@@ -30,10 +30,9 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public void DeserializeForRuntime()
 		{
-			activeRuntimePattern = new Dictionary<int, Card>();
-			//functionalPattern = new Dictionary<int, PatternModule>();
-			uiLookup = new Dictionary<Card, CardUI>();
-			if (patternObjects == null) return;
+			activeRuntimePattern ??= new Dictionary<int, Card>();
+			uiLookup ??= new Dictionary<Card, CardUI>();
+			if (patternObjects == null || activeRuntimePattern.Count > 0) return;
 			foreach (KeyValuePair<int, PatternModuleType> patternObject in patternObjects)
 			{
 				activeRuntimePattern.Add(patternObject.Key, new Card(patternObject.Value, true));
@@ -43,7 +42,6 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		public void InitOrReset(bool allowedToLoop = true)
 		{
 			activeRuntimePattern ??= new Dictionary<int, Card>();
-			//functionalPattern ??= new Dictionary<int, PatternModule>();
 			uiLookup ??= new Dictionary<Card, CardUI>();
 			loopsOnTimelineEnd = allowedToLoop;
 		}
@@ -167,7 +165,8 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 			original.DeserializeForRuntime();
 			original.InitOrReset();
-			
+			timeline.InitOrReset();
+
 			timeline.patternObjects = new SerializableDictionary<int, PatternModuleType>();
 			timeline.activeRuntimePattern = new Dictionary<int, Card>();
 			foreach (KeyValuePair<int, Card> kvp in original.activeRuntimePattern)
@@ -175,7 +174,6 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				timeline.activeRuntimePattern[kvp.Key] = new Card(kvp.Value.pattern.Clone());
 				timeline.patternObjects[kvp.Key] = kvp.Value.pattern.patternTypeData;
 			}
-			timeline.InitOrReset();
 			return timeline;
 		}
 	}

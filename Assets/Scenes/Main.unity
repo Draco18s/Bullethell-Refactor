@@ -167,6 +167,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: hard-point (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 778798223601149580, guid: 677b6b65f13b10b49bdb498500b84b0e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 778798223601149581, guid: 677b6b65f13b10b49bdb498500b84b0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -947,6 +951,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b170e9f86aa881948ab47a0e5861b1e7, type: 2}
   - {fileID: 11400000, guid: 89b588f148d9be548b0449a110ff1fe0, type: 2}
   - {fileID: 11400000, guid: 81e9c22df5efb514eb118e27dd56a1cb, type: 2}
+  - {fileID: 11400000, guid: f23a5fcd4feca8c45a8b9e2e2d1f6c8f, type: 2}
   modifiers: []
 --- !u!1 &1054511476
 GameObject:

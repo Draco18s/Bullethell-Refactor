@@ -46,7 +46,8 @@ namespace Assets.draco18s.bulletboss.pattern
 			public override PatternModule Clone()
 			{
 				PatternGroup mod = new PatternGroup(patternType);
-
+				mod.pattern = Timeline.CloneFrom(pattern);
+				mod.pattern.InitOrReset();
 				return mod;
 			}
 

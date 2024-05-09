@@ -20,12 +20,11 @@ MonoBehaviour:
   killOnComplete: 0
   preconfiguredPattern: 0
   pattern:
-    runtimeEditable: 0
+    runtimeEditable: 1
     upgrades: []
     patternObjects:
       keys: 
       values: []
-    hashID: 0
   allowedValueRange:
     min: 0
     max: 0

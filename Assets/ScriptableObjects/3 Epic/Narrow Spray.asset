@@ -13,30 +13,23 @@ MonoBehaviour:
   m_Name: Narrow Spray
   m_EditorClassIdentifier: 
   rarity: 0
-  description: A spray of 11 shots in a 10 degree cone
+  description: A spray of 5 shots in a 10 degree cone.
   icon: {fileID: -501359276, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
   preconfigured: 1
   unique: 0
   killOnComplete: 0
   preconfiguredPattern: 1
   pattern:
-    runtimeEditable: 0
+    runtimeEditable: 1
     upgrades: []
     patternObjects:
-      keys: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+      keys: 0100000002000000030000000400000005000000
       values:
-      - {fileID: 11400000, guid: fca96f3a1589f1f4a982d74bc4dac453, type: 2}
       - {fileID: 11400000, guid: 251860eba931b9a4595204cea88df35a, type: 2}
-      - {fileID: 11400000, guid: db23c3be0d44516459d41e30875bf582, type: 2}
       - {fileID: 11400000, guid: e88c50acf7e2e7c4b93ac26fb3c8a14f, type: 2}
-      - {fileID: 11400000, guid: dfa7da1b49af73740838590766fc44d5, type: 2}
       - {fileID: 11400000, guid: a2ad7a9c76954e147a39dbc6e80406b8, type: 2}
-      - {fileID: 11400000, guid: 4d06b0bac11aa644d89b08159fd0ea75, type: 2}
       - {fileID: 11400000, guid: 7b0aaf843e48a0e47948bbc6d1bbeb03, type: 2}
-      - {fileID: 11400000, guid: 8b39a9a9926028147b2821d6f184d723, type: 2}
       - {fileID: 11400000, guid: 944c5855cd0162749868f0a259fdbc9d, type: 2}
-      - {fileID: 11400000, guid: 5771f37819d121d4aa35208ec4ab8747, type: 2}
-    hashID: -1284217652
   allowedValueRange:
     min: 0
     max: 0

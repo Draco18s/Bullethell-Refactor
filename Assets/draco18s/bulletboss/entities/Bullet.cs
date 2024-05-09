@@ -65,7 +65,6 @@ namespace Assets.draco18s.bulletboss.entities
 
 		public void SetPattern(Timeline p)
 		{
-			Debug.Log($"SetPattern: {p?.GetModules()?.Count ?? -1}");
 			pattern = Timeline.CloneFrom(p);
 			pattern.InitOrReset(false);
 			pattern.ResetForNewLoopIteration();
