@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
   m_Name: Group
   m_EditorClassIdentifier: 
-  rarity: 1
+  rarity: 0
   description: Combines multiple Spawns into one
   icon: {fileID: -501359276, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
   preconfigured: 0
