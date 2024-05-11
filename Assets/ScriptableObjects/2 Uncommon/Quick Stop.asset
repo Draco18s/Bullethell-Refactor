@@ -17,6 +17,7 @@ MonoBehaviour:
   icon: {fileID: -1774684600, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
   preconfigured: 1
   unique: 0
+  killOnComplete: 0
   changeType: 0
   allowedValueRange:
     min: 0
@@ -25,7 +26,7 @@ MonoBehaviour:
   randomRange:
     min: 0
     max: 0
-  changeDuration: 0.001
+  changeDuration: 0.2
   allowedDurationRange:
     min: 0
     max: 0

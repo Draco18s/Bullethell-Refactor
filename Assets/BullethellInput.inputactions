@@ -1,0 +1,51 @@
+{
+    "name": "BullethellInput",
+    "maps": [
+        {
+            "name": "PatternEditor",
+            "id": "9adc4e8c-7ccd-40dd-81d5-4c9dde9ad758",
+            "actions": [
+                {
+                    "name": "Shift Fidelity",
+                    "type": "Button",
+                    "id": "c271db83-0ad6-4d07-969f-9f86c0728687",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5b048bbd-3e17-489c-b15e-45bde6f8e1b5",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Shift Fidelity",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "KeyboardMouse",
+            "bindingGroup": "KeyboardMouse",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

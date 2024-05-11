@@ -26,7 +26,7 @@ MonoBehaviour:
   randomRange:
     min: 0
     max: 0
-  changeDuration: 0.001
+  changeDuration: 0.2
   allowedDurationRange:
     min: 0
     max: 0

@@ -15,10 +15,12 @@ namespace Assets.draco18s.bulletboss.pattern
 	[CreateAssetMenu(menuName = "New Spawn Pattern")]
 	public class SpawnModuleType : TimelinePatternModuleType
 	{
+		[SerializeField] private float duration;
 		[SerializeField] private GameObject prefab;
 		[SerializeField] private bool killParent;
 		[SerializeField] private bool followParent;
 		[SerializeField] private float initialAngle;
+		[SerializeField] private FloatRange angleLimit;
 
 		public override PatternModule GetRuntimeObject()
 		{
@@ -27,7 +29,7 @@ namespace Assets.draco18s.bulletboss.pattern
 
 		public class SpawnModule : TimelinePatternModule<SpawnModuleType>
 		{
-			public override float duration => 1f;
+			public override float duration => patternType.duration;
 			private bool spawned = false;
 			private float spawnAngle = 0;
 
@@ -73,7 +75,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			public override void ConfigureKeyframe(RectTransform keyframeBar, DraggableElement handle, Keyframe editableKeyframe)
 			{
 				childPattern.InitOrReset();
-				editableKeyframe.SetEditableType(Keyframe.EditTypes.Angular, new FloatRange(-180,180), spawnAngle, true, 1, UpdateSpawnAngle);
+				editableKeyframe.SetEditableType(Keyframe.EditTypes.Angular, patternType.angleLimit, spawnAngle, true, 1, UpdateSpawnAngle);
 			}
 
 			private void UpdateSpawnAngle(float newAngle)

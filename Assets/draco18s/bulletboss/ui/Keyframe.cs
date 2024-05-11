@@ -30,9 +30,10 @@ namespace Assets.draco18s.bulletboss.ui
 
 		public void SetEditableType(EditTypes editType, FloatRange allowedRange, float curValue, bool showLabel, float scalar, Action<float> onUpdate)
 		{
+			bool rangeNonZero = !Mathf.Approximately(allowedRange.min, allowedRange.max);
 			if (editType == EditTypes.Angular)
 			{
-				angularEditor.gameObject.SetActive(true);
+				angularEditor.gameObject.SetActive(rangeNonZero);
 				angularEditor.SetLimits(allowedRange, onUpdate);
 				angularEditor.ShowLabel(showLabel);
 				//angularEditor.SetScalar(scalar);
@@ -40,7 +41,7 @@ namespace Assets.draco18s.bulletboss.ui
 			}
 			if (editType == EditTypes.Linear)
 			{
-				linearEditor.gameObject.SetActive(true);
+				linearEditor.gameObject.SetActive(rangeNonZero);
 				linearEditor.SetLimits(allowedRange, onUpdate);
 				linearEditor.ShowLabel(showLabel);
 				linearEditor.SetScalar(scalar);

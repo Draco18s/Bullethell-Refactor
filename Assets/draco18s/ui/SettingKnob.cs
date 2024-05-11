@@ -1,14 +1,12 @@
 ﻿using Assets.draco18s.bulletboss.ui;
 using Assets.draco18s.util;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Assets.draco18s.bulletboss.input;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SocialPlatforms;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace Assets.draco18s.ui
 {
@@ -16,34 +14,54 @@ namespace Assets.draco18s.ui
 	{
 		[SerializeField] private DraggableHandle handle;
 		[SerializeField] private RectTransform changeBar;
+		[SerializeField] private TextMeshProUGUI label;
 		private FloatRange allowedRange;
 		private Action<float> onUpdate;
 
 		private Vector3 target;
-		
+		private Vector3 trueMouse;
+		private bool rangeNonZero;
+
 		public override void OnDrag(PointerEventData data)
 		{
-			float min = allowedRange.min;
-			float max = allowedRange.max;
+			float min = (gameObject.activeSelf && rangeNonZero) ? allowedRange.min : float.NegativeInfinity;
+			float max = (gameObject.activeSelf && rangeNonZero) ? allowedRange.max : float.PositiveInfinity;
 			float ang = changeBar.localEulerAngles.z;
 			if (ang > 180) ang -= 360;
-			
-			target += new Vector3(data.delta.x, data.delta.y);
-			float a = Mathf.Atan2(target.y, target.x) / Mathf.PI * 180;
-			//SetValue(a-90);
-			changeBar.localEulerAngles = new Vector3(0, 0, Mathf.Clamp(a - 90, min, max));
-			onUpdate(Mathf.Clamp(a - 90, min, max));
+
+			float val;
+
+			trueMouse += new Vector3(data.delta.x, data.delta.y);
+
+			if (InputManager.PatternEditor.ShiftFidelity.IsPressed())
+			{
+				target += new Vector3(data.delta.x, data.delta.y) / 5;
+
+				val = Mathf.Clamp((Mathf.Atan2(target.y, target.x) / Mathf.PI * 180) - 90, min, max);
+				val = DMath.Step(val, 0.2f);
+			}
+			else
+			{
+				target += new Vector3(data.delta.x, data.delta.y);
+				val = Mathf.Clamp((Mathf.Atan2(target.y, target.x) / Mathf.PI * 180) - 90, min, max);
+				val = DMath.Step(val, 1f);
+			}
+
+			changeBar.localEulerAngles = new Vector3(0, 0, val);
+			onUpdate(val);
+			label.text = val.ToString("F1");
 		}
 
 		public override void SetValue(float val)
 		{
-			float min = gameObject.activeSelf ? allowedRange.min : float.NegativeInfinity;
-			float max = gameObject.activeSelf ? allowedRange.max : float.PositiveInfinity;
+			float min = (gameObject.activeSelf && rangeNonZero) ? allowedRange.min : float.NegativeInfinity;
+			float max = (gameObject.activeSelf && rangeNonZero) ? allowedRange.max : float.PositiveInfinity;
 
 			if (val > 180) val -= 360;
-
+			val = Mathf.Clamp(val, min, max);
 			changeBar.localEulerAngles = new Vector3(0, 0, val);
-			target = Vector3.zero;
+			trueMouse = target = Vector3.zero;
+			label.text = val.ToString("F1");
 		}
 
 		public override void SetLimits(FloatRange range, Action<float> callback)
@@ -64,7 +82,7 @@ namespace Assets.draco18s.ui
 
 		public override void ShowLabel(bool show)
 		{
-
+			label.gameObject.SetActive(show);
 		}
 
 		public override void SetScalar(float scale)
@@ -74,12 +92,13 @@ namespace Assets.draco18s.ui
 
 		public void OnPointerDown(PointerEventData eventData)
 		{
+			rangeNonZero = !Mathf.Approximately(allowedRange.min, allowedRange.max);
 			if (target.sqrMagnitude == 0)
 			{
-				target = new Vector3(0, 35, 0);
+				trueMouse = target = new Vector3(0, 35, 0);
 				return;
 			}
-			target = target.normalized * 35;
+			trueMouse = target = target.normalized * 35;
 		}
 	}
 }
