@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Assets.draco18s.bulletboss.entities;
-using Assets.draco18s.bulletboss.ui;
 using Assets.draco18s.util;
 using UnityEngine;
-using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
@@ -31,16 +25,18 @@ namespace Assets.draco18s.bulletboss.pattern
 
 		public class HomingTurnModule : ChangeModule
 		{
+			protected HomingTurnModuleType homingTypeData;
 			protected float maxTurnRate;
 			public HomingTurnModule(HomingTurnModuleType modType) : base(modType)
 			{
+				homingTypeData = modType;
 				maxTurnRate = newValue;
 				newValue = 0;
 			}
 
 			public override PatternModule Clone()
 			{
-				HomingTurnModule mod = new HomingTurnModule((HomingTurnModuleType)patternType);
+				HomingTurnModule mod = new HomingTurnModule(homingTypeData);
 				mod.changeDuration = changeDuration;
 				return mod;
 			}

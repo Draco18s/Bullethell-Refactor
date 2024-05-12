@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using Assets.draco18s.bulletboss.input;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class InputManager : MonoBehaviour
 {

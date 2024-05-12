@@ -1,12 +1,9 @@
 ﻿using Assets.draco18s.bulletboss.ui;
 using Assets.draco18s.util;
 using System;
-using Assets.draco18s.bulletboss.input;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 namespace Assets.draco18s.ui
 {

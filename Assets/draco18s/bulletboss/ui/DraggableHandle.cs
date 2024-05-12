@@ -1,7 +1,3 @@
-using System;
-using Assets.draco18s.util;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

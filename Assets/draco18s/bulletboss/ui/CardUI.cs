@@ -1,14 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using Assets.draco18s.bulletboss.cards;
-using Assets.draco18s.bulletboss.entities;
-using Assets.draco18s.bulletboss.pattern;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static Assets.draco18s.bulletboss.pattern.timeline.TimelineModuleType;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 namespace Assets.draco18s.bulletboss.ui
 {

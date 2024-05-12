@@ -6,8 +6,6 @@ using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.ui;
 using UnityEngine;
-using System.Collections.ObjectModel;
-using UnityEditor;
 
 namespace Assets.draco18s.bulletboss.pattern.timeline
 {

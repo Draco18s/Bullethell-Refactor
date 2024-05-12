@@ -1,6 +1,5 @@
 ﻿using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.util;
-using System;
 using System.Collections.Generic;
 using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.entities;
@@ -11,7 +10,7 @@ using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
 namespace Assets.draco18s.bulletboss.pattern
 {
 	[CreateAssetMenu(menuName = "New Pattern Group")]
-	public class PatternGroupModule : TimelinePatternModuleType
+	public class PatternGroupModuleType : TimelinePatternModuleType
 	{
 		[SerializeField] private IntRange allowedValueRange;
 
@@ -25,11 +24,11 @@ namespace Assets.draco18s.bulletboss.pattern
 			return module is SpawnModuleType;
 		}
 
-		public class PatternGroup : TimelinePatternModule<PatternGroupModule>
+		public class PatternGroup : TimelinePatternModule<PatternGroupModuleType>
 		{
 			public override float duration => 1f;
 
-			public PatternGroup(PatternGroupModule patternGroupModule) : base(patternGroupModule) { }
+			public PatternGroup(PatternGroupModuleType patternGroupModuleType) : base(patternGroupModuleType) { }
 
 			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved)
 			{

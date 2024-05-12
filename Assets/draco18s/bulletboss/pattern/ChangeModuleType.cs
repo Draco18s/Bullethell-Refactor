@@ -2,7 +2,6 @@
 using Assets.draco18s.bulletboss.ui;
 using Assets.draco18s.util;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
 
 namespace Assets.draco18s.bulletboss.pattern

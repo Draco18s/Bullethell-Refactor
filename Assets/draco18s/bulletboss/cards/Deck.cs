@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using Assets.draco18s.bulletboss.pattern;
-using Assets.draco18s.bulletboss.ui;
 using Assets.draco18s.util;
-using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.cards {
 	public class Deck

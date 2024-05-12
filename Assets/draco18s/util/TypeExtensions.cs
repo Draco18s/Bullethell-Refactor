@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -69,6 +68,19 @@ namespace Assets.draco18s.util {
                 n--;
                 (list[k], list[n]) = (list[n], list[k]);
             }
+		}
+
+		public static T GetRandom<T>(this IEnumerable<T> list)
+		{
+			T choice = default;
+			int i = 1;
+			foreach (T item in list)
+			{
+				if (Random.value < 1f / i)
+					choice = item;
+				i++;
+			}
+			return choice;
 		}
 
 		public static void Shuffle<T>(this Queue<T> queue)

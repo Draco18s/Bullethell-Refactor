@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.draco18s.bulletboss.pattern.timeline;
+﻿using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.util;
 using UnityEngine;
 
