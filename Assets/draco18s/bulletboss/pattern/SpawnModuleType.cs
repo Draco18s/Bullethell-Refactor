@@ -64,6 +64,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				shot.SetPattern(timeline);
 				if(followParent)
 					shot.SetParent(parentShot);
+				shot.gameObject.layer = (parentShot.gameObject.layer - (parentShot.gameObject.layer % 2)) + 1;
 				spawned = true;
 			}
 

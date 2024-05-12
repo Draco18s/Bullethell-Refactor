@@ -168,6 +168,10 @@ PrefabInstance:
       value: hard-point (1)
       objectReference: {fileID: 0}
     - target: {fileID: 778798223601149580, guid: 677b6b65f13b10b49bdb498500b84b0e, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 778798223601149580, guid: 677b6b65f13b10b49bdb498500b84b0e, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -373,10 +377,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1600, y: 900}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -875,7 +879,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 100
   field of view: 60
   orthographic: 1
   orthographic size: 5
@@ -958,6 +962,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cb9590ef284cb364ab1b1e5f44ca2b89, type: 2}
   - {fileID: 11400000, guid: c28ce774b7520b74e90aebfe185c0095, type: 2}
   - {fileID: 11400000, guid: c9a29c3d2bea89041ada40ac7be041c0, type: 2}
+  - {fileID: 11400000, guid: 7142fdd323448024b87071dec557c5f4, type: 2}
   - {fileID: 11400000, guid: 20cfdd96377318445b3766bca5d217e2, type: 2}
   - {fileID: 11400000, guid: de0568ce5275128438129301d1c991b7, type: 2}
   - {fileID: 11400000, guid: bfe6863b7dd0ab74a84d256fddde6aca, type: 2}
@@ -983,6 +988,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 41bfe591d6a509b4a91fe56b4556ee43, type: 2}
   - {fileID: 11400000, guid: 7c6f244a38f001545803ab27034d3123, type: 2}
   - {fileID: 11400000, guid: 6ea9def54a294804291ea3d447a3b80a, type: 2}
+  - {fileID: 11400000, guid: 05c18761e7d1c9e4b934d3a4314c4493, type: 2}
   - {fileID: 11400000, guid: 4f40aa4536393144a8dd99ad506fd7cc, type: 2}
   modifiers: []
 --- !u!1 &1054511476
@@ -1611,6 +1617,10 @@ PrefabInstance:
     - target: {fileID: 778798223601149580, guid: 677b6b65f13b10b49bdb498500b84b0e, type: 3}
       propertyPath: m_Name
       value: hard-point
+      objectReference: {fileID: 0}
+    - target: {fileID: 778798223601149580, guid: 677b6b65f13b10b49bdb498500b84b0e, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 778798223601149581, guid: 677b6b65f13b10b49bdb498500b84b0e, type: 3}
       propertyPath: m_LocalPosition.x

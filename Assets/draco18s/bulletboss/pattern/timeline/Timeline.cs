@@ -125,10 +125,14 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			foreach (int k in activeRuntimePattern.Keys.OrderBy(x => x))
 			{
 				if (k > idx) break;
-				if (k + activeRuntimePattern[k].pattern.duration > idx) continue;
+				if (k != idx && k + activeRuntimePattern[k].pattern.duration > idx) continue;
 				bool b = activeRuntimePattern[k].pattern.DoShotStep(bullet, dt, out bool shouldRemove);
 				if (shouldRemove) bullet.DestroySelf();
-				if(b && activeRuntimePattern[k].pattern.duration < dt) continue;
+				if(b && activeRuntimePattern[k].pattern.duration < dt)
+				{
+					idx++;
+					continue;
+				}
 				if(!b) break;
 			}
 

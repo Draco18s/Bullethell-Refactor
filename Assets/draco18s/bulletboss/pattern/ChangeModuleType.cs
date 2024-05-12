@@ -15,7 +15,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			Speed,Direction,Size,Time
 		}
 
-		[SerializeField] private ChangeType changeType;
+		[SerializeField] protected ChangeType changeType;
 		[SerializeField] private FloatRange allowedValueRange;
 
 		[SerializeField] private float newValue;
@@ -30,8 +30,8 @@ namespace Assets.draco18s.bulletboss.pattern
 
 		public class ChangeModule : PatternModule<ChangeModuleType>
 		{
-			private float timeElapsed;
-			private float oldValue;
+			protected float timeElapsed;
+			protected float oldValue;
 			public float newValue;
 			public FloatRange randomRange;
 			public float changeDuration;
@@ -50,6 +50,11 @@ namespace Assets.draco18s.bulletboss.pattern
 				else
 				{
 					changeDuration = patternType.allowedDurationRange.min;
+				}
+
+				if (patternType.changeType == ChangeType.Time)
+				{
+					changeDuration = patternType.newValue;
 				}
 			}
 
@@ -106,6 +111,8 @@ namespace Assets.draco18s.bulletboss.pattern
 				timeElapsed = 0;
 				if(patternType.randomRange.min != 0 && patternType.randomRange.max != 0)
 					newValue = patternType.newValue + Random.Range(patternType.randomRange.min, patternType.randomRange.max) + patternType.newValue;
+				else
+					newValue = patternType.newValue;
 			}
 
 			public override void ConfigureKeyframe(RectTransform keyframeBar, DraggableElement handle, Keyframe editableKeyframe)

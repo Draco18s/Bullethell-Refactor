@@ -36,6 +36,11 @@ namespace Assets.draco18s.bulletboss.entities
 			{
 				transform.Translate(parentShot.transform.forward * parentShot.speed * dt, Space.Self); 
 			}
+
+			if (Mathf.Abs(transform.position.x) > 10 || Mathf.Abs(transform.position.y) > 6.5f)
+			{
+				kill = true;
+			}
 			
 			if (kill)
 			{
@@ -73,6 +78,11 @@ namespace Assets.draco18s.bulletboss.entities
 		public void DestroySelf()
 		{
 			Destroy(gameObject);
+		}
+
+		public int GetTargetLayerMask()
+		{
+			return LayerMask.GetMask(gameObject.layer == LayerMask.NameToLayer("PlayerBullets") ? "Enemy" : "AIPlayer");
 		}
 	}
 }

@@ -49,12 +49,14 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				loopCounter++;
 				shouldBulletBeRemoved = false;
+				childPattern.RuntimeUpdate(shot, deltaTime);
 				return loopCounter >= numLoops;
 			}
 
 			public override void ResetForNewLoopIteration()
 			{
 				loopCounter = 0;
+				childPattern.ResetForNewLoopIteration();
 			}
 
 			public override void ConfigureKeyframe(RectTransform keyframeBar, DraggableElement handle, Keyframe editableKeyframe)
