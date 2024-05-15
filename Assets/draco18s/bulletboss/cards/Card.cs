@@ -1,12 +1,19 @@
 ﻿using Assets.draco18s.bulletboss.pattern;
+using Assets.draco18s.bulletboss.pattern.timeline;
+using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.cards
 {
 	public class Card
 	{
 		public PatternModule pattern { get; protected set; }
+		public TimelineModifierType timelineModifier { get; protected set; }
 		public bool isUnique { get; protected set; }
 		public bool isEphemeral { get; protected set; }
+		public NamedRarity rarity => pattern?.patternTypeData.rarity ?? timelineModifier.rarity;
+		public string name => pattern?.patternTypeData.name ?? timelineModifier.name;
+		public string description => pattern?.patternTypeData.description ?? timelineModifier.description;
+		public Sprite icon => pattern?.patternTypeData.icon ?? timelineModifier.icon;
 
 		public Card(PatternModuleType moduleType, bool ephemeral=false)
 		{
@@ -18,6 +25,13 @@ namespace Assets.draco18s.bulletboss.cards
 		public Card(PatternModule module, bool ephemeral = false)
 		{
 			pattern = module;
+			isUnique = false;
+			isEphemeral = ephemeral;
+		}
+
+		public Card(TimelineModifierType modifier, bool ephemeral = false)
+		{
+			timelineModifier = modifier;
 			isUnique = false;
 			isEphemeral = ephemeral;
 		}

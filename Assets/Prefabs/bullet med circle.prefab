@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1982740180085211200}
   - component: {fileID: 2421256366058637111}
   m_Layer: 0
-  m_Name: bullet 1
+  m_Name: bullet med circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.06
+  m_Radius: 0.12
 --- !u!114 &2421256366058637111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,6 +89,8 @@ MonoBehaviour:
       keys: 
       values: []
   baseSpeed: 1
+  shape: 0
+  size: 1
 --- !u!1 &1766367186497654624
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +118,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.13379, y: 0.13379, z: 0.13379}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 778798223601149581}
@@ -246,7 +248,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 765289114, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  m_Sprite: {fileID: -1878167980, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

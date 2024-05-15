@@ -63,7 +63,7 @@ namespace Assets.draco18s.ui {
 		}
 	}
 
-	public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler, IPointerClickHandler {
+	public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, /*ISelectHandler, IDeselectHandler,*/ IPointerClickHandler {
 		List<ButtonExtensions.OnHoverDelegate> hoverCallbacks = new List<ButtonExtensions.OnHoverDelegate>();
 		List<ButtonExtensions.OnHoverDelegate> updateCallbacks = new List<ButtonExtensions.OnHoverDelegate>();
 		List<ButtonExtensions.OnClickDelegate> rClickCallbacks = new List<ButtonExtensions.OnClickDelegate>();
@@ -95,15 +95,15 @@ namespace Assets.draco18s.ui {
 		public void OnPointerEnter(PointerEventData eventData) {
 			StartHover(new Vector3(eventData.position.x, eventData.position.y - 18f, 0f));
 		}
-		public void OnSelect(BaseEventData eventData) {
-			StartHover(transform.position);
-		}
+		//public void OnSelect(BaseEventData eventData) {
+			//StartHover(transform.position);
+		//}
 		public void OnPointerExit(PointerEventData eventData) {
 			StopHover();
 		}
-		public void OnDeselect(BaseEventData eventData) {
-			StopHover();
-		}
+		//public void OnDeselect(BaseEventData eventData) {
+		//	StopHover();
+		//}
 
 		public void OnDisable() {
 			StopHover();

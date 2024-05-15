@@ -3,6 +3,7 @@ using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.bulletboss.ui;
 using UnityEngine;
+using static Assets.draco18s.bulletboss.pattern.timeline.TimelineModifierType;
 
 namespace Assets.draco18s.bulletboss
 {
@@ -11,7 +12,7 @@ namespace Assets.draco18s.bulletboss
 		public static CardLibrary instance;
 
 		[SerializeField] private PatternModuleType[] modules;
-		[SerializeField] private TimelineModuleType[] modifiers;
+		[SerializeField] private TimelineModifierType[] modifiers;
 
 		public Deck collection { get; protected set; }
 
@@ -28,6 +29,11 @@ namespace Assets.draco18s.bulletboss
 				if(module.rarity != NamedRarity.Starting) continue;
 				collection.Add(new Card(module));
 			}
+			foreach (TimelineModifierType modifier in modifiers)
+			{
+				if (modifier.rarity != NamedRarity.Starting) continue;
+				collection.Add(new Card(modifier));
+			}
 			collection.Reset();
 			for (int i = 0; i < 5; i++)
 			{
@@ -37,6 +43,7 @@ namespace Assets.draco18s.bulletboss
 				CardUI cardUI = Instantiate(GameAssets.instance.cardUIObject, CardHand.instance.transform).GetComponent<CardUI>();
 				cardUI.SetData(card);
 			}
+			DeckUI.instance.SetDeck(collection);
 		}
 	}
 }

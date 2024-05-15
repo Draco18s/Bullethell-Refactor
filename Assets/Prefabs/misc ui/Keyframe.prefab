@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 466241926109139551}
+  bg: {fileID: 576003709223354832}
   frame: {fileID: 8253550249186643756}
   linearEditor: {fileID: 4751140493601392536}
   angularEditor: {fileID: 3457412800211652099}

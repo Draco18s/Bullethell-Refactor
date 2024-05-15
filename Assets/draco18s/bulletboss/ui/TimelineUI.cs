@@ -10,6 +10,7 @@ namespace Assets.draco18s.bulletboss.ui
 	public class TimelineUI : MonoBehaviour
 	{
 		[SerializeField] private Transform cardContainer;
+		[SerializeField] private Transform modifierContainer;
 		[SerializeField] private Button parentPatternBtn;
 		public static TimelineUI instance;
 
@@ -51,12 +52,44 @@ namespace Assets.draco18s.bulletboss.ui
 			currentTimeline.RemoveModule(cardUI);
 		}
 
+		public void RemoveModifier(CardUI cardUI)
+		{
+			currentTimeline.RemoveModifier(cardUI);
+		}
+
 		public void AddModule(CardUI cardUI)
 		{
-			cardUI.transform.SetParent(cardContainer);
-			cardUI.transform.localPosition = new Vector3(cardUI.transform.localPosition.x, 0);
-			currentTimeline.AddModule(cardUI);
+			if (!CanAdd(cardUI))
+			{
+
+				return;
+			}
+			if (cardUI.cardRef.pattern == null)
+			{
+				cardUI.transform.SetParent(modifierContainer);
+				currentTimeline.AddModifier(cardUI);
+			}
+			else
+			{
+				cardUI.transform.SetParent(cardContainer);
+				cardUI.transform.localPosition = new Vector3(cardUI.transform.localPosition.x, 0);
+				currentTimeline.AddModule(cardUI);
+			}
+
 			RefreshUI();
+		}
+
+		private bool CanAdd(CardUI cardUI)
+		{
+			if (cardUI.cardRef.pattern == null)
+			{
+				return modifierContainer.childCount < 5;
+			}
+			else
+			{
+				currentTimeline.CanAdd(cardUI.cardRef.pattern);
+			}
+			return true;
 		}
 
 		private void RefreshUI()

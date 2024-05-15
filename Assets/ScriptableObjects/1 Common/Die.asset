@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Die
   m_EditorClassIdentifier: 
   rarity: 1
-  description: 
+  description: Causes the bullet to die.
   icon: {fileID: 1851684047, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
   preconfigured: 1
   unique: 0
@@ -28,5 +28,5 @@ MonoBehaviour:
     max: 0
   changeDuration: 0.1
   allowedDurationRange:
-    min: 0
-    max: 0
+    min: 0.1
+    max: 0.1

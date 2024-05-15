@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Assets.draco18s.bulletboss.cards;
+using Assets.draco18s.ui;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -96,33 +97,42 @@ namespace Assets.draco18s.bulletboss.ui
 		public void SetData(Card card)
 		{
 			cardRef = card;
-			bgGlint.color = cardRef.pattern.patternTypeData.rarity.GetColor();
+			bgGlint.color = cardRef.rarity.GetColor();
 			//bgGlint.color = new Color(bgGlint.color.r, bgGlint.color.g, bgGlint.color.b, 0.75f);
 			//bg.color = cardRef.pattern.patternTypeData.rarity.GetColor();
 			//bgShiny.color = cardRef.pattern.patternTypeData.rarity.GetColor();
-			keyframeParent.SetIcon(card.pattern.patternTypeData);
-			cardName.text = cardRef.pattern.patternTypeData.name;
-			cardDesc.text = cardRef.pattern.patternTypeData.description;
-			float secondWidth = ((RectTransform)TimelineUI.instance.transform).rect.width / 10;
-			keyframeBar.sizeDelta = new Vector2(cardRef.pattern.duration * secondWidth + 10, keyframeBar.sizeDelta.y);
-			DraggableElement handle = keyframeBar.GetComponentInChildren<DraggableElement>();
-			if (cardRef.pattern.patternTypeData.preconfigured)
+			keyframeParent.SetIcon(card.icon, cardRef.rarity.GetColor());
+			cardName.text = cardRef.name;
+			cardDesc.text = cardRef.description;
+
+			sprite.sprite = spriteShiny.sprite = card.icon;
+
+			if (cardRef.pattern != null)
 			{
-				handle.Disable();
+				float secondWidth = ((RectTransform)TimelineUI.instance.transform).rect.width / 10;
+				keyframeBar.sizeDelta = new Vector2(cardRef.pattern.duration * secondWidth + 10, keyframeBar.sizeDelta.y);
+				DraggableElement handle = keyframeBar.GetComponentInChildren<DraggableElement>();
+				if (cardRef.pattern.patternTypeData.preconfigured)
+				{
+					handle.Disable();
+				}
+				else
+				{
+					handle.Enable();
+				}
+				cardRef.pattern.ConfigureKeyframe(keyframeBar, handle, keyframeParent);
+				editButton.gameObject.SetActive(card.pattern.hasEditableChild);
 			}
 			else
 			{
-				handle.Enable();
+				editButton.gameObject.SetActive(false);
+				keyframeBar.gameObject.SetActive(false);
 			}
-
-			sprite.sprite = spriteShiny.sprite = cardRef.pattern.patternTypeData.icon;
-
-			cardRef.pattern.ConfigureKeyframe(keyframeBar, handle, keyframeParent);
+			
 			bg.enabled = !card.isUnique;
 			bgShiny.enabled = card.isUnique;
 			sprite.enabled = !card.isUnique;
 			spriteShiny.enabled = card.isUnique;
-			editButton.gameObject.SetActive(card.pattern.hasEditableChild);
 			editButton.onClick.AddListener(EditChildPattern);
 		}
 
@@ -165,17 +175,19 @@ namespace Assets.draco18s.bulletboss.ui
 
 			if (timeline != null)
 			{
-				timeline.RemoveModule(this);
+				if (cardRef.pattern != null)
+					timeline.RemoveModule(this);
+				else
+					timeline.RemoveModifier(this);
 			}
 			Vector3 mouse = Input.mousePosition - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
 
 			transform.SetParent(canvasParent);
 			transform.position = canvasParent.TransformPoint(mouse);
-			transform.localPosition += (hoverTiltCenter.localPosition)/2;
+			transform.localPosition -= (hoverTiltCenter.localPosition)/2;
 			//MoveCard(mouse, 0.5f);
 			//MoveCard(mouse, 0.5f);
 			isHeld = true;
-			//Debug.Break();
 		}
 
 		public void OnPointerUp(PointerEventData eventData)
@@ -207,6 +219,20 @@ namespace Assets.draco18s.bulletboss.ui
 
 			keyframeParent.gameObject.SetActive(transform.parent != CardHand.instance.transform);
 			hoverTiltCenter.gameObject.SetActive(transform.parent == CardHand.instance.transform);
+		}
+
+		public void Disable(string reason)
+		{
+			keyframeParent.SetIconColor(Color.gray);
+			keyframeParent.AddHover(p =>
+			{
+				Tooltip.ShowTooltip(p, reason, 3);
+			});
+		}
+
+		public void Enable()
+		{
+			keyframeParent.SetIconColor(Color.white);
 		}
 	}
 }

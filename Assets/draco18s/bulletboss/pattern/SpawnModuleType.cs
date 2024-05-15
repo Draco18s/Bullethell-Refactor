@@ -7,7 +7,7 @@ using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
-	[CreateAssetMenu(menuName = "New Spawn Pattern")]
+	[CreateAssetMenu(menuName = "Pattern/New Spawn Pattern")]
 	public class SpawnModuleType : TimelinePatternModuleType
 	{
 		[SerializeField] private float duration;
@@ -16,6 +16,8 @@ namespace Assets.draco18s.bulletboss.pattern
 		[SerializeField] private bool followParent;
 		[SerializeField] private float initialAngle;
 		[SerializeField] private FloatRange angleLimit;
+
+		private static int spawnCount = 0;
 
 		public override PatternModule GetRuntimeObject()
 		{
@@ -61,6 +63,8 @@ namespace Assets.draco18s.bulletboss.pattern
 					shot.SetParent(parentShot);
 				shot.gameObject.layer = (parentShot.gameObject.layer - (parentShot.gameObject.layer % 2)) + 1;
 				spawned = true;
+				spawnCount++;
+				shot.gameObject.name += " - " + spawnCount;
 			}
 
 			public override void ResetForNewLoopIteration()

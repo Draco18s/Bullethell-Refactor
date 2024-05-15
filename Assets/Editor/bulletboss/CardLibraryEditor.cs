@@ -17,9 +17,10 @@ public class CardLibraryEditor : Editor
 		if (GUILayout.Button("Find all Cards"))
 		{
 			SerializedProperty modulesProp = serializedObject.FindProperty("modules");
-			//SerializedProperty modifiersProp = serializedObject.FindProperty("modifiers");
+			SerializedProperty modifiersProp = serializedObject.FindProperty("modifiers");
 			modulesProp.arraySize = 0;
-			string[] modules = AssetDatabase.FindAssets("t:PatternModuleType", new string[]
+			modifiersProp.arraySize = 0;
+			string[] locations = new string[]
 			{
 				"Assets/ScriptableObjects/0 Starting",
 				"Assets/ScriptableObjects/1 Common",
@@ -29,7 +30,8 @@ public class CardLibraryEditor : Editor
 				"Assets/ScriptableObjects/5 Ultra Rare",
 				"Assets/ScriptableObjects/6 Legendary",
 				"Assets/ScriptableObjects/7 Artifact",
-			});
+			};
+			string[] modules = AssetDatabase.FindAssets("t:PatternModuleType", locations);
 
 			string[] query = modules.Select(AssetDatabase.GUIDToAssetPath).ToArray();
 
@@ -39,6 +41,16 @@ public class CardLibraryEditor : Editor
 			{
 				Object asset = AssetDatabase.LoadAssetAtPath(path, typeof(ScriptableObject));
 				modulesProp.GetArrayElementAtIndex(i++).objectReferenceValue = asset;
+			}
+
+			modules = AssetDatabase.FindAssets("t:TimelineModuleType", locations);
+			query = modules.Select(AssetDatabase.GUIDToAssetPath).ToArray();
+			i = 0;
+			modifiersProp.arraySize = query.Length;
+			foreach (string path in query)
+			{
+				Object asset = AssetDatabase.LoadAssetAtPath(path, typeof(ScriptableObject));
+				modifiersProp.GetArrayElementAtIndex(i++).objectReferenceValue = asset;
 			}
 
 			serializedObject.ApplyModifiedProperties();

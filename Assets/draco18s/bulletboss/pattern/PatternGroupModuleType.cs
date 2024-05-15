@@ -9,7 +9,7 @@ using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
-	[CreateAssetMenu(menuName = "New Pattern Group")]
+	[CreateAssetMenu(menuName = "Pattern/New Pattern Group")]
 	public class PatternGroupModuleType : TimelinePatternModuleType
 	{
 		[SerializeField] private IntRange allowedValueRange;
@@ -21,12 +21,12 @@ namespace Assets.draco18s.bulletboss.pattern
 
 		public override bool CanAddModule(PatternModuleType module)
 		{
-			return module is SpawnModuleType;
+			return module is SpawnModuleType or PatternGroupModuleType;
 		}
 
 		public class PatternGroup : TimelinePatternModule<PatternGroupModuleType>
 		{
-			public override float duration => 1f;
+			public override float duration => Mathf.Max(childPattern.GetDuration(), 0.1f);
 
 			public PatternGroup(PatternGroupModuleType patternGroupModuleType) : base(patternGroupModuleType) { }
 
@@ -47,6 +47,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				PatternGroup mod = new PatternGroup(patternType);
 				mod.pattern = Timeline.CloneFrom(pattern);
 				mod.pattern.InitOrReset();
+				mod.pattern.SetModuleType(patternType);
 				return mod;
 			}
 

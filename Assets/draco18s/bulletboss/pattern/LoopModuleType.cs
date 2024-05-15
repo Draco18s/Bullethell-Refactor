@@ -6,7 +6,7 @@ using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
-	[CreateAssetMenu(menuName = "New Pattern Loop")]
+	[CreateAssetMenu(menuName = "Pattern/New Pattern Loop")]
 	public class LoopModuleType : TimelinePatternModuleType
 	{
 		[SerializeField] private int iterations;
@@ -40,10 +40,13 @@ namespace Assets.draco18s.bulletboss.pattern
 
 			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved)
 			{
-				loopCounter++;
 				shouldBulletBeRemoved = false;
-				childPattern.RuntimeUpdate(shot, deltaTime);
-				return loopCounter >= numLoops;
+				if (numLoops > 0 && loopCounter >= numLoops) return true;
+				if (childPattern.RuntimeUpdate(shot, deltaTime))
+				{
+					loopCounter++;
+				}
+				return numLoops > 0 && loopCounter >= numLoops;
 			}
 
 			public override void ResetForNewLoopIteration()

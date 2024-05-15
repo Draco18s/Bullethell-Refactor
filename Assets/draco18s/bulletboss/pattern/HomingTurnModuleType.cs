@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
-	[CreateAssetMenu(menuName = "Homing Change")]
+	[CreateAssetMenu(menuName = "Pattern/Homing Change")]
 	public class HomingTurnModuleType : ChangeModuleType
 	{
 		public HomingTurnModuleType()

@@ -10,26 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a349b16367ecdfa48a5b8a0b3581e100, type: 3}
-  m_Name: Instant Spawn
+  m_Name: Instant Following-120
   m_EditorClassIdentifier: 
-  rarity: 6
-  description: Basic blue shot. Unlimited angle adjustment.
+  rarity: 0
+  description: 
   icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
-  preconfigured: 1
+  preconfigured: 0
   unique: 0
   killOnComplete: 0
-  preconfiguredPattern: 0
+  preconfiguredPattern: 1
   pattern:
-    runtimeEditable: 0
+    runtimeEditable: 1
     upgrades: []
     patternObjects:
-      keys: 
-      values: []
-  duration: 0.0001
-  prefab: {fileID: 778798223601149580, guid: 7c4c3f1104f5da94aabcf78a0459a4f4, type: 3}
+      keys: 010000008c000000
+      values:
+      - {fileID: 11400000, guid: ece1d751069630340b616467e62a5e12, type: 2}
+      - {fileID: 11400000, guid: a6ca8c7794b37ce40bab658502e7d9a1, type: 2}
+  duration: 0.1
+  prefab: {fileID: 778798223601149580, guid: 6010b6c9fcae355418ba3f290d7a72ec, type: 3}
   killParent: 0
-  followParent: 0
-  initialAngle: 0
+  followParent: 1
+  initialAngle: -100
   angleLimit:
-    min: -180
-    max: 180
+    min: -120
+    max: -120

@@ -1,5 +1,6 @@
 using System;
 using Assets.draco18s.bulletboss.pattern;
+using Assets.draco18s.ui;
 using Assets.draco18s.util;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,14 +17,20 @@ namespace Assets.draco18s.bulletboss.ui
 		}
 
 		[SerializeField] private Image icon;
+		[SerializeField] private Image bg;
 		[SerializeField] private Image frame;
 		[SerializeField] private DraggableElement linearEditor;
 		[SerializeField] private DraggableElement angularEditor;
 		
-		public void SetIcon(PatternModuleType pattern)
+		public void SetIcon(Sprite sprite, Color color)
 		{
-			icon.sprite = pattern.icon;
-			frame.color = pattern.rarity.GetColor();
+			icon.sprite = sprite;
+			frame.color = color;
+		}
+
+		public void SetIconColor(Color color)
+		{
+			bg.color = color;
 		}
 
 		public void SetEditableType(EditTypes editType, FloatRange allowedRange, float curValue, bool showLabel, float scalar, Action<float> onUpdate)
@@ -45,6 +52,11 @@ namespace Assets.draco18s.bulletboss.ui
 				linearEditor.SetScalar(scalar);
 				linearEditor.SetValue(curValue);
 			}
+		}
+
+		public void AddHover(ButtonExtensions.OnHoverDelegate action)
+		{
+			bg.AddHover(action, true);
 		}
 	}
 }

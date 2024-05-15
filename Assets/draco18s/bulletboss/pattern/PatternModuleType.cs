@@ -17,18 +17,17 @@ namespace Assets.draco18s.bulletboss.pattern
 		public bool killOnComplete = false;
 
 		public abstract PatternModule GetRuntimeObject();
+		public virtual bool CanAddModule(PatternModuleType module)
+		{
+			return true;
+		}
 	}
 
 	public abstract class TimelinePatternModuleType : PatternModuleType
 	{
 		[SerializeField] protected bool preconfiguredPattern;
 		[SerializeField] protected Timeline pattern = new Timeline();
-
-		public virtual bool CanAddModule(PatternModuleType module)
-		{
-			return true;
-		}
-
+		
 		public bool GetIsPatternPreconfigured()
 		{
 			return preconfiguredPattern;
@@ -78,10 +77,11 @@ namespace Assets.draco18s.bulletboss.pattern
 
 		protected TimelinePatternModule(U modType) : base(modType)
 		{
-			if(modType.GetIsPatternPreconfigured())
+			if (modType.GetIsPatternPreconfigured())
 				pattern = Timeline.CloneFrom(patternType.GetPattern());
 			else
-				pattern = new Timeline();
+				pattern = new Timeline(); 
+			pattern.SetModuleType(patternType);
 		}
 	}
 }

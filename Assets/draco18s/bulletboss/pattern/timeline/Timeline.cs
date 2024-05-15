@@ -6,6 +6,7 @@ using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.ui;
 using UnityEngine;
+using Card = Assets.draco18s.bulletboss.cards.Card;
 
 namespace Assets.draco18s.bulletboss.pattern.timeline
 {
@@ -13,21 +14,24 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 	public class Timeline
 	{
 		[SerializeField] private bool runtimeEditable;
-		[SerializeField] private TimelineModuleType[] upgrades;
+		[SerializeField] private TimelineModifierType[] modifiers;
 		[SerializeField] private SerializableDictionary<int, PatternModuleType> patternObjects;
 
 		private Dictionary<int, Card> activeRuntimePattern;
+		private List<Card> activeRuntimeModifiers;
 		//private Dictionary<int, PatternModule> functionalPattern => activeRuntimePattern.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.pattern);
 		private Dictionary<Card, CardUI> uiLookup;
 		private float currentTime;
 		public delegate void OnTimelineChanged();
 		public OnTimelineChanged onTimelineChanged = () => { };
 		private bool loopsOnTimelineEnd = true;
-
+		private float overrideDuration = 0;
+		private PatternModuleType moduleTypeOfThis;
 		public bool isEditable => runtimeEditable;
 
 		public void DeserializeForRuntime()
 		{
+			activeRuntimeModifiers ??= new List<Card>();
 			activeRuntimePattern ??= new Dictionary<int, Card>();
 			uiLookup ??= new Dictionary<Card, CardUI>();
 			if (patternObjects == null || activeRuntimePattern.Count > 0) return;
@@ -35,10 +39,20 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			{
 				activeRuntimePattern.Add(patternObject.Key, new Card(patternObject.Value, true));
 			}
+			foreach (TimelineModifierType modifierObject in modifiers)
+			{
+				activeRuntimeModifiers.Add(new Card(modifierObject, true));
+			}
+		}
+
+		public void SetModuleType(PatternModuleType module)
+		{
+			moduleTypeOfThis = module;
 		}
 
 		public void InitOrReset(bool allowedToLoop = true)
 		{
+			activeRuntimeModifiers ??= new List<Card>();
 			activeRuntimePattern ??= new Dictionary<int, Card>();
 			uiLookup ??= new Dictionary<Card, CardUI>();
 			loopsOnTimelineEnd = allowedToLoop;
@@ -65,6 +79,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			activeRuntimePattern.Add(k, card.cardRef);
 			uiLookup.Add(activeRuntimePattern[k], card);
 			ValidateModules();
+			currentTime = 0;
 		}
 
 		public void RemoveModule(CardUI card)
@@ -75,6 +90,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			activeRuntimePattern.Remove(k, out Card m);
 			uiLookup.Remove(m);
 			ValidateModules();
+			currentTime = 0;
 		}
 
 		public void UpdateUIObj(Card module, CardUI cardUI)
@@ -111,6 +127,15 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				}
 			}
 
+			foreach (Card card in activeRuntimeModifiers)
+			{
+				CardUI uiCard = uiLookup[card];
+
+				bool b = activeRuntimeModifiers.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) > 1;
+				if(b) uiCard.Disable("Cannot have two Sprite modifiers");
+				else uiCard.Enable();
+			}
+
 			onTimelineChanged();
 		}
 
@@ -119,6 +144,9 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			if(activeRuntimePattern == null) return true;
 			float secondWidth = ((RectTransform)TimelineUI.instance.transform).rect.width / 10;
 			int idx = Mathf.CeilToInt(currentTime * secondWidth);
+
+			//if(activeRuntimePattern.Count > 1)
+			//	Debug.Log("Acting on " + idx + string.Join(',', activeRuntimePattern.OrderBy(x => x.Key).Select(kv => kv.Value.pattern.patternTypeData.name + " @ " + kv.Key)));
 
 			foreach (int k in activeRuntimePattern.Keys.OrderBy(x => x))
 			{
@@ -133,9 +161,9 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				}
 				if(!b) break;
 			}
-
 			currentTime += dt;
-			if (currentTime > GetDuration() && loopsOnTimelineEnd)
+			bool completed = currentTime >= GetDuration();
+			if (completed && loopsOnTimelineEnd)
 			{
 				currentTime -= GetDuration();
 				foreach (KeyValuePair<int, Card> module in activeRuntimePattern)
@@ -143,13 +171,18 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 					module.Value.pattern.ResetForNewLoopIteration();
 				}
 			}
-			return false;
+			return completed;
+		}
+
+		public void SetOverrideDuration(float duration)
+		{
+			overrideDuration = duration;
 		}
 
 		public float GetDuration()
 		{
 			float secondWidth = ((RectTransform)TimelineUI.instance.transform).rect.width / 10;
-			float max = 0;
+			float max = overrideDuration;
 			if (activeRuntimePattern != null)
 			{
 				foreach (KeyValuePair<int, Card> kvp in activeRuntimePattern)
@@ -176,7 +209,27 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				timeline.activeRuntimePattern[kvp.Key] = new Card(kvp.Value.pattern.Clone());
 				timeline.patternObjects[kvp.Key] = kvp.Value.pattern.patternTypeData;
 			}
+			timeline.runtimeEditable = original.runtimeEditable;
 			return timeline;
+		}
+
+		public bool CanAdd(PatternModule refPattern)
+		{
+			return moduleTypeOfThis == null || moduleTypeOfThis.CanAddModule(refPattern.patternTypeData);
+		}
+
+		public void AddModifier(CardUI cardUI)
+		{
+			activeRuntimeModifiers.Add(cardUI.cardRef);
+			uiLookup.Add(cardUI.cardRef, cardUI);
+			ValidateModules();
+		}
+
+		public void RemoveModifier(CardUI cardUI)
+		{
+			activeRuntimeModifiers.Remove(cardUI.cardRef);
+			uiLookup.Remove(cardUI.cardRef);
+			ValidateModules();
 		}
 	}
 }

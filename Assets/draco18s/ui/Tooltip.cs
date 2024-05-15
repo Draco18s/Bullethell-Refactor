@@ -52,7 +52,7 @@ namespace Assets.draco18s.ui {
 				((RectTransform)textArea.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, textArea.preferredWidth);
 				((RectTransform)textArea.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textArea.preferredHeight);
 				((RectTransform)instance.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (textArea.preferredWidth / 2) + 22);
-				((RectTransform)instance.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, (textArea.preferredHeight / 2) - 10);
+				((RectTransform)instance.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, (textArea.preferredHeight / 2) + 10);
 				fits = true;
 			}
 			/*if(t.preferredHeight < 232) {
@@ -81,7 +81,7 @@ namespace Assets.draco18s.ui {
 				((RectTransform)textArea.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
 				h = textArea.preferredHeight;
 				((RectTransform)instance.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (w / 2) + 16);
-				((RectTransform)instance.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, (h / 2) - 10);
+				((RectTransform)instance.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, (h / 2) + 10);
 			}
 			float wid = ((RectTransform)instance.transform).rect.width;
 			float hig = ((RectTransform)instance.transform).rect.height;
@@ -89,10 +89,10 @@ namespace Assets.draco18s.ui {
 				if(allowMoveDown) {
 					//shift the tooltip down. No check for off-screen
 					if(instance.transform.position.y - hig * 1.5f < 35) {
-						instance.transform.position = new Vector3(Screen.width - 5 - wid, instance.transform.position.y + ((RectTransform)instance.transform).rect.height - 10, 0);
+						instance.transform.position = new Vector3(Screen.width - 5 - wid, instance.transform.position.y + ((RectTransform)instance.transform).rect.height + 10, 0);
 					}
 					else {
-						instance.transform.position = new Vector3(Screen.width - 5 - wid, instance.transform.position.y - ((RectTransform)instance.transform).rect.height - 10, 0);
+						instance.transform.position = new Vector3(Screen.width - 5 - wid, instance.transform.position.y - ((RectTransform)instance.transform).rect.height + 10, 0);
 					}
 				}
 				else {

@@ -6,7 +6,7 @@ using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
-	[CreateAssetMenu(menuName = "New Bullet Change")]
+	[CreateAssetMenu(menuName = "Pattern/New Bullet Change")]
 	public class ChangeModuleType : PatternModuleType
 	{
 		public enum ChangeType
@@ -27,11 +27,24 @@ namespace Assets.draco18s.bulletboss.pattern
 			return new ChangeModule(this);
 		}
 
+		private void OnValidate()
+		{
+			if(preconfigured)
+			{
+				if (changeType == ChangeType.Time)
+				{
+					changeDuration = newValue;
+				}
+				allowedDurationRange = new FloatRange(changeDuration, changeDuration);
+			}
+		}
+
 		public class ChangeModule : PatternModule<ChangeModuleType>
 		{
 			protected float timeElapsed;
 			protected float oldValue;
 			public float newValue;
+			public float targetValue;
 			public FloatRange randomRange;
 			public float changeDuration;
 
@@ -42,7 +55,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				timeElapsed = 0;
 				if (patternType.preconfigured)
 				{
-					newValue = patternType.newValue;
+					targetValue = newValue = patternType.newValue;
 					randomRange = patternType.randomRange;
 					changeDuration = patternType.changeDuration;
 				}
@@ -61,8 +74,9 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				ChangeModule mod = new ChangeModule(patternType);
 				mod.newValue = newValue;
+				mod.targetValue = targetValue;
 				mod.changeDuration = changeDuration;
-				//mod.randomRange = randomRange;
+				mod.randomRange = randomRange;
 				return mod;
 			}
 
@@ -70,7 +84,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				timeElapsed += deltaTime;
 				float t = Mathf.Clamp01(timeElapsed / changeDuration);
-				float val = Mathf.Lerp(oldValue, newValue, t);
+				float val = Mathf.Lerp(oldValue, targetValue, t);
 
 				switch (patternType.changeType)
 				{
@@ -78,7 +92,7 @@ namespace Assets.draco18s.bulletboss.pattern
 						if (oldValue < -1000)
 						{
 							oldValue = shot.speed;
-							val = Mathf.Lerp(oldValue, newValue, t);
+							val = Mathf.Lerp(oldValue, targetValue, t);
 						}
 						shot.ChangeSpeed(val);
 						break;
@@ -86,8 +100,8 @@ namespace Assets.draco18s.bulletboss.pattern
 						if (oldValue < -1000)
 						{
 							oldValue = shot.transform.localEulerAngles.z;
-							newValue = oldValue + newValue;
-							val = Mathf.Lerp(oldValue, newValue, t);
+							targetValue = oldValue + newValue;
+							val = Mathf.Lerp(oldValue, targetValue, t);
 						}
 						shot.ChangeRotation(val);
 						break;
@@ -95,7 +109,7 @@ namespace Assets.draco18s.bulletboss.pattern
 						if (oldValue < -1000)
 						{
 							oldValue = shot.transform.localScale.x;
-							val = Mathf.Lerp(oldValue, newValue, t);
+							val = Mathf.Lerp(oldValue, targetValue, t);
 						}
 						shot.ChangeScale(val);
 						break;
@@ -110,8 +124,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				timeElapsed = 0;
 				if(patternType.randomRange.min != 0 && patternType.randomRange.max != 0)
 					newValue = patternType.newValue + Random.Range(patternType.randomRange.min, patternType.randomRange.max) + patternType.newValue;
-				else
-					newValue = patternType.newValue;
+				targetValue = newValue;
 			}
 
 			public override void ConfigureKeyframe(RectTransform keyframeBar, DraggableElement handle, Keyframe editableKeyframe)
@@ -127,6 +140,9 @@ namespace Assets.draco18s.bulletboss.pattern
 					case ChangeType.Size:
 						editableKeyframe.SetEditableType(Keyframe.EditTypes.Linear, patternType.allowedValueRange, newValue, true, 100, UpdateValue);
 						break;
+					case ChangeType.Time:
+						Debug.Log($"Change time says duration is {changeDuration}");
+						break;
 				}
 				if (patternType.preconfigured || patternType.allowedDurationRange.Range <= float.Epsilon)
 					handle.Disable();
@@ -141,6 +157,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			private void UpdateValue(float dv)
 			{
 				newValue = Mathf.Clamp(dv, patternType.allowedValueRange.min, patternType.allowedValueRange.max);
+				Debug.Log($"Updated to {newValue}");
 			}
 		}
 	}
