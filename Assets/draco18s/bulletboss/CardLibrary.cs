@@ -1,4 +1,5 @@
-﻿using Assets.draco18s.bulletboss.cards;
+﻿using System.Collections.Generic;
+using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.bulletboss.ui;
@@ -35,15 +36,13 @@ namespace Assets.draco18s.bulletboss
 				collection.Add(new Card(modifier));
 			}
 			collection.Reset();
-			for (int i = 0; i < 5; i++)
-			{
-				Card card = collection.Draw();
-				if(card == null) break;
 
-				CardUI cardUI = Instantiate(GameAssets.instance.cardUIObject, CardHand.instance.transform).GetComponent<CardUI>();
-				cardUI.SetData(card);
-			}
 			DeckUI.instance.SetDeck(collection);
+		}
+
+		public Card Draw()
+		{
+			return collection.Draw();
 		}
 	}
 }

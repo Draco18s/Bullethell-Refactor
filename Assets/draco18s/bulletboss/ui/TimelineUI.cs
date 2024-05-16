@@ -106,5 +106,11 @@ namespace Assets.draco18s.bulletboss.ui
 			currentTimeline.ValidateModules();
 			parentPatternBtn.gameObject.SetActive(timelines.Count > 1);
 		}
+
+		public void Close()
+		{
+			canvas.enabled = false;
+			timelines.Clear();
+		}
 	}
 }
