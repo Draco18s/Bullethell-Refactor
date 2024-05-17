@@ -1,6 +1,7 @@
 ﻿using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.util;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Assets.draco18s.bulletboss.entities
@@ -20,7 +21,7 @@ namespace Assets.draco18s.bulletboss.entities
 			Large,
 		}
 
-		[SerializeField] protected Timeline serializedPattern;
+		[SerializeField, FormerlySerializedAs("mainWeapon")] protected Timeline serializedPattern;
 		[SerializeField] protected float baseSpeed;
 		[SerializeField] protected BulletShape shape;
 		[SerializeField] protected BulletSize size;

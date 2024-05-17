@@ -14,9 +14,16 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern = Timeline.CloneFrom(serializedPattern);
 		}
 
-		void Update()
+		private void Update()
 		{
+			if (GameManager.instance.gameState != GameManager.GameState.Combat && GameManager.instance.gameState != GameManager.GameState.Editing) return;
 			pattern.RuntimeUpdate(this, Time.deltaTime);
+			ChildUpdate();
+		}
+
+		protected virtual void ChildUpdate()
+		{
+
 		}
 
 		[UsedImplicitly]

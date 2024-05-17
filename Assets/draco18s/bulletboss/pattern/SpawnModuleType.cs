@@ -56,7 +56,7 @@ namespace Assets.draco18s.bulletboss.pattern
 
 				Quaternion q = Quaternion.Euler(0,0, spawnAngle);
 
-				GameObject go = Instantiate(patternType.prefab, parentShot.transform.position, parentShot.transform.rotation * q, parentShot.transform.parent);
+				GameObject go = Instantiate(patternType.prefab, parentShot.transform.position, parentShot.transform.rotation * q, GameManager.instance.bulletParentContainer);
 				Bullet shot = go.GetComponent<Bullet>();
 				shot.SetPattern(timeline);
 				if(followParent)

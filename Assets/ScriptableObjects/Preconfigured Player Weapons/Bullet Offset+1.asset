@@ -10,26 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a349b16367ecdfa48a5b8a0b3581e100, type: 3}
-  m_Name: Starter Bullet
+  m_Name: Bullet Offset+1
   m_EditorClassIdentifier: 
   rarity: 0
-  description: Basic blue shot. Minimal angle adjustment.
-  icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
-  preconfigured: 1
+  description: 
+  icon: {fileID: 0}
+  preconfigured: 0
   unique: 0
   killOnComplete: 0
-  preconfiguredPattern: 0
+  preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
     modifiers: []
     patternObjects:
-      keys: 
-      values: []
-  duration: 3
+      keys: 010000000e0000000f000000
+      values:
+      - {fileID: 11400000, guid: a29f59625923c4241b72e4853589136c, type: 2}
+      - {fileID: 11400000, guid: 1a4dfd5634ec3e14d8b2582ae47710b1, type: 2}
+      - {fileID: 11400000, guid: 55e18f6d8e2b2394fbef79fd889a0d2e, type: 2}
+  duration: 0.333
   prefab: {fileID: 778798223601149580, guid: 6010b6c9fcae355418ba3f290d7a72ec, type: 3}
   killParent: 0
   followParent: 0
-  initialAngle: 0
+  initialAngle: 90
   angleLimit:
-    min: -10
-    max: 10
+    min: 0
+    max: 0
