@@ -21,7 +21,7 @@ MonoBehaviour:
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 1
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 000000007c150000
       values:

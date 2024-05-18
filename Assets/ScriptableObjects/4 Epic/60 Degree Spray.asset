@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
   m_Name: 60 Degree Spray
   m_EditorClassIdentifier: 
-  rarity: 3
+  rarity: 4
   description: A spray of 5 shots in a 60 degree cone
   icon: {fileID: -501359276, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
   preconfigured: 1
@@ -21,7 +21,7 @@ MonoBehaviour:
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 0100000002000000030000000400000005000000
       values:
@@ -30,6 +30,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: a2ad7a9c76954e147a39dbc6e80406b8, type: 2}
       - {fileID: 11400000, guid: 730c69b749c2ec74db455f95acb60965, type: 2}
       - {fileID: 11400000, guid: 8e0e7e19b550d9945b4ce4610d7ef6ca, type: 2}
+  maxObjects: 0
   allowedValueRange:
     min: 0
     max: 0

@@ -1,6 +1,8 @@
-﻿using Assets.draco18s.bulletboss.pattern.timeline;
+﻿using System;
+using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.util;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -40,12 +42,28 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern ??= Timeline.CloneFrom(serializedPattern);
 			pattern.SetOverrideDuration(20);
 		}
-		
+
 		private void Update()
+		{
+			if (GameManager.instance == null || GameManager.instance.gameState != GameManager.GameState.Combat && GameManager.instance.gameState != GameManager.GameState.Editing) return;
+			pattern.RuntimeUpdate(this, Time.deltaTime);
+			if (pattern == null) return;
+			OnUpdate(Time.deltaTime);
+			ChildUpdate();
+		}
+
+		protected virtual void ChildUpdate()
+		{
+
+		}
+
+		/*private void Update()
 		{
 			if (pattern == null) return;
 			OnUpdate(Time.deltaTime);
-		}
+		}*/
+
+		private Vector2Int lastWrite = new Vector2Int(-1000,-1000);
 
 		private void OnUpdate(float dt)
 		{
@@ -64,8 +82,38 @@ namespace Assets.draco18s.bulletboss.entities
 			if (kill)
 			{
 				Destroy(gameObject);
+				return;
 			}
-			transform.position = transform.position.ReplaceZ(transform.position.x / -50f + (parentShot != null?0.1f:0));
+
+			if (!GameManager.instance.doHeatmap) return;
+
+			transform.position = transform.position.ReplaceZ(transform.position.x / -50f + (parentShot != null ? 0.1f : 0));
+			Vector2 texPosF = new Vector2(Mathf.Clamp(transform.position.x / 18, -0.5f, 0.5f), Mathf.Clamp(transform.position.y / 10, -0.5f, 0.5f));
+			Vector2Int texPos = new Vector2Int(Mathf.RoundToInt((texPosF.x + 0.5f) * GameManager.instance.heatmap.width), Mathf.RoundToInt((texPosF.y + 0.5f) * GameManager.instance.heatmap.height));
+
+			if (texPosF.x > 0.5) return;
+			if (texPosF.y > 0.5) return;
+			if (texPosF.x <= -0.5) return;
+			if (texPosF.y <= -0.5) return;
+
+			if (lastWrite == texPos)
+			{
+				return;
+			}
+
+			lastWrite = texPos;
+			if (GameManager.instance.heatmap == null) return;
+
+			Color c = Color.HSVToRGB(Mathf.Clamp01(1) - (1f/255), Mathf.Clamp01(1), Mathf.Clamp01(1));
+			//if (h > 0)
+			//	c.a = 0.5f + v * s * 0.5f;
+			//else
+			//	c.a = 0f;
+			//texPos.ReplaceX(texPos.x + (int)Mathf.Sign(transform.up.x));
+			//texPos.ReplaceY(texPos.y + (int)Mathf.Sign(transform.up.y));
+			GameManager.instance.heatmap.SetPixel(texPos.x, texPos.y,c);
+			GameManager.instance.heatmap.Apply();
+			RenderTexture.active = null;
 		}
 
 		public void ChangeSpeed(float val)
@@ -95,7 +143,7 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern.ResetForNewLoopIteration();
 		}
 
-		public void DestroySelf()
+		public virtual void DestroySelf()
 		{
 			Destroy(gameObject);
 		}

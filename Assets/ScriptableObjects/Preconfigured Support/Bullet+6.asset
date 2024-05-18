@@ -21,11 +21,15 @@ MonoBehaviour:
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 
       values: []
+  duration: 1
   prefab: {fileID: 778798223601149580, guid: 6010b6c9fcae355418ba3f290d7a72ec, type: 3}
   killParent: 0
   followParent: 0
   initialAngle: 6
+  angleLimit:
+    min: 0
+    max: 0

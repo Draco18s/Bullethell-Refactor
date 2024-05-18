@@ -21,7 +21,7 @@ MonoBehaviour:
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 0100000002000000030000000400000005000000
       values:
@@ -30,6 +30,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 8836e085c428ddc429a352986586161e, type: 2}
       - {fileID: 11400000, guid: 4990f84e3e5112246b76fc7d7d2034e3, type: 2}
       - {fileID: 11400000, guid: ad41f297deed4b642af4a1f4003e1852, type: 2}
+  maxObjects: 0
   allowedValueRange:
     min: 0
     max: 0

@@ -44,6 +44,26 @@ namespace Assets.draco18s.util {
 			return value;
 		}
 
+		public static Vector2Int ReplaceX(this Vector2Int v1, int nx)
+		{
+			return new Vector2Int(nx, v1.y);
+		}
+
+		public static Vector2Int ReplaceY(this Vector2Int v1, int ny)
+		{
+			return new Vector2Int(v1.x, ny);
+		}
+
+		public static Vector2 ReplaceX(this Vector2 v1, float nx)
+		{
+			return new Vector3(nx, v1.y);
+		}
+
+		public static Vector2 ReplaceY(this Vector2 v1, float ny)
+		{
+			return new Vector2(v1.x, ny);
+		}
+
 		public static Vector3 ReplaceX(this Vector3 v1, float nx)
 		{
 			return new Vector3(nx, v1.y, v1.z);

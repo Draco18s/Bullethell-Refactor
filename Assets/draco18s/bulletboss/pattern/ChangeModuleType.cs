@@ -157,7 +157,6 @@ namespace Assets.draco18s.bulletboss.pattern
 			private void UpdateValue(float dv)
 			{
 				newValue = Mathf.Clamp(dv, patternType.allowedValueRange.min, patternType.allowedValueRange.max);
-				Debug.Log($"Updated to {newValue}");
 			}
 		}
 	}

@@ -12,6 +12,7 @@ namespace Assets.draco18s.bulletboss.pattern
 	[CreateAssetMenu(menuName = "Pattern/New Pattern Group")]
 	public class PatternGroupModuleType : TimelinePatternModuleType
 	{
+		[SerializeField] private int maxObjects;
 		[SerializeField] private IntRange allowedValueRange;
 
 		public override PatternModule GetRuntimeObject()

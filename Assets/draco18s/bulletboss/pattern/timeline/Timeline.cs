@@ -39,6 +39,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			{
 				activeRuntimePattern.Add(patternObject.Key, new Card(patternObject.Value, true));
 			}
+			if (modifiers == null || activeRuntimeModifiers.Count > 0) return;
 			foreach (TimelineModifierType modifierObject in modifiers)
 			{
 				activeRuntimeModifiers.Add(new Card(modifierObject, true));
