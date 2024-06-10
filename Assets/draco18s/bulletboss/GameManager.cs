@@ -1,5 +1,6 @@
 using System.Collections;
 using Assets.draco18s.bulletboss.ui;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
@@ -22,6 +23,11 @@ namespace Assets.draco18s.bulletboss
 		[SerializeField] private GameObject aiPlayerObject;
 		[SerializeField] private Transform bulletContainer;
 		[SerializeField] private Texture2D bulletHeatmap;
+
+		public TextMeshProUGUI gemsTxt;
+		public TextMeshProUGUI hitsTxt;
+		public int gemsCount = 0;
+		public int hitsCount = 0;
 
 		public GameState gameState { get; protected set; } = GameState.Init;
 		public Texture2D heatmap => bulletHeatmap;
@@ -92,7 +98,8 @@ namespace Assets.draco18s.bulletboss
 			heatmap.SetPixels(cols);
 			heatmap.Apply();
 			gameState = GameState.MainMenu;
-			NewTurn();
+			//NewTurn();
+			EndTurn();
 		}
 
 		public void EndTurn()
@@ -102,6 +109,7 @@ namespace Assets.draco18s.bulletboss
 			CardHand.instance.Discard(-1);
 			endTurnBtn.gameObject.SetActive(false);
 			aiPlayerObject.SetActive(true);
+			//NewTurn();// temp
 		}
 
 		public void NewTurn()

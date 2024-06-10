@@ -10,6 +10,10 @@ namespace Assets.draco18s.bulletboss.entities
 {
 	public class Player : MountPoint
 	{
+		public int currentHP { get; protected set; }
+		public int maximumHP { get; protected set; }
+
+
 		protected override void ChildUpdate()
 		{
 

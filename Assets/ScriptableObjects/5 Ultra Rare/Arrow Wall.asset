@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a349b16367ecdfa48a5b8a0b3581e100, type: 3}
   m_Name: Arrow Wall
   m_EditorClassIdentifier: 
-  rarity: 5
+  rarity: 0
   description: Shot that fires smaller bullets out to the sides.
   icon: {fileID: -984770300, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
   preconfigured: 0
@@ -21,7 +21,7 @@ MonoBehaviour:
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 00000000
       values:

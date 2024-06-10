@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c4489a2aa520b54283b8439382ce745, type: 3}
   m_Name: Death Blossom
   m_EditorClassIdentifier: 
-  rarity: 7
+  rarity: 0
   description: Fires 250 bullets in random directions. 30 seconds between barrages.
   icon: {fileID: -2064506342, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
   preconfigured: 1

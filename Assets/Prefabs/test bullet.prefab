@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 778798223601149581}
   - component: {fileID: 1982740180085211200}
-  - component: {fileID: 2421256366058637111}
-  m_Layer: 0
-  m_Name: bullet med circle
+  - component: {fileID: 7678842538011126931}
+  - component: {fileID: 7701422301358709829}
+  m_Layer: 13
+  m_Name: test bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +71,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.12
---- !u!114 &2421256366058637111
+--- !u!114 &7678842538011126931
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -79,19 +80,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 778798223601149580}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6ee464eb1624884397b8b8467fdfc0d, type: 3}
+  m_Script: {fileID: 11500000, guid: e411843eb2a27194da3f5ed8166c63e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedPattern:
-    runtimeEditable: 0
-    modifiers: []
-    patternObjects:
-      keys: 
-      values: []
-  baseSpeed: 1
-  shape: 0
-  size: 1
-  sprite: {fileID: 0}
+--- !u!114 &7701422301358709829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778798223601149580}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1b6a9c85f4de9f44bd5d59affbae16b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1766367186497654624
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,7 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5996330548781755466}
   - component: {fileID: 4096482398320433981}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: spot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +189,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6203935351059945815}
   - component: {fileID: 8663178427113676983}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

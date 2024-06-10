@@ -14,7 +14,9 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern = Timeline.CloneFrom(serializedPattern);
 		}
 
-		public override void DestroySelf() { }
+		public override void DestroySelf()
+		{
+		}
 
 		[UsedImplicitly]
 		private void OnMouseUpAsButton()

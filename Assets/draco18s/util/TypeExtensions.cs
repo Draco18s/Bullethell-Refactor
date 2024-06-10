@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,6 +8,18 @@ namespace Assets.draco18s.util {
 	public static class TypeExtensions {
 		public static bool IsArrayOf<T>(this Type type) {
 			return type == typeof(T[]);
+		}
+		public static IEnumerable<T> PadRight<T>(this IEnumerable<T> source, int length)
+		{
+			int i = 0;
+			// use "Take" in case "length" is smaller than the source's length.
+			foreach (var item in source.Take(length))
+			{
+				yield return item;
+				i++;
+			}
+			for (; i < length; i++)
+				yield return default(T);
 		}
 
 		public static T GetComponentInParents<T>(this Transform trans) where T : Component
@@ -96,8 +109,11 @@ namespace Assets.draco18s.util {
 			int i = 1;
 			foreach (T item in list)
 			{
-				if (Random.value < 1f / i)
+				float r = Random.value;
+				if (r < 1f / i)
+				{
 					choice = item;
+				}
 				i++;
 			}
 			return choice;

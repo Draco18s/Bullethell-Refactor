@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Assets.draco18s.bulletboss.entities
 {
-	public class Bullet : MonoBehaviour
+	public class Bullet : MonoBehaviour, IHasSpeed
 	{
 		public enum BulletShape
 		{
@@ -35,6 +35,8 @@ namespace Assets.draco18s.bulletboss.entities
 		public BulletShape bulletShape => shape;
 		public BulletSize bulletSize => size;
 
+		public float Speed => speed;
+
 		private void Start()
 		{
 			speed = baseSpeed;
@@ -43,12 +45,12 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern.SetOverrideDuration(20);
 		}
 
-		private void Update()
+		private void FixedUpdate()
 		{
 			if (GameManager.instance == null || GameManager.instance.gameState != GameManager.GameState.Combat && GameManager.instance.gameState != GameManager.GameState.Editing) return;
-			pattern.RuntimeUpdate(this, Time.deltaTime);
+			pattern.RuntimeUpdate(this, Time.fixedDeltaTime);
 			if (pattern == null) return;
-			OnUpdate(Time.deltaTime);
+			OnUpdate(Time.fixedDeltaTime);
 			ChildUpdate();
 		}
 
@@ -81,13 +83,14 @@ namespace Assets.draco18s.bulletboss.entities
 			
 			if (kill)
 			{
-				Destroy(gameObject);
+				DestroySelf();
 				return;
 			}
 
-			if (!GameManager.instance.doHeatmap) return;
 
 			transform.position = transform.position.ReplaceZ(transform.position.x / -50f + (parentShot != null ? 0.1f : 0));
+			
+			if (!GameManager.instance.doHeatmap) return;
 			Vector2 texPosF = new Vector2(Mathf.Clamp(transform.position.x / 18, -0.5f, 0.5f), Mathf.Clamp(transform.position.y / 10, -0.5f, 0.5f));
 			Vector2Int texPos = new Vector2Int(Mathf.RoundToInt((texPosF.x + 0.5f) * GameManager.instance.heatmap.width), Mathf.RoundToInt((texPosF.y + 0.5f) * GameManager.instance.heatmap.height));
 

@@ -25,7 +25,7 @@ MonoBehaviour:
     patternObjects:
       keys: 
       values: []
-  duration: 3
+  duration: 4
   prefab: {fileID: 778798223601149580, guid: 6010b6c9fcae355418ba3f290d7a72ec, type: 3}
   killParent: 0
   followParent: 0
