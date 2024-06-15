@@ -1,0 +1,56 @@
+{
+    "Bullethell": {
+        "checkpoints": [
+            {
+                "steps": 498000,
+                "file_path": "results\\bullethell_024_giant\\Bullethell\\Bullethell-498000.onnx",
+                "reward": -19.507521549860638,
+                "creation_time": 1718414449.3531606,
+                "auxillary_file_paths": [
+                    "results\\bullethell_024_giant\\Bullethell\\Bullethell-498000.pt"
+                ]
+            },
+            {
+                "steps": 999000,
+                "file_path": "results\\bullethell_024_giant\\Bullethell\\Bullethell-999000.onnx",
+                "reward": 1.0012772878011067,
+                "creation_time": 1718415196.1917815,
+                "auxillary_file_paths": [
+                    "results\\bullethell_024_giant\\Bullethell\\Bullethell-999000.pt"
+                ]
+            },
+            {
+                "steps": 1497000,
+                "file_path": "results\\bullethell_024_giant\\Bullethell\\Bullethell-1497000.onnx",
+                "reward": 7.7111484739515515,
+                "creation_time": 1718415905.5401485,
+                "auxillary_file_paths": [
+                    "results\\bullethell_024_giant\\Bullethell\\Bullethell-1497000.pt"
+                ]
+            },
+            {
+                "steps": 1503000,
+                "file_path": "results\\bullethell_024_giant\\Bullethell\\Bullethell-1503000.onnx",
+                "reward": 18.416362762451172,
+                "creation_time": 1718415948.7647676,
+                "auxillary_file_paths": [
+                    "results\\bullethell_024_giant\\Bullethell\\Bullethell-1503000.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1503000,
+            "file_path": "results\\bullethell_024_giant\\Bullethell.onnx",
+            "reward": 18.416362762451172,
+            "creation_time": 1718415948.7647676,
+            "auxillary_file_paths": [
+                "results\\bullethell_024_giant\\Bullethell\\Bullethell-1503000.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

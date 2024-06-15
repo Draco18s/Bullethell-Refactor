@@ -15762,7 +15762,7 @@ PrefabInstance:
     - target: {fileID: 6286037221075871277, guid: 24102d45bdf90a942a64e7ef397bdc5d, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: ed9d5a02b97f88f4b8ec9ed0f38e27d8, type: 3}
+      objectReference: {fileID: 5022602860645237092, guid: fef4c652e8a621a4697a86635040324b, type: 3}
     - target: {fileID: 8364041288282364902, guid: 24102d45bdf90a942a64e7ef397bdc5d, type: 3}
       propertyPath: drawDebug
       value: 1

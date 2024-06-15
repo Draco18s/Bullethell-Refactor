@@ -114,14 +114,14 @@ namespace Assets.draco18s.bulletboss.entities
 			sensor.AddObservation(prevMove.x);
 			sensor.AddObservation(prevMove.y);
 
-			float d = Mathf.Abs(transform.localPosition.x - -8.5f);
+			float d = Mathf.Abs((transform.localPosition.x - -8.5f) / 10f);
 			sensor.AddObservation(d);
-			d = Mathf.Abs(transform.localPosition.x - 8.5f);
+			d = Mathf.Abs((transform.localPosition.x - 8.5f) / 10f);
 			sensor.AddObservation(d);
 
-			d = Mathf.Abs(transform.localPosition.y - -2.5f);
+			d = Mathf.Abs((transform.localPosition.y - -2.5f) / 10f);
 			sensor.AddObservation(d);
-			d = Mathf.Abs(transform.localPosition.y - 2.5f);
+			d = Mathf.Abs((transform.localPosition.y - 2.5f) / 10f);
 			sensor.AddObservation(d);
 
 			int l1 = LayerMask.NameToLayer("EnemyBullets");
@@ -135,7 +135,7 @@ namespace Assets.draco18s.bulletboss.entities
 			{
 				if (b == null)
 				{
-					sensor.AddObservation(oobPos);
+					sensor.AddObservation(oobPos / 10f);
 					sensor.AddObservation(Vector3.zero);
 					continue;
 				}
@@ -151,7 +151,7 @@ namespace Assets.draco18s.bulletboss.entities
 				float bSpeed = b.GetComponent<IHasSpeed>().Speed;
 
 				//sensor.AddObservation(b.transform.localPosition.ReplaceZ(b.transform.localScale.x));
-				sensor.AddObservation(v);
+				sensor.AddObservation(v / 10f);
 				sensor.AddObservation(b.transform.right * bSpeed * Time.fixedDeltaTime);
 				b.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
 				padObj.Remove(b);
@@ -162,14 +162,14 @@ namespace Assets.draco18s.bulletboss.entities
 				Collider2D b = padObj.GetRandom();
 				if (b == null)
 				{
-					sensor.AddObservation(oobPos);
+					sensor.AddObservation(oobPos / 10f);
 					sensor.AddObservation(Vector3.zero);
 					continue;
 				}
 				float bSpeed = b.GetComponent<IHasSpeed>().Speed;
 
 				Vector3 v = (b.transform.localPosition - transform.localPosition).ReplaceZ(b.transform.localScale.x);
-				sensor.AddObservation(v);
+				sensor.AddObservation(v / 10f);
 				sensor.AddObservation(b.transform.right * bSpeed * Time.fixedDeltaTime);
 				b.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
 				padObj.Remove(b);
@@ -183,13 +183,13 @@ namespace Assets.draco18s.bulletboss.entities
 			{
 				if (b == null)
 				{
-					sensor.AddObservation(oobPos);
+					sensor.AddObservation(oobPos / 10f);
 					continue;
 				}
 
 				Vector3 v = (b.transform.localPosition - transform.localPosition).ReplaceZ(1);
 				//sensor.AddObservation(b.transform.localPosition.ReplaceZ(1));
-				sensor.AddObservation(v);
+				sensor.AddObservation(v / 10f);
 				b.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
 				padObj.Remove(b);
 			}
@@ -242,21 +242,21 @@ namespace Assets.draco18s.bulletboss.entities
 			for (int j = 0; obs.Length > 0 && j < 3; j++)
 			{
 				int i = (5*6) + j * 3;
-				Vector3 pos = new Vector3(obs[i], obs[i + 1], 0);
+				Vector3 pos = new Vector3(obs[i], obs[i + 1], 0) * 10f;
 				if (obs[i + 2] < 0.001f) continue;
 				areGems = true;
 				float dist1 = (pos).magnitude;
 				float dist2 = (pos - mv).magnitude;
 
-				float sc = (dist1 - dist2) / dist2 * (j == 0 ? 10f : 0.01f);
+				float sc = (dist1 - dist2) / dist2 * (j == 0 ? 2.5f : 0.01f);
 				if (dist2 < dist1) /* move closer to gem */
 				{
-					AddReward(perUpdateScore * sc * sc);
+					AddReward(perUpdateScore * sc * sc * 0.3f);
 					movedTowardsAny = true;
 				}
 
 				Color col = (dist2 < dist1 ? Color.green : Color.clear);
-				col.a = sc;
+				col.a = sc * 2;
 				if (drawDebug) Debug.DrawLine(transform.position + mv, pos + transform.position, col, 0.02f);
 			}
 
@@ -265,15 +265,20 @@ namespace Assets.draco18s.bulletboss.entities
 				AddReward(-perUpdateScore * 5);
 			}
 
-			if (mag < 0.2f && areGems)
-				AddReward(-perUpdateScore * 5);
+			if (areGems)
+			{
+				if (mag < 0.2f)
+					AddReward(-perUpdateScore * 5);
+				Color col = (mag < 0.2f ? Color.red : Color.yellow);
+				if (drawDebug) Debug.DrawLine(Vector3.up + Vector3.right * (Time.time % 1), Vector3.up + Vector3.up * mag * 2 + Vector3.right * (Time.time % 1), col, 1);
+			}
 
 			bool areShots = false;
 			for (int j = 0; obs.Length > 0 && j < 5; j++)
 			{
 				int i = j * 6;
 
-				Vector3 pos = new Vector3(obs[i], obs[i + 1], 0);
+				Vector3 pos = new Vector3(obs[i], obs[i + 1], 0) * 10f;
 				Vector3 dir = new Vector3(obs[i + 3], obs[i + 4], 0);
 				
 				if (obs[i + 2] < 0.001f) continue;
@@ -282,10 +287,10 @@ namespace Assets.draco18s.bulletboss.entities
 				float dist2 = (pos - mv).magnitude;
 
 				// if original distance is less than 0.5 seconds worth of movement + combined radius
-				if (j < 3 && dist2 < dist1) /*getting closer to a bullet*/
+				if (j < 3 && dist2 < dist1 && dist1 < 3) /*getting closer to a bullet*/
 				{
 					float sc = dist1 - dist2;
-					AddReward(-perUpdateScore * sc * 0.5f);
+					AddReward(-perUpdateScore * sc * sc * 0.025f);
 					Color col = (dist2 < dist1 ? Color.red : Color.clear);
 					col.a = sc;
 					if (drawDebug) Debug.DrawLine(transform.position + mv, pos + dir + gameContainer.position + transform.localPosition, col, 0.02f);
@@ -307,8 +312,10 @@ namespace Assets.draco18s.bulletboss.entities
 
 			if (!areShots && !areGems)
 			{
-				AddReward(perUpdateScore * 5 * (mag > 0.2f ? -1 : 1));
-				Color col = (mag > 0.2f ? Color.red : Color.green);
+				// try increasing penalty for fast and/or increasing reward for slow
+				// try making this integrate with the "distance from center" code
+				AddReward(perUpdateScore * (mag > 0.2f ? -mag*5 : 0.2f / Mathf.Max(mag, 0.04f)));
+				Color col = (mag > 0.3f ? (mag > 0.6f ? Color.red : Color.yellow) : Color.green);
 				if (drawDebug) Debug.DrawLine(Vector3.up + Vector3.right * (Time.time % 1), Vector3.up + Vector3.up * mag * 2 + Vector3.right * (Time.time % 1), col, 1);
 			}
 
@@ -324,21 +331,41 @@ namespace Assets.draco18s.bulletboss.entities
 				}
 				Color col = sc <= 0 ? Color.red : Color.green;
 				col.a = sc < 0 ? 0 - sc : sc;
-				Debug.DrawLine(gameContainer.position, transform.position, col, 0.02f);
+				if(drawDebug) Debug.DrawLine(gameContainer.position, transform.position, col, 0.02f);
 				AddReward(perUpdateScore * Mathf.Clamp(sc, -1, 0.5f) * 10 * (!areShots ? 1.5f : 1));
 			}
 
-			RaycastHit2D hit2 = Physics2D.CircleCast(transform.position, 0.3f, controlSignal, mag * 20, LayerMask.GetMask("EnemyBullets"));
-			if (hit2.collider != null)
+			// mag*20 is definitely too much
+			// reaches into adjacent environments
+			RaycastHit2D hit_bul = Physics2D.CircleCast(transform.position, 0.3f, controlSignal, mag * 2, LayerMask.GetMask("EnemyBullets"));
+			if (hit_bul.collider != null && hit_bul.collider.transform.parent == gameContainer)
 			{
-				float sc = Mathf.Clamp(4 / hit2.distance, 0, 16);
+				float sc = Mathf.Clamp(1 / hit_bul.distance, 0, 4);
 				AddReward(-perUpdateScore * sc * 0.5f * mag);
+				if (drawDebug) Debug.DrawLine(hit_bul.point, transform.position, Color.red, 0.02f);
 			}
-			hit2 = Physics2D.CircleCast(transform.position, 0.3f, controlSignal, mag * 20, LayerMask.GetMask("Powerups"));
-			if (hit2.collider != null)
+			RaycastHit2D hit_gem = Physics2D.CircleCast(transform.position, 0.3f, controlSignal, mag * 2, LayerMask.GetMask("Powerups"));
+			if (hit_gem.collider != null && hit_gem.collider.transform.parent == gameContainer)
 			{
-				float sc = Mathf.Clamp(1 / hit2.distance, 0, 4);
+				float sc = Mathf.Clamp(1 / hit_gem.distance, 0, 4);
 				AddReward(perUpdateScore * sc * 0.5f * mag);
+				if (drawDebug) Debug.DrawLine(hit_gem.point, transform.position, Color.cyan, 0.02f);
+			}
+
+			RaycastHit2D hit3 = Physics2D.CircleCast(transform.position, 0.3f, prevMove, mag * 2, LayerMask.GetMask("Powerups", "EnemyBullets"));
+			if (hit3.collider != null && hit3.collider.transform.parent == gameContainer)
+			{
+				float sc = Mathf.Clamp(1 / (hit3.distance * 10), 0, 4);
+				if (hit3.transform.gameObject.layer == LayerMask.NameToLayer("Powerups"))
+				{
+					AddReward(perUpdateScore * sc * mag * (hit_gem.collider != null && hit_gem.collider.transform.parent == gameContainer ? 1 : -1));
+					if (drawDebug) Debug.DrawLine(hit3.point, transform.position, (hit_gem.collider != null && hit_gem.collider.transform.parent == gameContainer ? Color.magenta : Color.cyan), 0.02f);
+				}
+				if (hit3.transform.gameObject.layer == LayerMask.NameToLayer("EnemyBullets"))
+				{
+					AddReward(perUpdateScore * sc * mag * 0.4f * (hit_bul.collider != null && hit_bul.collider.transform.parent == gameContainer ? -1 : 1));
+					if (drawDebug) Debug.DrawLine(hit3.point, transform.position, (hit_bul.collider != null && hit_bul.collider.transform.parent == gameContainer ? Color.cyan : Color.magenta), 0.02f);
+				}
 			}
 
 			transform.Translate(mv, Space.Self);
@@ -352,26 +379,26 @@ namespace Assets.draco18s.bulletboss.entities
 			float s = 1 - Mathf.Clamp(Mathf.Abs(transform.localPosition.x - -8.5f), 0, 1);
 			col2.a = s * s;
 			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f * (mv.x < 0.05 ? 2 : 1));
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.left * 1, (s < 0.001 ? Color.clear : col2), 0.02f);
+				AddReward(-perUpdateScore * s * s * 2.5f * (controlSignal.x < 0.05 ? 2 : -0.75f));
+			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.left * 1, (s < 0.001 ? Color.clear : (controlSignal.x < 0.05 ? Color.red : col2)), 0.02f);
 
 			s = 1 - Mathf.Clamp(Mathf.Abs(transform.localPosition.x - 8.5f), 0, 1);
 			col2.a = s * s;
 			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f * (mv.x > -0.05 ? 2 : 1));
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.right * 1, (s < 0.001 ? Color.clear : col2), 0.02f);
+				AddReward(-perUpdateScore * s * s * 2.5f * (controlSignal.x > -0.05 ? 2 : -0.75f));
+			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.right * 1, (s < 0.001 ? Color.clear : (controlSignal.x > -0.05 ? Color.red : col2)), 0.02f);
 
 			s = 1 - Mathf.Clamp(Mathf.Abs(transform.localPosition.y - -2.5f), 0, 1);
 			col2.a = s * s;
 			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f * (mv.y < 0.05 ? 2 : 1));
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.down * 1, (s < 0.001 ? Color.clear : col2), 0.02f);
+				AddReward(-perUpdateScore * s * s * 2.5f * (controlSignal.y < 0.05 ? 2 : -0.75f));
+			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.down * 1, (s < 0.001 ? Color.clear : (controlSignal.y < 0.05 ? Color.red : col2)), 0.02f);
 
 			s = 1 - Mathf.Clamp(Mathf.Abs(transform.localPosition.y - 2.5f), 0, 1);
 			col2.a = s * s;
 			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f * (mv.y > -0.05 ? 2 : 1));
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.up * 1, (s < 0.001 ? Color.clear : col2), 0.02f);
+				AddReward(-perUpdateScore * s * s * 2.5f * (controlSignal.y > -0.05 ? 2 : -0.75f));
+			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.up * 1, (s < 0.001 ? Color.clear : (controlSignal.y > -0.05 ? Color.red : col2)), 0.02f);
 		}
 
 		void OnTriggerEnter2D(Collider2D other)
@@ -397,12 +424,17 @@ namespace Assets.draco18s.bulletboss.entities
 			{
 				GameManager.instance.hitsCount++;
 				GameManager.instance.hitsTxt.text = GameManager.instance.hitsCount.ToString();
-				AddReward(-1f);
+				AddReward(-0.75f);
 				//EndEpisode(); return;
 				Destroy(other.gameObject);
 
 				GameObject go = Instantiate(bulletPrefab, gameContainer);
-				go.transform.localPosition = new Vector3(Random.value * 17 - 8.5f, Random.value * 6 - 3, 0);
+				Vector3 p;
+				do
+				{
+					p = new Vector3(Random.value * 17 - 8.5f, Random.value * 6 - 3, 0);
+				} while (Vector3.Distance(p, transform.localPosition) < 1.5f);
+				go.transform.localPosition = p; 
 				go.transform.localScale = Vector3.one * ((Random.value / 2) + 0.5f);
 				//bonus -= 1;
 				//MaxStep /= 2;
