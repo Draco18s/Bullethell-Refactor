@@ -24,9 +24,9 @@ namespace Assets.draco18s.bulletboss.entities
 		[SerializeField] private bool drawDebug = false;
 
 		private float xpos = -4;
-		private float prob = 0.35f;
+		private float prob = 1.15f;
 		private Vector3 oobPos = new Vector3(0, -100, 0);
-		
+
 		protected override void Awake()
 		{
 			base.Awake();
@@ -41,7 +41,7 @@ namespace Assets.draco18s.bulletboss.entities
 			int leftRight = Random.value > 0.5f ? 1 : -1;
 			bool spawnGems = Random.value < 0.5f;
 			bool spawnShots = Random.value < 0.5f;
-			
+
 			transform.localPosition = new Vector3(Random.value * 2 * -leftRight + 6 * -leftRight, Random.value * 4 - 2, 0);
 
 			gameContainer.Clear();
@@ -54,7 +54,7 @@ namespace Assets.draco18s.bulletboss.entities
 				Vector3 p;
 				do
 				{
-					p = new Vector3((Random.value * (3.5f + Mathf.Clamp(xpos / 10f, 0, 4)) + Mathf.Clamp(xpos / 2 - 2, -5, 4)) * leftRight, Random.value * 4 - 2, 0);
+					p = new Vector3((Random.value * (3.5f + Mathf.Clamp(xpos / 10f, 0, 3)) + Mathf.Clamp(xpos / 2 - 2, -5, 3)) * leftRight, Random.value * 4 - 2, 0);
 				} while (Vector3.Distance(p, transform.localPosition) < 2.0f);
 				go.transform.localPosition = p;
 			}
@@ -280,7 +280,7 @@ namespace Assets.draco18s.bulletboss.entities
 				areShots = true;
 				float dist1 = (pos).magnitude;
 				float dist2 = (pos - mv).magnitude;
-				
+
 				// if original distance is less than 0.5 seconds worth of movement + combined radius
 				if (j < 3 && dist2 < dist1) /*getting closer to a bullet*/
 				{
@@ -298,7 +298,7 @@ namespace Assets.draco18s.bulletboss.entities
 				if (hit.collider != null /*being in the path of the bullet*/)
 				{
 					float sc = Mathf.Clamp(4 / hit.distance, 0, 8);
-					AddReward(-perUpdateScore * sc * 5f);
+					AddReward(-perUpdateScore * sc * 0.5f);
 					Color col = Color.magenta;
 					col.a = sc;
 					if (drawDebug) Debug.DrawLine(pos + dir + gameContainer.position + transform.localPosition, hit.point, col, 0.02f);
@@ -306,7 +306,11 @@ namespace Assets.draco18s.bulletboss.entities
 			}
 
 			if (!areShots && !areGems)
+			{
 				AddReward(perUpdateScore * 5 * (mag > 0.2f ? -1 : 1));
+				Color col = (mag > 0.2f ? Color.red : Color.green);
+				if (drawDebug) Debug.DrawLine(Vector3.up + Vector3.right * (Time.time % 1), Vector3.up + Vector3.up * mag * 2 + Vector3.right * (Time.time % 1), col, 1);
+			}
 
 			if (!areGems)
 			{
@@ -321,20 +325,20 @@ namespace Assets.draco18s.bulletboss.entities
 				Color col = sc <= 0 ? Color.red : Color.green;
 				col.a = sc < 0 ? 0 - sc : sc;
 				Debug.DrawLine(gameContainer.position, transform.position, col, 0.02f);
-				AddReward(perUpdateScore * Mathf.Clamp(sc, -1, 0.5f) * 30 * (!areShots ? 1.5f : 1));
+				AddReward(perUpdateScore * Mathf.Clamp(sc, -1, 0.5f) * 10 * (!areShots ? 1.5f : 1));
 			}
 
-			RaycastHit2D hit2 = Physics2D.CircleCast(transform.position, 0.3f, mv, mag * 20, LayerMask.GetMask("EnemyBullets"));
+			RaycastHit2D hit2 = Physics2D.CircleCast(transform.position, 0.3f, controlSignal, mag * 20, LayerMask.GetMask("EnemyBullets"));
 			if (hit2.collider != null)
 			{
 				float sc = Mathf.Clamp(4 / hit2.distance, 0, 16);
-				AddReward(-perUpdateScore * sc * 50 * mag);
+				AddReward(-perUpdateScore * sc * 0.5f * mag);
 			}
-			hit2 = Physics2D.CircleCast(transform.position, 0.3f, mv, mag * 20, LayerMask.GetMask("Powerups"));
+			hit2 = Physics2D.CircleCast(transform.position, 0.3f, controlSignal, mag * 20, LayerMask.GetMask("Powerups"));
 			if (hit2.collider != null)
 			{
 				float sc = Mathf.Clamp(1 / hit2.distance, 0, 4);
-				AddReward(perUpdateScore * sc * 50);
+				AddReward(perUpdateScore * sc * 0.5f * mag);
 			}
 
 			transform.Translate(mv, Space.Self);
