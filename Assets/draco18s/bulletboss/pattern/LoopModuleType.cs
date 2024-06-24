@@ -1,7 +1,13 @@
-﻿using Assets.draco18s.bulletboss.entities;
+﻿using System;
+using Assets.draco18s.bulletboss.entities;
+using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.bulletboss.ui;
+using Assets.draco18s.serialization;
 using Assets.draco18s.util;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
+using static Assets.draco18s.bulletboss.pattern.ChangeModuleType;
 using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
 
 namespace Assets.draco18s.bulletboss.pattern
@@ -17,6 +23,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			return new LoopModule(this);
 		}
 
+		[JsonResolver(typeof(Resolver))]
 		public class LoopModule : TimelinePatternModule<LoopModuleType>
 		{
 			private int numLoops;
@@ -36,6 +43,17 @@ namespace Assets.draco18s.bulletboss.pattern
 				LoopModule mod = new LoopModule(patternType);
 				mod.numLoops = numLoops;
 				return mod;
+			}
+
+			public override PatternModuleType ExportAsScriptableObject()
+			{
+				LoopModuleType result = CreateInstance<LoopModuleType>();
+				result.name = patternType.name;
+				result.preconfigured = result.preconfiguredPattern = true;
+				result.pattern = Timeline.CloneForAsset(pattern);
+				result.iterations = numLoops;
+				result.allowedValueRange = patternType.allowedValueRange;
+				return result;
 			}
 
 			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved)
@@ -60,6 +78,41 @@ namespace Assets.draco18s.bulletboss.pattern
 				childPattern.InitOrReset();
 				handle.SetValue(duration);
 				handle.Disable();
+			}
+
+			public class Resolver : JsonConverter
+			{
+				public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+				{
+					LoopModule v = (LoopModule)value;
+					JObject o = new JObject();
+					o.Add(new JProperty("mod_type", v.patternTypeData.name));
+					o.Add(new JProperty("timeline", JsonConvert.SerializeObject(v.pattern, ContractResolver.jsonSettings)));
+					o.Add(new JProperty("numLoops", v.numLoops));
+					o.WriteTo(writer);
+				}
+
+				public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+				{
+					JObject jObject = JObject.Load(reader);
+					string id = (string)jObject.GetValue("mod_type");
+					PatternModuleType modType = CardLibrary.instance.GetModuleByName(id);
+					if (modType == null) throw new JsonReaderException($"Unable to read {id}");
+					LoopModule runObj = (LoopModule)modType.GetRuntimeObject();
+
+					runObj.pattern = jObject.GetValue("timeline").Value<Timeline>();
+					runObj.numLoops = (int)jObject.GetValue("numLoops");
+					return runObj;
+				}
+
+				public override bool CanConvert(Type objectType)
+				{
+					return typeof(LoopModule).IsAssignableFrom(objectType);
+				}
+
+				public override bool CanRead => true;
+
+				public override bool CanWrite => true;
 			}
 		}
 	}

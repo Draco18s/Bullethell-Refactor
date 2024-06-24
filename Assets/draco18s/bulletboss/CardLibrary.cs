@@ -3,6 +3,8 @@ using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.bulletboss.ui;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using UnityEngine;
 using static Assets.draco18s.bulletboss.pattern.timeline.TimelineModifierType;
 
@@ -11,9 +13,11 @@ namespace Assets.draco18s.bulletboss
 	public class CardLibrary : MonoBehaviour
 	{
 		public static CardLibrary instance;
-
+		
 		[SerializeField] private PatternModuleType[] modules;
 		[SerializeField] private TimelineModifierType[] modifiers;
+		private Dictionary<string, PatternModuleType> moduleRegistry;
+		private Dictionary<string, TimelineModifierType> modifierRegistry;
 
 		public Deck collection { get; protected set; }
 
@@ -21,6 +25,8 @@ namespace Assets.draco18s.bulletboss
 		{
 			instance = this;
 			collection = new Deck();
+			moduleRegistry = new Dictionary<string, PatternModuleType>();
+			modifierRegistry = new Dictionary<string, TimelineModifierType>();
 		}
 
 		void Start()
@@ -29,11 +35,13 @@ namespace Assets.draco18s.bulletboss
 			{
 				if(module.rarity != NamedRarity.Starting) continue;
 				collection.Add(new Card(module));
+				moduleRegistry.Add(module.name, module);
 			}
 			foreach (TimelineModifierType modifier in modifiers)
 			{
 				if (modifier.rarity != NamedRarity.Starting) continue;
 				collection.Add(new Card(modifier));
+				modifierRegistry.Add(modifier.name, modifier);
 			}
 			collection.Reset();
 
@@ -43,6 +51,16 @@ namespace Assets.draco18s.bulletboss
 		public Card Draw()
 		{
 			return collection.Draw();
+		}
+
+		public PatternModuleType GetModuleByName(string id)
+		{
+			return moduleRegistry[id];
+		}
+
+		public TimelineModifierType GetModifierByName(string id)
+		{
+			return modifierRegistry[id];
 		}
 	}
 }

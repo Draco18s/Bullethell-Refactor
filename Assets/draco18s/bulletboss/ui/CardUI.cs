@@ -208,7 +208,7 @@ namespace Assets.draco18s.bulletboss.ui
 				}
 			}
 
-			if (timeline!= null)
+			if (timeline!= null && timeline.CanAdd(this))
 			{
 				timeline.AddModule(this);
 			}

@@ -16,6 +16,8 @@ namespace Assets.draco18s.bulletboss.pattern
 			SerializedProperty icon = serializedObject.FindProperty("icon");
 			SerializedProperty preconfigured = serializedObject.FindProperty("preconfigured");
 			SerializedProperty preconfiguredPattern = serializedObject.FindProperty("preconfiguredPattern");
+			SerializedProperty maxObjects = serializedObject.FindProperty("maxObjects");
+			SerializedProperty allowedMaxObjRange = serializedObject.FindProperty("allowedMaxObjValueRange");
 
 			SerializedProperty iterations = serializedObject.FindProperty("iterations");
 			SerializedProperty allowedRange = serializedObject.FindProperty("allowedValueRange");
@@ -36,6 +38,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				EditorGUILayout.PropertyField(iterations);
 
 				EditorGUILayout.PropertyField(preconfiguredPattern);
+				EditorGUILayout.PropertyField(maxObjects);
 				if (preconfiguredPattern.boolValue)
 				{
 					EditorGUILayout.PropertyField(pattern);

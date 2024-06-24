@@ -98,8 +98,8 @@ namespace Assets.draco18s.bulletboss
 			heatmap.SetPixels(cols);
 			heatmap.Apply();
 			gameState = GameState.MainMenu;
-			//NewTurn();
-			EndTurn();
+			NewTurn();
+			//EndTurn();
 		}
 
 		public void EndTurn()

@@ -21,10 +21,11 @@ MonoBehaviour:
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 
       values: []
+  maxObjects: 10
   iterations: 2
   allowedValueRange:
     min: 0

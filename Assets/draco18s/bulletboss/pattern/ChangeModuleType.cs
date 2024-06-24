@@ -1,8 +1,14 @@
-﻿using Assets.draco18s.bulletboss.entities;
+﻿using System;
+using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.ui;
+using Assets.draco18s.serialization;
 using Assets.draco18s.util;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Unity.Sentis.Layers;
 using UnityEngine;
 using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
+using Random = UnityEngine.Random;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
@@ -39,13 +45,13 @@ namespace Assets.draco18s.bulletboss.pattern
 			}
 		}
 
+		[JsonResolver(typeof(Resolver))]
 		public class ChangeModule : PatternModule<ChangeModuleType>
 		{
 			protected float timeElapsed;
 			protected float oldValue;
 			public float newValue;
 			public float targetValue;
-			public FloatRange randomRange;
 			public float changeDuration;
 
 			public override float duration => changeDuration;
@@ -56,7 +62,6 @@ namespace Assets.draco18s.bulletboss.pattern
 				if (patternType.preconfigured)
 				{
 					targetValue = newValue = patternType.newValue;
-					randomRange = patternType.randomRange;
 					changeDuration = patternType.changeDuration;
 				}
 				else
@@ -76,8 +81,22 @@ namespace Assets.draco18s.bulletboss.pattern
 				mod.newValue = newValue;
 				mod.targetValue = targetValue;
 				mod.changeDuration = changeDuration;
-				mod.randomRange = randomRange;
 				return mod;
+			}
+
+			public override PatternModuleType ExportAsScriptableObject()
+			{
+				ChangeModuleType result = CreateInstance<ChangeModuleType>();
+				result.name = patternType.name;
+				result.preconfigured = true;
+				result.rarity = patternTypeData.rarity;
+				result.unique = true;
+				result.newValue = newValue;
+				result.changeDuration = changeDuration;
+				result.changeType = patternType.changeType;
+				result.allowedDurationRange = patternType.allowedDurationRange;
+				result.allowedValueRange = patternType.allowedValueRange;
+				return result;
 			}
 
 			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved)
@@ -157,6 +176,41 @@ namespace Assets.draco18s.bulletboss.pattern
 			private void UpdateValue(float dv)
 			{
 				newValue = Mathf.Clamp(dv, patternType.allowedValueRange.min, patternType.allowedValueRange.max);
+			}
+
+			public class Resolver : JsonConverter
+			{
+				public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+				{
+					ChangeModule v = (ChangeModule)value;
+					JObject o = new JObject();
+					o.Add(new JProperty("mod_type", v.patternTypeData.name));
+					o.Add(new JProperty("newValue", v.newValue));
+					o.Add(new JProperty("changeDuration", v.changeDuration));
+					o.WriteTo(writer);
+				}
+
+				public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+				{
+					JObject jObject = JObject.Load(reader);
+					string id = (string)jObject.GetValue("mod_type");
+					PatternModuleType modType = CardLibrary.instance.GetModuleByName(id);
+					if (modType == null) throw new JsonReaderException($"Unable to read {id}");
+					ChangeModule runObj = (ChangeModule)modType.GetRuntimeObject();
+
+					runObj.newValue = (float)jObject.GetValue("newValue");
+					runObj.changeDuration = (float)jObject.GetValue("changeDuration");
+					return runObj;
+				}
+
+				public override bool CanConvert(Type objectType)
+				{
+					return typeof(ChangeModule).IsAssignableFrom(objectType);
+				}
+
+				public override bool CanRead => true;
+
+				public override bool CanWrite => true;
 			}
 		}
 	}

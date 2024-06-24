@@ -5,12 +5,15 @@ using System.Linq;
 using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.ui;
+using Assets.draco18s.serialization;
 using UnityEngine;
-using Card = Assets.draco18s.bulletboss.cards.Card;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Assets.draco18s.bulletboss.pattern.timeline
 {
 	[Serializable]
+	[JsonResolver(typeof(Resolver))]
 	public class Timeline
 	{
 		[SerializeField] private bool runtimeEditable;
@@ -23,10 +26,13 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		private Dictionary<Card, CardUI> uiLookup;
 		private float currentTime;
 		public delegate void OnTimelineChanged();
-		public OnTimelineChanged onTimelineChanged = () => { };
+		[NonSerialized] public OnTimelineChanged onTimelineChanged = () => { };
 		private bool loopsOnTimelineEnd = true;
 		private float overrideDuration = 0;
 		private PatternModuleType moduleTypeOfThis;
+		[NonSerialized] private PatternModule moduleOfThis;
+
+		public PatternModule runtimeModule => moduleOfThis;
 		public bool isEditable => runtimeEditable;
 
 		public void DeserializeForRuntime()
@@ -46,9 +52,10 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			}
 		}
 
-		public void SetModuleType(PatternModuleType module)
+		public void SetModuleType(PatternModule module)
 		{
-			moduleTypeOfThis = module;
+			moduleOfThis = module;
+			moduleTypeOfThis = module.patternTypeData;
 		}
 
 		public void InitOrReset(bool allowedToLoop = true)
@@ -107,7 +114,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public void ValidateModules()
 		{
-			int nextOpen = -10000;
+			int nextOpen = 0;
 			float secondWidth = ((RectTransform)TimelineUI.instance.transform).rect.width / 10;
 			foreach (int k in activeRuntimePattern.Keys.OrderBy(x => x))
 			{
@@ -214,8 +221,32 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			return timeline;
 		}
 
+		public static Timeline CloneForAsset(Timeline original)
+		{
+			Timeline timeline = new Timeline();
+
+			original.DeserializeForRuntime();
+			original.InitOrReset();
+			timeline.InitOrReset();
+
+			timeline.patternObjects = new SerializableDictionary<int, PatternModuleType>();
+			foreach (KeyValuePair<int, Card> kvp in original.activeRuntimePattern)
+			{
+				timeline.patternObjects[kvp.Key] = kvp.Value.pattern.ExportAsScriptableObject();
+			}
+			timeline.runtimeEditable = false;
+			return timeline;
+		}
+
+		public IReadOnlyList<PatternModuleType> GetPatternObjects()
+		{
+			return patternObjects.Values.ToList();
+		}
+
 		public bool CanAdd(PatternModule refPattern)
 		{
+			int max = moduleTypeOfThis?.GetMaxChildren() ?? -1;
+			if (max < 0 || activeRuntimePattern.Count >= max) return false;
 			return moduleTypeOfThis == null || moduleTypeOfThis.CanAddModule(refPattern.patternTypeData);
 		}
 
@@ -231,6 +262,42 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			activeRuntimeModifiers.Remove(cardUI.cardRef);
 			uiLookup.Remove(cardUI.cardRef);
 			ValidateModules();
+		}
+
+		public class Resolver : JsonConverter
+		{
+			public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+			{
+				if (value == null) return;
+
+				Timeline v = (Timeline)value;
+				JObject o = new JObject();
+
+				if (v.activeRuntimePattern == null) return;
+				foreach (KeyValuePair<int, Card> entry in v.activeRuntimePattern)
+				{
+					string str = entry.Value == null ? "null" : JsonConvert.SerializeObject(entry.Value.pattern, ContractResolver.jsonSettings);
+					Debug.Log($"{entry.Key}: {entry.Value?.pattern == null} => {str}");
+				}
+
+				if(v.activeRuntimePattern != null)
+					o.Add(new JProperty("pattern", v.activeRuntimePattern.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.pattern)));
+				o.WriteTo(writer);
+			}
+
+			public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+			{
+				JObject jObject = JObject.Load(reader);
+				Timeline runObj = new Timeline();
+				//runObj.activeRuntimePattern = jObject.GetValue("pattern").Value<Dictionary<int, PatternModule>>();
+				return runObj;
+			}
+
+			public override bool CanConvert(Type objectType)
+			{
+				Debug.Log("CanConvert timeline");
+				return typeof(Timeline).IsAssignableFrom(objectType);
+			}
 		}
 	}
 }

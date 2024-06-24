@@ -130,7 +130,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 			IOrderedEnumerable<Collider2D> bul = padObj.PadRight(Mathf.Max(padObj.Count, 5)).OrderBy(a => a == null ? 100000 : Vector3.Distance(a.transform.localPosition.ReplaceZ(0), transform.localPosition.ReplaceZ(0)));
 
-			int q = 0;
+			//int q = 0;
 			foreach (Collider2D b in bul.Take(3))
 			{
 				if (b == null)
