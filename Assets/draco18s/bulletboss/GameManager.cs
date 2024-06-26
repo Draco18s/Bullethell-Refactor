@@ -106,15 +106,22 @@ namespace Assets.draco18s.bulletboss
 		{
 			interfaceCanvas.enabled = false;
 			TimelineUI.instance.Close();
-			CardHand.instance.Discard(-1);
+			CardHand.instance.Discard(-1, true);
 			endTurnBtn.gameObject.SetActive(false);
-			aiPlayerObject.SetActive(true);
-			//NewTurn();// temp
+			//aiPlayerObject.SetActive(true);
+			StartCoroutine(WaitFive());
+		}
+
+		private IEnumerator WaitFive()
+		{
+			yield return new WaitForSecondsRealtime(5);
+			NewTurn();// temp
 		}
 
 		public void NewTurn()
 		{
 			gameState = GameState.Editing;
+			endTurnBtn.gameObject.SetActive(true);
 			interfaceCanvas.enabled = true;
 			CardHand.instance.Draw(GetDrawCount());
 			aiPlayerObject.SetActive(false);

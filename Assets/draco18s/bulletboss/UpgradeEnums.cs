@@ -45,5 +45,23 @@ namespace Assets.draco18s.bulletboss
 			}
 			return Color.gray;
 		}
+
+		public static Color GetTextColor(this NamedRarity rarity)
+		{
+			switch (rarity)
+			{
+				case NamedRarity.Starting:
+				case NamedRarity.Common:
+				case NamedRarity.Epic:
+				case NamedRarity.Artifact:
+					return Color.white;
+				case NamedRarity.Uncommon:
+				case NamedRarity.Rare:
+				case NamedRarity.UltraRare:
+				case NamedRarity.Legendary:
+					return Color.black;
+			}
+			return Color.gray;
+		}
 	}
 }

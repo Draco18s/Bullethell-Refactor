@@ -22,6 +22,10 @@ namespace Assets.draco18s.bulletboss.ui
 		[SerializeField] private Transform hoverTiltCenter;
 		[SerializeField] private Transform hoverPosCenter;
 
+		[SerializeField] private RectTransform tagBar;
+		[SerializeField] private Image tagBG;
+		[SerializeField] private TextMeshProUGUI tagName;
+
 		[SerializeField] private Keyframe keyframeParent;
 		[SerializeField] private RectTransform keyframeBar;
 		[SerializeField] private Button editButton;
@@ -81,7 +85,23 @@ namespace Assets.draco18s.bulletboss.ui
 
 			time += Time.deltaTime;
 			time = Mathf.Clamp01(time * 4) / 4;
+
+			if (cardRef.isEphemeral != lastEphemeral)
+			{
+				lastEphemeral = cardRef.isEphemeral;
+				bg.enabled = !(cardRef.isUnique || cardRef.isEphemeral);
+				bgShiny.enabled = cardRef.isUnique || cardRef.isEphemeral;
+				bgShiny.GetComponent<Image>().material.SetFloat("_EphemeralStrength", cardRef.isEphemeral ? 1 : 0);
+				Color tColor = cardRef.rarity.GetColor() * (cardRef.isEphemeral ? 0.35f : 1);
+				tColor.a = 1;
+				tagBG.color = tColor;
+				tagName.text = cardRef.isEphemeral ? "Ephemeral" : cardRef.rarity.ToString();
+				tagName.color = cardRef.isEphemeral ? Color.white : cardRef.rarity.GetTextColor();
+				lastEphemeral = cardRef.isEphemeral;
+			}
 		}
+
+		private bool lastEphemeral = false;
 
 		private void MoveCard(Vector3 mouse, float amt)
 		{
@@ -129,11 +149,16 @@ namespace Assets.draco18s.bulletboss.ui
 				keyframeBar.gameObject.SetActive(false);
 			}
 			
-			bg.enabled = !card.isUnique;
-			bgShiny.enabled = card.isUnique;
+			bg.enabled = !(card.isUnique || card.isEphemeral);
+			bgShiny.enabled = card.isUnique || card.isEphemeral;
 			sprite.enabled = !card.isUnique;
 			spriteShiny.enabled = card.isUnique;
 			editButton.onClick.AddListener(EditChildPattern);
+			bgShiny.GetComponent<Image>().material.SetFloat("_EphemeralStrength", card.isEphemeral ? 1 : 0);
+			tagBG.color = cardRef.rarity.GetColor() * (cardRef.isEphemeral ? 0.25f : 1);
+			tagName.text = cardRef.isEphemeral ? "Ephemeral" : cardRef.rarity.ToString();
+			tagName.color = cardRef.isEphemeral ? Color.white : cardRef.rarity.GetTextColor();
+			lastEphemeral = cardRef.isEphemeral;
 		}
 
 		private void EditChildPattern()
@@ -179,6 +204,12 @@ namespace Assets.draco18s.bulletboss.ui
 					timeline.RemoveModule(this);
 				else
 					timeline.RemoveModifier(this);
+				
+				CardHand.instance.Insert(this);
+			}
+			else
+			{
+				CardHand.instance.Remove(this);
 			}
 			Vector3 mouse = Input.mousePosition - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
 

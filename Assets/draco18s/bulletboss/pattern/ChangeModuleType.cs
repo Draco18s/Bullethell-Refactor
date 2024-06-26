@@ -184,7 +184,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				{
 					ChangeModule v = (ChangeModule)value;
 					JObject o = new JObject();
-					o.Add(new JProperty("mod_type", v.patternTypeData.name));
+					o.Add(new JProperty("mod_type", $"{v.patternTypeData.rarity}/{v.patternTypeData.name}"));
 					o.Add(new JProperty("newValue", v.newValue));
 					o.Add(new JProperty("changeDuration", v.changeDuration));
 					o.WriteTo(writer);

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.util;
 using System.Collections.ObjectModel;
+using Assets.draco18s.bulletboss.pattern;
 using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.ui
@@ -15,17 +17,25 @@ namespace Assets.draco18s.bulletboss.ui
 			transform.Clear();
 		}
 
-		public void Discard(int num)
+		public void Discard(int num, bool dupStarting=false)
 		{
 			if (num < 0 || num > transform.childCount)
 			{
-				transform.Clear();
-				return;
+				num = transform.childCount;
 			}
-
 			for (int i = 0; i < num; i++)
 			{
-				Destroy(transform.GetChild(Mathf.FloorToInt(Random.value * transform.childCount)).gameObject);
+				Transform t = transform.GetChild(i);
+				CardLibrary.instance.Discard(t.GetComponent<CardUI>().cardRef);
+				Destroy(t.gameObject);
+			}
+
+			if (dupStarting)
+			{
+				foreach (CardUI cardUI in playedCards)
+				{
+					CardLibrary.instance.Discard(new Card(cardUI.cardRef.pattern.patternTypeData));
+				}
 			}
 		}
 
@@ -38,6 +48,35 @@ namespace Assets.draco18s.bulletboss.ui
 
 				CardUI cardUI = Instantiate(GameAssets.instance.cardUIObject, transform).GetComponent<CardUI>();
 				cardUI.SetData(card);
+			}
+		}
+
+		public void Insert(CardUI cardUI)
+		{
+			cardUI.transform.SetParent(transform);
+			if (playedCards.Contains(cardUI))
+			{
+				playedCards.Remove(cardUI);
+			}
+			else if (cardUI.cardRef.rarity == NamedRarity.Starting)
+			{
+				cardUI.cardRef.SetEphemeral();
+			}
+		}
+
+		public void Insert(Card card)
+		{
+			CardUI cardUI = Instantiate(GameAssets.instance.cardUIObject, transform).GetComponent<CardUI>();
+			cardUI.SetData(card);
+		}
+
+		private List<CardUI> playedCards = new List<CardUI>();
+
+		public void Remove(CardUI cardUI)
+		{
+			if (!cardUI.cardRef.isUnique)
+			{
+				playedCards.Add(cardUI);
 			}
 		}
 	}

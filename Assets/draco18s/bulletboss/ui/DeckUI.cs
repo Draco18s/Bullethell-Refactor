@@ -30,7 +30,11 @@ namespace Assets.draco18s.bulletboss.ui
 
 		private void UpdateDeckGraphics(int numCards)
 		{
-
+			int display = (numCards / 4);
+			for (int i = 0; i < cardStack.childCount; i++)
+			{
+				cardStack.GetChild(i).gameObject.SetActive(i >= cardStack.childCount - display);
+			}
 		}
 	}
 }

@@ -134,6 +134,22 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 					nextOpen += Mathf.CeilToInt(module.pattern.duration * secondWidth);
 				}
 			}
+			
+			KeyValuePair<int, Card>[] tooFar = activeRuntimePattern.Where(kvp => kvp.Key > secondWidth*10).ToArray();
+			foreach (KeyValuePair<int, Card> pair in tooFar)
+			{
+				if (uiLookup.TryGetValue(pair.Value, out CardUI ui))
+				{
+					activeRuntimePattern.Remove(pair.Key);
+					uiLookup.Remove(pair.Value);
+					CardHand.instance.Insert(ui);
+				}
+				else
+				{
+					activeRuntimePattern.Remove(pair.Key);
+					CardHand.instance.Insert(pair.Value);
+				}
+			}
 
 			foreach (Card card in activeRuntimeModifiers)
 			{

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Starter Bullet
   m_EditorClassIdentifier: 
   rarity: 0
-  description: Basic blue shot. Minimal angle adjustment.
+  description: Basic blue shot. Minimal angle adjustment, very long reload.
   icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
   preconfigured: 1
   unique: 0

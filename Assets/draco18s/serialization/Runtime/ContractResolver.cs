@@ -22,7 +22,7 @@ namespace Assets.draco18s.serialization {
 				return contract;
 			}
 			if(typeof(Vector2).IsAssignableFrom(type)) {
-				contract.Converter = new Vector3Converter();
+				contract.Converter = new Vector2Converter();
 				return contract;
 			}
 			if(typeof(Vector3).IsAssignableFrom(type)) {

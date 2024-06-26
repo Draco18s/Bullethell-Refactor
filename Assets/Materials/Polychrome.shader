@@ -4,6 +4,7 @@ Shader "Effects/Polychrome"
 	{
         _MainTex ("Texture", 2D) = "black" {}
         _Intensity ("Intensity", float) = 3.5
+        _EphemeralStrength ("EphemeralStrength", float) = 1
 
 		_StencilComp("Stencil Comparison", Float) = 8
 		_Stencil("Stencil ID", Float) = 0
@@ -78,6 +79,7 @@ Shader "Effects/Polychrome"
 			float4 _ClipRect;
 			float4 _MainTex_ST;
 			fixed _Intensity;
+			fixed _EphemeralStrength;
 
 			v2f vert(appdata v)
 			{
@@ -151,8 +153,10 @@ Shader "Effects/Polychrome"
 				fixed polyY = _t;
 
 				fixed time = 123.33412 * (_t / 1.14212) % 3000;
-
-				fixed4 tex = tex2D(_MainTex, i.uv);
+				
+				float ephemeral = sin(_Time*15 + i.uv.y*20);
+				float2 tuv = float2((i.uv.x + 0.03 * ephemeral * _EphemeralStrength)%1, i.uv.y);
+				fixed4 tex = tex2D(_MainTex, tuv);
 				float originalAlpha = tex.a;
 
 				fixed2 uv = i.uv + i.normal + i.worldpos.x/200 / (_Intensity * 1.7);
@@ -187,11 +191,16 @@ Shader "Effects/Polychrome"
 				hsl.y = min(0.6,hsl.y+0.5);
 
 				tex.rgb = RGB(hsl).rgb;
+				float red = tex.r + 0.25;
+				
+				tex.r = tex.r * (1-_EphemeralStrength) + red * (_EphemeralStrength) * 0.6;
+				tex.g = tex.g * (1-_EphemeralStrength) + red * (_EphemeralStrength) * 0.6 + tex.b * (_EphemeralStrength)*0.4;
+				tex.b = tex.b * (1-_EphemeralStrength) + red * (_EphemeralStrength) * 0.6 + tex.b * (_EphemeralStrength)*0.4;
 
 				#ifdef UNITY_UI_CLIP_RECT
 				tex.a *= UnityGet2DClipping(i.worldpos.xy, _ClipRect);
 				#endif
-
+				tex.a = 1.4;
 				return tex;
 			}
 		ENDCG

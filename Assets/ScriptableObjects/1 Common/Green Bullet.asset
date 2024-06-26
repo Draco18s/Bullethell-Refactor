@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Green Bullet
   m_EditorClassIdentifier: 
   description: Basic green shot
-  rarity: 0
+  rarity: 1
   icon: {fileID: 456510937, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
   moduleType: 0
   allowedBulletShape: 0

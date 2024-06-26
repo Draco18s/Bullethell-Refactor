@@ -35,5 +35,10 @@ namespace Assets.draco18s.bulletboss.cards
 			isUnique = false;
 			isEphemeral = ephemeral;
 		}
+
+		public void SetEphemeral()
+		{
+			isEphemeral = true;
+		}
 	}
 }

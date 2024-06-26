@@ -55,7 +55,6 @@ namespace Assets.draco18s.bulletboss.pattern
 	}
 	
 	[Serializable]
-	[JsonResolver(typeof(BaseResolver))]
 	public abstract class PatternModule
 	{
 		[NonSerialized] public PatternModuleType patternTypeData;
@@ -75,37 +74,6 @@ namespace Assets.draco18s.bulletboss.pattern
 		public abstract PatternModule Clone();
 
 		public abstract PatternModuleType ExportAsScriptableObject();
-
-		public class BaseResolver : JsonConverter
-		{
-			public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-			{
-				PatternModule v = (PatternModule)value;
-				JObject o = new JObject();
-				o.Add(new JProperty("mod_type", v.patternTypeData.name));
-				o.WriteTo(writer);
-			}
-
-			public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-			{
-				JObject jObject = JObject.Load(reader);
-				string id = (string)jObject.GetValue("mod_type");
-				PatternModuleType modType = CardLibrary.instance.GetModuleByName(id);
-				if (modType == null) throw new JsonReaderException($"Unable to read {id}");
-				PatternModule runObj = modType.GetRuntimeObject();
-				
-				return runObj;
-			}
-
-			public override bool CanConvert(Type objectType)
-			{
-				return typeof(PatternModule).IsAssignableFrom(objectType);
-			}
-
-			public override bool CanRead => true;
-
-			public override bool CanWrite => true;
-		}
 	}
 
 	public abstract class PatternModule<T> : PatternModule where T : PatternModuleType

@@ -7,6 +7,7 @@ namespace Assets.draco18s.bulletboss.cards {
 	{
 		private readonly List<Card> fullCollection;
 		private readonly Queue<Card> activeDeck;
+		private readonly Queue<Card> activeDiscard;
 		private readonly List<Card> allCards;
 
 		public event Action<int> OnSizeChange = delegate(int i) {  };
@@ -15,6 +16,7 @@ namespace Assets.draco18s.bulletboss.cards {
 		{
 			allCards = new List<Card>();
 			activeDeck = new Queue<Card>();
+			activeDiscard = new Queue<Card>();
 			fullCollection = new List<Card>();
 		}
 
@@ -28,11 +30,19 @@ namespace Assets.draco18s.bulletboss.cards {
 
 		public Card Draw()
 		{
-			if(activeDeck.Count > 0)
-				return activeDeck.Dequeue();
+			if(activeDeck.Count <= 0 && activeDiscard.Count > 0)
+			{
+				activeDeck.AddRange(activeDiscard);
+				activeDiscard.Clear();
+				activeDeck.Shuffle();
+			}
+
+			Card ret = null;
+			if (activeDeck.Count > 0)
+				ret = activeDeck.Dequeue();
 
 			OnSizeChange(activeDeck.Count);
-			return null;
+			return ret;
 		}
 
 		public void Shuffle()
@@ -49,6 +59,11 @@ namespace Assets.draco18s.bulletboss.cards {
 		public int Count()
 		{
 			return activeDeck.Count;
+		}
+
+		public void Discard(Card cardRef)
+		{
+			activeDiscard.Enqueue(cardRef);
 		}
 	}
 }

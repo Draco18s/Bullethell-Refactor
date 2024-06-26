@@ -35,7 +35,11 @@ namespace Assets.draco18s.bulletboss.ui
 			canvas = GetComponent<Canvas>();
 			canvas.enabled = false;
 			parentPatternBtn.onClick.AddListener(SelectParentPattern);
+#if UNITY_EDITOR
 			saveAssetButton.onClick.AddListener(SaveAsset);
+#else
+			saveAssetButton.gameObject.SetActive(false);
+#endif
 		}
 
 		private void SaveAsset()
@@ -64,7 +68,10 @@ namespace Assets.draco18s.bulletboss.ui
 			ContractResolver.jsonSettings = settings;
 			Dictionary<int, PatternModule> points = new Dictionary<int, PatternModule>
 			{
-				{0, new ChangeModuleType.ChangeModule((ChangeModuleType)CardLibrary.instance.GetModuleByName("Change Direction"))}
+				{0, new ChangeModuleType.ChangeModule((ChangeModuleType)CardLibrary.instance.GetModuleByName("Change Direction"))
+				{
+					newValue = 1
+				}}
 			};
 
 			string json1 = JsonConvert.SerializeObject(points, Formatting.Indented, settings);
@@ -151,6 +158,9 @@ namespace Assets.draco18s.bulletboss.ui
 				currentTimeline.UpdateUIObj(m.Value, cardUI);
 			}
 			currentTimeline.ValidateModules();
+			// TODO: scrolling region
+			//float secondWidth = ((RectTransform)transform).rect.width / 10;
+			//((RectTransform)cardContainer).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, currentTimeline.GetDuration() * secondWidth);
 			parentPatternBtn.gameObject.SetActive(timelines.Count > 1);
 		}
 

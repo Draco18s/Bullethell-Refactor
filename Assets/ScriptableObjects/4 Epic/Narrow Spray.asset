@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
   m_Name: Narrow Spray
   m_EditorClassIdentifier: 
-  rarity: 3
+  rarity: 4
   description: A spray of 5 shots in a 8 degree cone.
   icon: {fileID: -501359276, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
   preconfigured: 1
@@ -21,7 +21,7 @@ MonoBehaviour:
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 1
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 0100000002000000030000000400000005000000
       values:
@@ -30,6 +30,4 @@ MonoBehaviour:
       - {fileID: 11400000, guid: a2ad7a9c76954e147a39dbc6e80406b8, type: 2}
       - {fileID: 11400000, guid: 7b0aaf843e48a0e47948bbc6d1bbeb03, type: 2}
       - {fileID: 11400000, guid: 944c5855cd0162749868f0a259fdbc9d, type: 2}
-  allowedValueRange:
-    min: 0
-    max: 0
+  maxObjects: -1

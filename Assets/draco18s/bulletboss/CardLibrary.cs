@@ -33,9 +33,9 @@ namespace Assets.draco18s.bulletboss
 		{
 			foreach (PatternModuleType module in modules)
 			{
-				if(module.rarity != NamedRarity.Starting) continue;
+				if(module.rarity < NamedRarity.Rare) continue;
 				collection.Add(new Card(module));
-				moduleRegistry.Add(module.name, module);
+				moduleRegistry.Add($"{module.rarity}/{module.name}", module);
 			}
 			foreach (TimelineModifierType modifier in modifiers)
 			{
@@ -61,6 +61,12 @@ namespace Assets.draco18s.bulletboss
 		public TimelineModifierType GetModifierByName(string id)
 		{
 			return modifierRegistry[id];
+		}
+
+		public void Discard(Card cardRef)
+		{
+			if(cardRef.isEphemeral) return;
+			collection.Discard(cardRef);
 		}
 	}
 }
