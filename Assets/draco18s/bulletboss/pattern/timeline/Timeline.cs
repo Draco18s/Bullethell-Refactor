@@ -290,14 +290,14 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				JObject o = new JObject();
 
 				if (v.activeRuntimePattern == null) return;
-				foreach (KeyValuePair<int, Card> entry in v.activeRuntimePattern)
+				/*foreach (KeyValuePair<int, Card> entry in v.activeRuntimePattern)
 				{
 					string str = entry.Value == null ? "null" : JsonConvert.SerializeObject(entry.Value.pattern, ContractResolver.jsonSettings);
 					Debug.Log($"{entry.Key}: {entry.Value?.pattern == null} => {str}");
-				}
+				}*/
 
 				if(v.activeRuntimePattern != null)
-					o.Add(new JProperty("pattern", v.activeRuntimePattern.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.pattern)));
+					o.Add(new JProperty("pattern", v.activeRuntimePattern.ToDictionary(kvp => kvp.Key, kvp => JsonConvert.SerializeObject(kvp.Value.pattern, ContractResolver.jsonSettings))));
 				o.WriteTo(writer);
 			}
 

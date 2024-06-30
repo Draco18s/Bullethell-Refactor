@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
+  m_Name: 60 Degree Spray
+  m_EditorClassIdentifier: 
+  rarity: 3
+  description: A spray of 7 shots in a 60 degree cone
+  icon: {fileID: -501359276, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  preconfigured: 1
+  unique: 0
+  killOnComplete: 0
+  preconfiguredPattern: 1
+  pattern:
+    runtimeEditable: 0
+    modifiers: []
+    patternObjects:
+      keys: 01000000020000000300000004000000050000000600000007000000
+      values:
+      - {fileID: 11400000, guid: 415249531c8760c47a8c7c2e2aa4c6e8, type: 2}
+      - {fileID: 11400000, guid: eedff1357b18b6a41830208b0bd01691, type: 2}
+      - {fileID: 11400000, guid: 86e4e4d88ef019445a75e5ed30c6535d, type: 2}
+      - {fileID: 11400000, guid: a2ad7a9c76954e147a39dbc6e80406b8, type: 2}
+      - {fileID: 11400000, guid: a387883e9c1b1924c963af6606e08c31, type: 2}
+      - {fileID: 11400000, guid: 6d4c4016140415f42b2e55b2e1784dae, type: 2}
+      - {fileID: 11400000, guid: 8e0e7e19b550d9945b4ce4610d7ef6ca, type: 2}
+  maxObjects: -1

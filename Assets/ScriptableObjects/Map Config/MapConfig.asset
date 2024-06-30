@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72209bb69d6a0541a1c105b41dab490, type: 3}
+  m_Name: MapConfig
+  m_EditorClassIdentifier: 
+  nodeBlueprints: []
+  numOfPreBossNodes:
+    min: 2
+    max: 5
+  numOfStartingNodes:
+    min: 3
+    max: 3
+  extraPaths: 6
+  layers:
+  - nodeType: 0
+    distanceFromPreviousLayer:
+      min: 425
+      max: 475
+    nodesApartDistance: 150
+    randomizePosition: 0
+    randomizeNodes: 0
+  - nodeType: 0
+    distanceFromPreviousLayer:
+      min: 400
+      max: 475
+    nodesApartDistance: 200
+    randomizePosition: 0
+    randomizeNodes: 0

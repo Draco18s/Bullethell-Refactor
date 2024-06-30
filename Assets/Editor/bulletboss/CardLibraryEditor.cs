@@ -22,14 +22,14 @@ public class CardLibraryEditor : Editor
 			modifiersProp.arraySize = 0;
 			string[] locations = new string[]
 			{
-				"Assets/ScriptableObjects/0 Starting",
-				"Assets/ScriptableObjects/1 Common",
-				"Assets/ScriptableObjects/2 Uncommon",
-				"Assets/ScriptableObjects/3 Rare",
-				"Assets/ScriptableObjects/4 Epic",
-				"Assets/ScriptableObjects/5 Ultra Rare",
-				"Assets/ScriptableObjects/6 Legendary",
-				"Assets/ScriptableObjects/7 Artifact",
+				"Assets/ScriptableObjects/Patterns/0 Starting",
+				"Assets/ScriptableObjects/Patterns/1 Common",
+				"Assets/ScriptableObjects/Patterns/2 Uncommon",
+				"Assets/ScriptableObjects/Patterns/3 Rare",
+				"Assets/ScriptableObjects/Patterns/4 Epic",
+				"Assets/ScriptableObjects/Patterns/5 Ultra Rare",
+				"Assets/ScriptableObjects/Patterns/6 Legendary",
+				"Assets/ScriptableObjects/Patterns/7 Artifact",
 			};
 			string[] modules = AssetDatabase.FindAssets("t:PatternModuleType", locations);
 

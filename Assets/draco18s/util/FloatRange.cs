@@ -15,6 +15,11 @@ namespace Assets.draco18s.util
 			this.max = max;
 		}
 
+		public float GetValue()
+		{
+			return UnityEngine.Random.Range(min, max + 1);
+		}
+
 		public override string ToString()
 		{
 			return $"({min} — {max})";

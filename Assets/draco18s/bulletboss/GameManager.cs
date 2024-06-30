@@ -24,6 +24,8 @@ namespace Assets.draco18s.bulletboss
 		[SerializeField] private Transform bulletContainer;
 		[SerializeField] private Texture2D bulletHeatmap;
 
+		public int Depth { get; protected set; } = 0;
+
 		public TextMeshProUGUI gemsTxt;
 		public TextMeshProUGUI hitsTxt;
 		public int gemsCount = 0;

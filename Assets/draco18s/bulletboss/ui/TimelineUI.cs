@@ -68,7 +68,7 @@ namespace Assets.draco18s.bulletboss.ui
 			ContractResolver.jsonSettings = settings;
 			Dictionary<int, PatternModule> points = new Dictionary<int, PatternModule>
 			{
-				{0, new ChangeModuleType.ChangeModule((ChangeModuleType)CardLibrary.instance.GetModuleByName("Change Direction"))
+				{0, new ChangeModuleType.ChangeModule((ChangeModuleType)CardLibrary.instance.GetModuleByName("Common/Change Direction"))
 				{
 					newValue = 1
 				}}

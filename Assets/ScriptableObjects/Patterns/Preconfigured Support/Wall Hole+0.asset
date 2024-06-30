@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
+  m_Name: Wall Hole+0
+  m_EditorClassIdentifier: 
+  rarity: 0
+  description: 
+  icon: {fileID: 0}
+  preconfigured: 1
+  unique: 0
+  killOnComplete: 0
+  preconfiguredPattern: 1
+  pattern:
+    runtimeEditable: 0
+    upgrades: []
+    patternObjects:
+      keys: 01000000020000000300000004000000050000000600000008000000090000000a0000000b0000000c0000000d000000
+      values:
+      - {fileID: 11400000, guid: 415249531c8760c47a8c7c2e2aa4c6e8, type: 2}
+      - {fileID: 11400000, guid: 876926ba763359c4bab53d25fb2cf5cb, type: 2}
+      - {fileID: 11400000, guid: eedff1357b18b6a41830208b0bd01691, type: 2}
+      - {fileID: 11400000, guid: d101a940e5bb5bb4f96850539567af0e, type: 2}
+      - {fileID: 11400000, guid: 86e4e4d88ef019445a75e5ed30c6535d, type: 2}
+      - {fileID: 11400000, guid: 5771f37819d121d4aa35208ec4ab8747, type: 2}
+      - {fileID: 11400000, guid: fca96f3a1589f1f4a982d74bc4dac453, type: 2}
+      - {fileID: 11400000, guid: a387883e9c1b1924c963af6606e08c31, type: 2}
+      - {fileID: 11400000, guid: 730c69b749c2ec74db455f95acb60965, type: 2}
+      - {fileID: 11400000, guid: 6d4c4016140415f42b2e55b2e1784dae, type: 2}
+      - {fileID: 11400000, guid: 1902384722046f34a84efe209c2fa5e4, type: 2}
+      - {fileID: 11400000, guid: 8e0e7e19b550d9945b4ce4610d7ef6ca, type: 2}
+  allowedValueRange:
+    min: 0
+    max: 0

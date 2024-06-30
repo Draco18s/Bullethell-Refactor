@@ -154,7 +154,7 @@ namespace Assets.draco18s.bulletboss.ui
 			sprite.enabled = !card.isUnique;
 			spriteShiny.enabled = card.isUnique;
 			editButton.onClick.AddListener(EditChildPattern);
-			bgShiny.GetComponent<Image>().material.SetFloat("_EphemeralStrength", card.isEphemeral ? 1 : 0);
+			bgShiny.GetComponent<Image>().material.SetFloat("_EphemeralStrength", card.isEphemeral ? 1 : 0); 
 			tagBG.color = cardRef.rarity.GetColor() * (cardRef.isEphemeral ? 0.25f : 1);
 			tagName.text = cardRef.isEphemeral ? "Ephemeral" : cardRef.rarity.ToString();
 			tagName.color = cardRef.isEphemeral ? Color.white : cardRef.rarity.GetTextColor();
