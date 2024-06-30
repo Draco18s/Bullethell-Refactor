@@ -1,13 +1,8 @@
-﻿using Assets.draco18s.bulletboss.entities;
-using Assets.draco18s.util;
-using System;
+﻿using Assets.draco18s.util;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.draco18s.bulletboss.ui.map
+namespace Assets.draco18s.bulletboss.map
 {
 	[CreateAssetMenu(fileName = "MapConfig", menuName = "Map/Config")]
 	public class MapConfig : ScriptableObject

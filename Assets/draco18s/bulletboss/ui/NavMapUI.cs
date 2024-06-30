@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.draco18s.bulletboss.ui.map;
+using Assets.draco18s.bulletboss.map;
 using Assets.draco18s.ui;
 using Assets.draco18s.util;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 

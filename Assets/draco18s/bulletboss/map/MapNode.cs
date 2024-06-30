@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.draco18s.bulletboss.ui.map
+namespace Assets.draco18s.bulletboss.map
 {
 	public class MapNode
 	{

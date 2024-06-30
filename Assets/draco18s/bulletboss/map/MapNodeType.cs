@@ -1,4 +1,4 @@
-﻿namespace Assets.draco18s.bulletboss.ui.map
+﻿namespace Assets.draco18s.bulletboss.map
 {
 	public enum MapNodeType
 	{

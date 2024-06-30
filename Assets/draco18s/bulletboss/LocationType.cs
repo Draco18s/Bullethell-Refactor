@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assets.draco18s.bulletboss.ui.map;
+﻿using Assets.draco18s.bulletboss.ui.map;
 using UnityEngine;
 
 namespace Assets.draco18s.bulletboss

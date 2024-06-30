@@ -2,7 +2,7 @@
 using UnityEngine;
 using Assets.draco18s.util;
 
-namespace Assets.draco18s.bulletboss.ui.map
+namespace Assets.draco18s.bulletboss.map
 {
 	[Serializable]
 	public class MapLayer

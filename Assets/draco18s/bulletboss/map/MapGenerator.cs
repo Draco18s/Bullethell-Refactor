@@ -1,16 +1,11 @@
 ﻿using Assets.draco18s.util;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Unity.Sentis.Layers;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static TreeEditor.TreeEditorHelper;
 using Random = UnityEngine.Random;
 
-namespace Assets.draco18s.bulletboss.ui.map
+namespace Assets.draco18s.bulletboss.map
 {
 	public static class MapGenerator
 	{
