@@ -1,4 +1,4 @@
-﻿using Assets.draco18s.bulletboss.ui.map;
+﻿using Assets.draco18s.bulletboss.map;
 using UnityEngine;
 
 namespace Assets.draco18s.bulletboss
