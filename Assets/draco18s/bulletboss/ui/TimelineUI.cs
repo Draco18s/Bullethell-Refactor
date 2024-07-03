@@ -7,6 +7,8 @@ using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.serialization;
 using Assets.draco18s.util;
 using Newtonsoft.Json;
+using Newtonsoft.Json.UnityConverters;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -44,7 +46,7 @@ namespace Assets.draco18s.bulletboss.ui
 
 		private void SaveAsset()
 		{
-#if UNITY_EDITOR
+#if !UNITY_EDITOR
 			if (currentTimeline.runtimeModule != null)
 			{
 				PatternModuleType so = currentTimeline.runtimeModule.ExportAsScriptableObject();
@@ -64,7 +66,8 @@ namespace Assets.draco18s.bulletboss.ui
 			}
 #else
 			JsonSerializerSettings settings = new JsonSerializerSettings();
-			settings.ContractResolver = new ContractResolver();
+			//settings.ContractResolver = new ContractResolver();
+			settings.ContractResolver = new UnityTypeContractResolver();
 			ContractResolver.jsonSettings = settings;
 			Dictionary<int, PatternModule> points = new Dictionary<int, PatternModule>
 			{

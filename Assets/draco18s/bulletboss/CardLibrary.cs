@@ -45,7 +45,7 @@ namespace Assets.draco18s.bulletboss
 			}
 			collection.Reset();
 
-			DeckUI.instance.SetDeck(collection);
+			//DeckUI.instance.SetDeck(collection);
 		}
 
 		public Card Draw()

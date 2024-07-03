@@ -106,7 +106,6 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 				{
-					Debug.Log("Writing spawn module");
 					SpawnModule v = (SpawnModule)value;
 					JObject o = new JObject();
 					o.Add(new JProperty("mod_type", v.patternTypeData.name));

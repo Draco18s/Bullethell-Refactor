@@ -36,21 +36,26 @@ namespace Assets.draco18s.bulletboss.ui
 		public void SetEditableType(EditTypes editType, FloatRange allowedRange, float curValue, bool showLabel, float scalar, Action<float> onUpdate)
 		{
 			bool rangeNonZero = !Mathf.Approximately(allowedRange.min, allowedRange.max);
-			if (editType == EditTypes.Angular)
+			switch (editType)
 			{
-				angularEditor.gameObject.SetActive(rangeNonZero);
-				angularEditor.SetLimits(allowedRange, onUpdate);
-				angularEditor.ShowLabel(showLabel);
-				//angularEditor.SetScalar(scalar);
-				angularEditor.SetValue(curValue);
-			}
-			if (editType == EditTypes.Linear)
-			{
-				linearEditor.gameObject.SetActive(rangeNonZero);
-				linearEditor.SetLimits(allowedRange, onUpdate);
-				linearEditor.ShowLabel(showLabel);
-				linearEditor.SetScalar(scalar);
-				linearEditor.SetValue(curValue);
+				case EditTypes.None:
+					angularEditor.gameObject.SetActive(false);
+					linearEditor.gameObject.SetActive(false);
+					return;
+				case EditTypes.Angular:
+					angularEditor.gameObject.SetActive(rangeNonZero);
+					angularEditor.SetLimits(allowedRange, onUpdate);
+					angularEditor.ShowLabel(showLabel);
+					//angularEditor.SetScalar(scalar);
+					angularEditor.SetValue(curValue);
+					break;
+				case EditTypes.Linear:
+					linearEditor.gameObject.SetActive(rangeNonZero);
+					linearEditor.SetLimits(allowedRange, onUpdate);
+					linearEditor.ShowLabel(showLabel);
+					linearEditor.SetScalar(scalar);
+					linearEditor.SetValue(curValue);
+					break;
 			}
 		}
 

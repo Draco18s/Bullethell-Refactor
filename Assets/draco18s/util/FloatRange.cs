@@ -5,6 +5,8 @@ namespace Assets.draco18s.util
 	[Serializable]
 	public struct FloatRange
 	{
+		public static readonly FloatRange Zero = new FloatRange(0, 0);
+
 		public float min;
 		public float max;
 		public float Range => max - min;

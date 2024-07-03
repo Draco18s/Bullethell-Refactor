@@ -1,4 +1,5 @@
 using System.Collections;
+using Assets.draco18s.bulletboss.map;
 using Assets.draco18s.bulletboss.ui;
 using TMPro;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Assets.draco18s.bulletboss
 	{
 		public enum GameState
 		{
-			Init, MainMenu, Editing, Combat, GameOver
+			Init, MainMenu, Map, Combat, Editing, Store, Forge, GameOver
 		}
 
 		public static GameManager instance;
@@ -20,11 +21,14 @@ namespace Assets.draco18s.bulletboss
 
 		[SerializeField] private Button endTurnBtn;
 		[SerializeField] private Canvas interfaceCanvas;
+		[SerializeField] private Canvas mapCanvas;
 		[SerializeField] private GameObject aiPlayerObject;
 		[SerializeField] private Transform bulletContainer;
 		[SerializeField] private Texture2D bulletHeatmap;
+		[SerializeField] private MapConfig conf;
 
 		public int Depth { get; protected set; } = 0;
+		public Map CurrentMap { get; protected set; }
 
 		public TextMeshProUGUI gemsTxt;
 		public TextMeshProUGUI hitsTxt;
@@ -40,6 +44,9 @@ namespace Assets.draco18s.bulletboss
 			endTurnBtn.onClick.AddListener(EndTurn);
 			StartCoroutine(WaitForReady());
 			instance = this;
+
+			CurrentMap = MapGenerator.GenerateMap(conf);
+			mapCanvas.enabled = false;
 		}
 
 		private float timer = 1;
@@ -100,8 +107,30 @@ namespace Assets.draco18s.bulletboss
 			heatmap.SetPixels(cols);
 			heatmap.Apply();
 			gameState = GameState.MainMenu;
+			// todo: temporary
+			ShowMap();
+		}
+
+		private void ShowMap()
+		{
+			gameState = GameState.Map;
+			mapCanvas.enabled = true;
+		}
+
+		public void StartNewCombat(MapNode node)
+		{
+			gameState = GameState.Combat;
+			mapCanvas.enabled = false;
 			NewTurn();
-			//EndTurn();
+		}
+
+		public void NewTurn()
+		{
+			gameState = GameState.Editing;
+			endTurnBtn.gameObject.SetActive(true);
+			interfaceCanvas.enabled = true;
+			CardHand.instance.Draw(GetDrawCount());
+			aiPlayerObject.SetActive(false);
 		}
 
 		public void EndTurn()
@@ -116,17 +145,8 @@ namespace Assets.draco18s.bulletboss
 
 		private IEnumerator WaitFive()
 		{
-			yield return new WaitForSecondsRealtime(5);
+			yield return new WaitForSecondsRealtime(2.5f);
 			NewTurn();// temp
-		}
-
-		public void NewTurn()
-		{
-			gameState = GameState.Editing;
-			endTurnBtn.gameObject.SetActive(true);
-			interfaceCanvas.enabled = true;
-			CardHand.instance.Draw(GetDrawCount());
-			aiPlayerObject.SetActive(false);
 		}
 
 		private int GetDrawCount()

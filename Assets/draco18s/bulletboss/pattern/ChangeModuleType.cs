@@ -165,6 +165,8 @@ namespace Assets.draco18s.bulletboss.pattern
 				}
 				if (patternType.preconfigured || patternType.allowedDurationRange.Range <= float.Epsilon)
 					handle.Disable();
+				if(patternType.preconfigured)
+					editableKeyframe.SetEditableType(Keyframe.EditTypes.None, FloatRange.Zero, 0, false, 1, _ => { });
 			}
 
 			private void UpdateDuration(float dv)

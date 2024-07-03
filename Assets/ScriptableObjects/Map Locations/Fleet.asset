@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 558da12261e84b7478c2e8d25f0c8614, type: 3}
-  m_Name: City
+  m_Name: Fleet
   m_EditorClassIdentifier: 
-  _nodeType: 4
-  _description: Buy stuff
-  _icon: {fileID: 21300000, guid: b74321c0ad25beb46bcac8a38d8675e2, type: 3}
+  _nodeType: 1
+  _description: Elite encounter
+  _icon: {fileID: 21300000, guid: 6135b01004d8248498feb79646601c5e, type: 3}

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Wreck
   m_EditorClassIdentifier: 
   _nodeType: 3
-  _description: 
-  _icon: {fileID: 0}
+  _description: Loot
+  _icon: {fileID: 21300000, guid: 0061cb47e64e3174d9ddf9e5f677280e, type: 3}

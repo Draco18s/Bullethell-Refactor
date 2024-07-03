@@ -2,8 +2,8 @@
 {
 	public enum MapNodeType
 	{
-		MinorEnemy,
-		EliteEnemy,
+		NormalEncounter,
+		FleetEncounter,
 		RestSite,
 		Treasure,
 		Store,

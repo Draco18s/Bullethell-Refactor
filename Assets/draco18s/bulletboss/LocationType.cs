@@ -1,4 +1,5 @@
-﻿using Assets.draco18s.bulletboss.map;
+﻿using System;
+using Assets.draco18s.bulletboss.map;
 using UnityEngine;
 
 namespace Assets.draco18s.bulletboss
@@ -14,9 +15,22 @@ namespace Assets.draco18s.bulletboss
 		public string description => _description;
 		public Sprite icon => _icon;
 
-		public void DoRewards()
+		public void DoRewards(Action onComplete)
 		{
-
+			switch (this._nodeType)
+			{
+				case MapNodeType.Treasure:
+				case MapNodeType.RestSite:
+				case MapNodeType.Mystery:
+				case MapNodeType.Store:
+					break;
+				case MapNodeType.NormalEncounter:
+				case MapNodeType.FleetEncounter:
+				case MapNodeType.Boss:
+				default:
+					break;
+			}
+			onComplete();
 		}
 	}
 }

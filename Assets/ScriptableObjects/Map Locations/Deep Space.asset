@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Deep Space
   m_EditorClassIdentifier: 
   _nodeType: 0
-  _description: 
-  _icon: {fileID: -880887341, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  _description: Normal encounter
+  _icon: {fileID: 21300000, guid: 6135b01004d8248498feb79646601c5e, type: 3}

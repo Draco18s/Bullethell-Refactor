@@ -9,7 +9,7 @@ namespace Assets.draco18s.bulletboss.map
 {
 	public static class MapGenerator
 	{
-		private static readonly IEnumerable<MapNodeType> RandomNodes = Enum.GetValues(typeof(MapNodeType)).Cast<MapNodeType>();
+		private static readonly IEnumerable<MapNodeType> RandomNodes = Enum.GetValues(typeof(MapNodeType)).Cast<MapNodeType>().Where(e => e != MapNodeType.Boss);
 		
 		public static Map GenerateMap(MapConfig conf)
 		{
@@ -89,15 +89,17 @@ namespace Assets.draco18s.bulletboss.map
 
 		private static void PlaceLayer(MapConfig config, List<(float dist, float sum)>  layerDistances, int layerIndex, List<List<MapNode>> nodes)
 		{
+			bool d = layerIndex == 1;
 			MapLayer layer = config.layers[layerIndex];
 			List<MapNode> nodesOnThisLayer = new List<MapNode>();
 
 			float offset = layer.nodesApartDistance * config.GridWidth / 2f;
-
+			
 			for (int i = 0; i < config.GridWidth; i++)
 			{
 				MapNodeType nodeType = Random.Range(0f, 1f) < layer.randomizeNodes ? RandomNodes.GetRandom() : layer.nodeType;
 				LocationType blueprint = config.nodeBlueprints.Where(b => b.nodeType == nodeType).GetRandom();
+				//float o = layer.randomizePosition * Random.Range(-0.5f, 0.5f) * layer.nodesApartDistance;
 				MapNode node = new MapNode(blueprint, new Vector2Int(i, layerIndex))
 				{
 					position = new Vector2(-offset + i * layer.nodesApartDistance, layerDistances[layerIndex].sum)
@@ -139,6 +141,8 @@ namespace Assets.draco18s.bulletboss.map
 				if (rightCol < config.GridWidth && horizontalDistance <= verticalDistance)
 					candidateCols.Add(rightCol);
 
+				if(candidateCols.Count < 1) continue;
+
 				int randomCandidateIndex = Random.Range(0, candidateCols.Count);
 				int candidateCol = candidateCols[randomCandidateIndex];
 				Vector2Int nextPoint = new Vector2Int(candidateCol, row);
@@ -166,11 +170,11 @@ namespace Assets.draco18s.bulletboss.map
 
 				foreach (MapNode node in list)
 				{
-					float xRnd = Random.Range(-1f, 1f);
-					float yRnd = Random.Range(-1f, 1f);
+					float xRnd = Random.Range(-0.5f, 0.5f);
+					float yRnd = Random.Range(-0.5f, 0.5f);
 
-					float x = xRnd * layer.nodesApartDistance / 2f;
-					float y = yRnd < 0 ? distToPreviousLayer * yRnd / 2f : distToNextLayer * yRnd / 2f;
+					float x = xRnd * layer.nodesApartDistance;
+					float y = yRnd < 0 ? distToPreviousLayer * yRnd : distToNextLayer * yRnd;
 
 					node.position += new Vector2(x, y) * layer.randomizePosition;
 				}

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Planet
   m_EditorClassIdentifier: 
   _nodeType: 2
-  _description: 
-  _icon: {fileID: 0}
+  _description: Take a break
+  _icon: {fileID: 21300000, guid: 052a17ff1de8b1f4e9f6176e4b2930a6, type: 3}
