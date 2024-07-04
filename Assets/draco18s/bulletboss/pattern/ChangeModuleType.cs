@@ -45,7 +45,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			}
 		}
 
-		[JsonResolver(typeof(Resolver))]
+		[JsonResolver(typeof(Converter))]
 		public class ChangeModule : PatternModule<ChangeModuleType>
 		{
 			protected float timeElapsed;
@@ -180,13 +180,13 @@ namespace Assets.draco18s.bulletboss.pattern
 				newValue = Mathf.Clamp(dv, patternType.allowedValueRange.min, patternType.allowedValueRange.max);
 			}
 
-			public class Resolver : JsonConverter
+			public class Converter : JsonConverter
 			{
 				public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 				{
 					ChangeModule v = (ChangeModule)value;
 					JObject o = new JObject();
-					o.Add(new JProperty("mod_type", $"{v.patternTypeData.rarity}/{v.patternTypeData.name}"));
+					o.Add(new JProperty("mod_type", CardLibrary.instance.GetModuleName(v.patternTypeData)));
 					o.Add(new JProperty("newValue", v.newValue));
 					o.Add(new JProperty("changeDuration", v.changeDuration));
 					o.WriteTo(writer);

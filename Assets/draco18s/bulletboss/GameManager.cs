@@ -1,6 +1,10 @@
 using System.Collections;
 using Assets.draco18s.bulletboss.map;
 using Assets.draco18s.bulletboss.ui;
+using Assets.draco18s.serialization;
+using Assets.draco18s.util;
+using Newtonsoft.Json;
+using Newtonsoft.Json.UnityConverters;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
@@ -19,21 +23,19 @@ namespace Assets.draco18s.bulletboss
 		public static GameManager instance;
 		public Transform bulletParentContainer => bulletContainer;
 
+		[SerializeField] private GameObject aiPlayerPrefab;
+
 		[SerializeField] private Button endTurnBtn;
 		[SerializeField] private Canvas interfaceCanvas;
 		[SerializeField] private Canvas mapCanvas;
-		[SerializeField] private GameObject aiPlayerObject;
+		[SerializeField] private Transform aiPlayerContainer;
 		[SerializeField] private Transform bulletContainer;
 		[SerializeField] private Texture2D bulletHeatmap;
 		[SerializeField] private MapConfig conf;
 
 		public int Depth { get; protected set; } = 0;
+		public MapConfig CurrentMapConfig { get; protected set; }
 		public Map CurrentMap { get; protected set; }
-
-		public TextMeshProUGUI gemsTxt;
-		public TextMeshProUGUI hitsTxt;
-		public int gemsCount = 0;
-		public int hitsCount = 0;
 
 		public GameState gameState { get; protected set; } = GameState.Init;
 		public Texture2D heatmap => bulletHeatmap;
@@ -47,6 +49,24 @@ namespace Assets.draco18s.bulletboss
 
 			CurrentMap = MapGenerator.GenerateMap(conf);
 			mapCanvas.enabled = false;
+		}
+
+		// todo: save game
+		public void SaveGame()
+		{
+			JsonSerializerSettings settings = new JsonSerializerSettings();
+			//settings.ContractResolver = new ContractResolver();
+			settings.ContractResolver = new UnityTypeContractResolver();
+			ContractResolver.jsonSettings = settings;
+
+			// current map
+			// deck/collection
+			// aiplayer details
+		}
+
+		public void LoadGame()
+		{
+
 		}
 
 		private float timer = 1;
@@ -107,21 +127,44 @@ namespace Assets.draco18s.bulletboss
 			heatmap.SetPixels(cols);
 			heatmap.Apply();
 			gameState = GameState.MainMenu;
+			NavMapUI.instance.RenderMap(CurrentMap);
 			// todo: temporary
 			ShowMap();
 		}
 
 		private void ShowMap()
 		{
+			NavMapUI.instance.UpdateMap(CurrentMap);
 			gameState = GameState.Map;
 			mapCanvas.enabled = true;
 		}
 
+		public void DoEvent(MapNode node)
+		{
+
+		}
+
 		public void StartNewCombat(MapNode node)
 		{
+			aiPlayerContainer.Clear();
+			bulletContainer.Clear();
+			if (node.locType.nodeType == MapNodeType.NormalEncounter || node.locType.nodeType == MapNodeType.Boss)
+			{
+				SetupPlayers(1);
+			}
+			if (node.locType.nodeType == MapNodeType.FleetEncounter)
+			{
+				SetupPlayers(3);
+			}
 			gameState = GameState.Combat;
 			mapCanvas.enabled = false;
 			NewTurn();
+		}
+
+		private void SetupPlayers(int count)
+		{
+			//aiPlayerPrefab
+			//aiPlayerContainer
 		}
 
 		public void NewTurn()
@@ -130,7 +173,6 @@ namespace Assets.draco18s.bulletboss
 			endTurnBtn.gameObject.SetActive(true);
 			interfaceCanvas.enabled = true;
 			CardHand.instance.Draw(GetDrawCount());
-			aiPlayerObject.SetActive(false);
 		}
 
 		public void EndTurn()
@@ -139,7 +181,6 @@ namespace Assets.draco18s.bulletboss
 			TimelineUI.instance.Close();
 			CardHand.instance.Discard(-1, true);
 			endTurnBtn.gameObject.SetActive(false);
-			//aiPlayerObject.SetActive(true);
 			StartCoroutine(WaitFive());
 		}
 

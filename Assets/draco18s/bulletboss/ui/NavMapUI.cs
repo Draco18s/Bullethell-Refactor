@@ -11,6 +11,7 @@ namespace Assets.draco18s.bulletboss.ui
 {
 	public class NavMapUI : MonoBehaviour
 	{
+		public static NavMapUI instance;
 		[SerializeField] private GameObject mapNodePrefab;
 		[SerializeField] private ScrollRect scrollView;
 		[SerializeField] private Transform nodeContainer;
@@ -19,29 +20,18 @@ namespace Assets.draco18s.bulletboss.ui
 		{
 			nodeContainer.Clear();
 			scrollView.verticalNormalizedPosition = 0;
-			StartCoroutine(Wait());
-
-			/*LocationType loc = GameAssets.instance.GetRandomLocation();
-			
-			GameObject go = Instantiate(mapNodePrefab, nodeContainer, false);
-			((RectTransform)go.transform).anchoredPosition3D = new Vector3(0,0,0);
-			Image img = go.GetComponent<Image>();
-			img.sprite = loc.icon;
-			img.AddHover(p =>
-			{
-				Tooltip.ShowTooltip(go.transform.position + new Vector3(50, 50), $"{loc.name}\n{loc.description}", 5);
-			});
-			go.GetComponent<Button>().onClick.AddListener(() =>
-			{
-				//loc.DoRewards();
-				//GameManager.instance.StartNewGame();
-			});*/
+			//StartCoroutine(Wait());
+			instance = this;
 		}
 
-		private IEnumerator Wait()
+		public void UpdateMap(Map map)
 		{
-			yield return new WaitWhile(() => GameManager.instance.CurrentMap == null);
-			RenderMap(GameManager.instance.CurrentMap);
+			MapNodeUI[] nodes = FindObjectsOfType<MapNodeUI>();
+			if (map.path.Count == 0) return;
+			foreach (MapNodeUI node in nodes)
+			{
+				node.SetAvailable(node.node.incoming.Contains(map.path[^1]));
+			}
 		}
 
 		public void RenderMap(Map map)
@@ -80,8 +70,9 @@ namespace Assets.draco18s.bulletboss.ui
 			go.GetComponent<Button>().onClick.AddListener(() =>
 			{
 				// todo
-				loc.DoRewards(GameManager.instance.StartNewGame);
-				GameManager.instance.StartNewCombat(node);
+				loc.DoRewards(node);
+				GameManager.instance.CurrentMap.AddPath(node);
+				ui.SetVisited();
 			});
 			return ui;
 		}

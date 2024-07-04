@@ -65,22 +65,8 @@ namespace Assets.draco18s.bulletboss.ui
 				}
 			}
 #else
-			JsonSerializerSettings settings = new JsonSerializerSettings();
-			//settings.ContractResolver = new ContractResolver();
-			settings.ContractResolver = new UnityTypeContractResolver();
-			ContractResolver.jsonSettings = settings;
-			Dictionary<int, PatternModule> points = new Dictionary<int, PatternModule>
-			{
-				{0, new ChangeModuleType.ChangeModule((ChangeModuleType)CardLibrary.instance.GetModuleByName("Common/Change Direction"))
-				{
-					newValue = 1
-				}}
-			};
-
-			string json1 = JsonConvert.SerializeObject(points, Formatting.Indented, settings);
-			Debug.Log(json1);
 			
-			string json2 = JsonConvert.SerializeObject(currentTimeline.GetModules().ToDictionary(kvp => kvp.Key, kvp => kvp.Value.pattern), Formatting.Indented, settings);
+			string json2 = JsonConvert.SerializeObject(currentTimeline.GetModules().ToDictionary(kvp => kvp.Key, kvp => kvp.Value.pattern), Formatting.Indented, ContractResolver.jsonSettings);
 			Debug.Log(json2);
 #endif
 		}
@@ -154,7 +140,7 @@ namespace Assets.draco18s.bulletboss.ui
 			cardContainer.Clear();
 			foreach (KeyValuePair<int, Card> m in currentTimeline.GetModules())
 			{
-				CardUI cardUI = Instantiate(GameAssets.instance.cardUIObject, cardContainer).GetComponent<CardUI>();
+				CardUI cardUI = Instantiate(GameAssets.instance.playableUIObject, cardContainer).GetComponent<CardUI>();
 				Vector3 p = cardUI.gameObject.transform.localPosition;
 				cardUI.SetData(m.Value);
 				cardUI.gameObject.transform.localPosition = new Vector3(m.Key, p.y, p.z);

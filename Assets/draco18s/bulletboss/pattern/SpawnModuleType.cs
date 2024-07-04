@@ -28,7 +28,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			return new SpawnModule(this);
 		}
 
-		[JsonResolver(typeof(Resolver))]
+		[JsonResolver(typeof(Converter))]
 		public class SpawnModule : TimelinePatternModule<SpawnModuleType>
 		{
 			public override float duration => patternType.duration;
@@ -102,14 +102,14 @@ namespace Assets.draco18s.bulletboss.pattern
 				spawnAngle = newAngle;
 			}
 
-			public class Resolver : JsonConverter
+			public class Converter : JsonConverter
 			{
 				public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 				{
 					SpawnModule v = (SpawnModule)value;
 					JObject o = new JObject();
-					o.Add(new JProperty("mod_type", v.patternTypeData.name));
-					o.Add(new JProperty("timeline", JsonConvert.SerializeObject(v.pattern, ContractResolver.jsonSettings)));
+					o.Add(new JProperty("mod_type", CardLibrary.instance.GetModuleName(v.patternTypeData)));
+					o.Add(new JProperty("timeline", JToken.FromObject(v.pattern, serializer)));
 					o.Add(new JProperty("spawnAngle", v.spawnAngle));
 					o.WriteTo(writer);
 				}

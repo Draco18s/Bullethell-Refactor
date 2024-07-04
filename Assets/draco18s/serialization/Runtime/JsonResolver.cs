@@ -1,8 +1,4 @@
 using System;
-using UnityEngine;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace Assets.draco18s.serialization {
 	/// <summary>

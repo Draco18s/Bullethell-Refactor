@@ -38,6 +38,7 @@ namespace Assets.draco18s.bulletboss.ui
 		private float time;
 		private readonly Vector3 origPosition = new Vector3(0,-105,0);
 		private Canvas selfCanvas;
+		private bool lastEphemeral = false;
 
 		void Awake()
 		{
@@ -100,8 +101,6 @@ namespace Assets.draco18s.bulletboss.ui
 				lastEphemeral = cardRef.isEphemeral;
 			}
 		}
-
-		private bool lastEphemeral = false;
 
 		private void MoveCard(Vector3 mouse, float amt)
 		{

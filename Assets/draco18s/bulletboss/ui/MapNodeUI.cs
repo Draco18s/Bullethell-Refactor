@@ -1,6 +1,7 @@
 using Assets.draco18s.bulletboss.map;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Unity.Sentis.Layers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,16 @@ namespace Assets.draco18s.bulletboss.ui
 			_visibleIcon.sprite = node.locType.icon;
 			_completeSprite.enabled = visited;
 			interactable = canAccess;
+		}
+
+		public void SetVisited()
+		{
+			_completeSprite.enabled = true;
+		}
+
+		public void SetAvailable(bool canVisit)
+		{
+			interactable = canVisit;
 		}
 	}
 }

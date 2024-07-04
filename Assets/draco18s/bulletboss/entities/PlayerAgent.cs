@@ -406,8 +406,8 @@ namespace Assets.draco18s.bulletboss.entities
 			if (other.gameObject.layer == LayerMask.NameToLayer("Powerups"))
 			{
 				xpos += 0.1f;
-				GameManager.instance.gemsCount++;
-				GameManager.instance.gemsTxt.text = GameManager.instance.gemsCount.ToString();
+				//GameManager.instance.gemsCount++;
+				//GameManager.instance.gemsTxt.text = GameManager.instance.gemsCount.ToString();
 				AddReward(0.75f);
 				//EndEpisode(); return;
 				Destroy(other.gameObject);
@@ -422,8 +422,8 @@ namespace Assets.draco18s.bulletboss.entities
 			}
 			if (other.gameObject.layer == LayerMask.NameToLayer("EnemyBullets"))
 			{
-				GameManager.instance.hitsCount++;
-				GameManager.instance.hitsTxt.text = GameManager.instance.hitsCount.ToString();
+				//GameManager.instance.hitsCount++;
+				//GameManager.instance.hitsTxt.text = GameManager.instance.hitsCount.ToString();
 				AddReward(-0.75f);
 				//EndEpisode(); return;
 				Destroy(other.gameObject);

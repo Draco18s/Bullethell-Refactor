@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 namespace Assets.draco18s.bulletboss.pattern.timeline
 {
 	[Serializable]
-	[JsonResolver(typeof(Resolver))]
+	[JsonResolver(typeof(Converter))]
 	public class Timeline
 	{
 		[SerializeField] private bool runtimeEditable;
@@ -156,8 +156,16 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				CardUI uiCard = uiLookup[card];
 
 				bool b = activeRuntimeModifiers.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) > 1;
-				if(b) uiCard.Disable("Cannot have two Sprite modifiers");
-				else uiCard.Enable();
+				if(b)
+				{
+					uiCard.Disable("Cannot have two Sprite modifiers");
+					card.SetDisabled(true);
+				}
+				else
+				{
+					uiCard.Enable();
+					card.SetDisabled(false);
+				}
 			}
 
 			onTimelineChanged();
@@ -280,7 +288,16 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			ValidateModules();
 		}
 
-		public class Resolver : JsonConverter
+		public void ApplyModifiers(Bullet bullet)
+		{
+			foreach (Card m in activeRuntimeModifiers)
+			{
+				if(!m.isActive) continue;
+				m.timelineModifier.ApplyModifier(bullet);
+			}
+		}
+
+		public class Converter : JsonConverter
 		{
 			public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 			{
@@ -289,9 +306,12 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				Timeline v = (Timeline)value;
 				JObject o = new JObject();
 
-				if (v.activeRuntimePattern == null) return;
-				if(v.activeRuntimePattern != null)
-					o.Add(new JProperty("pattern", v.activeRuntimePattern.ToDictionary(kvp => kvp.Key, kvp => JsonConvert.SerializeObject(kvp.Value.pattern, ContractResolver.jsonSettings))));
+				if (v.moduleTypeOfThis != null)
+					o.Add(new JProperty("moduleTypeOfThis", CardLibrary.instance.GetModuleName(v.moduleTypeOfThis)));
+				if (v.activeRuntimePattern != null)
+					o.Add(new JProperty("timeline", JToken.FromObject(v.activeRuntimePattern.ToDictionary(k=>k.Key, k=>k.Value.pattern), serializer)));
+				o.Add(new JProperty("overrideDuration", v.overrideDuration));
+				o.Add(new JProperty("activeModifiers", new JArray(v.activeRuntimeModifiers.Select(m => CardLibrary.instance.GetModuleName(m.timelineModifier)))));
 				o.WriteTo(writer);
 			}
 
@@ -299,7 +319,15 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			{
 				JObject jObject = JObject.Load(reader);
 				Timeline runObj = new Timeline();
-				//runObj.activeRuntimePattern = jObject.GetValue("pattern").Value<Dictionary<int, PatternModule>>();
+				if (jObject.ContainsKey("moduleTypeOfThis"))
+					runObj.moduleTypeOfThis = CardLibrary.instance.GetModuleByName(jObject.GetValue("moduleTypeOfThis").Value<string>());
+				if (jObject.ContainsKey("timeline"))
+					runObj.activeRuntimePattern = jObject.GetValue("timeline").Value<Dictionary<int, PatternModule>>().ToDictionary(k => k.Key, k => new Card(k.Value));
+				runObj.overrideDuration = jObject.GetValue("overrideDuration").Value<float>();
+
+				runObj.activeRuntimeModifiers = jObject.GetValue("activeModifiers").Value<List<string>>().Select(k => new Card(CardLibrary.instance.GetModifierByName(k))).ToList();
+
+
 				return runObj;
 			}
 

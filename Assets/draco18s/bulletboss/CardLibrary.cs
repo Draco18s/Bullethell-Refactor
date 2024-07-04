@@ -33,7 +33,7 @@ namespace Assets.draco18s.bulletboss
 		{
 			foreach (PatternModuleType module in modules)
 			{
-				moduleRegistry.Add($"{module.rarity}/{module.name}", module);
+				moduleRegistry.Add(GetModuleName(module), module);
 				if (module.rarity > NamedRarity.Rare) continue;
 				collection.Add(new Card(module));
 			}
@@ -67,6 +67,16 @@ namespace Assets.draco18s.bulletboss
 		{
 			if(cardRef.isEphemeral) return;
 			collection.Discard(cardRef);
+		}
+
+		public string GetModuleName(PatternModuleType module)
+		{
+			return $"{module.rarity}/{module.name}";
+		}
+
+		public string GetModuleName(TimelineModifierType module)
+		{
+			return $"{module.rarity}/{module.name}";
 		}
 	}
 }

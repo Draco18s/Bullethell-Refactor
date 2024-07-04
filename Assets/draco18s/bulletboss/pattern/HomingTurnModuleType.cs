@@ -75,7 +75,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				{
 					HomingTurnModule v = (HomingTurnModule)value;
 					JObject o = new JObject();
-					o.Add(new JProperty("mod_type", v.patternTypeData.name));
+					o.Add(new JProperty("mod_type", CardLibrary.instance.GetModuleName(v.patternTypeData)));
 					o.Add(new JProperty("maxTurnRate", v.maxTurnRate));
 					o.WriteTo(writer);
 				}

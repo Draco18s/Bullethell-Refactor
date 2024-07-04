@@ -15,22 +15,25 @@ namespace Assets.draco18s.bulletboss
 		public string description => _description;
 		public Sprite icon => _icon;
 
-		public void DoRewards(Action onComplete)
+		public void DoRewards(MapNode node)
 		{
-			switch (this._nodeType)
+			switch (_nodeType)
 			{
 				case MapNodeType.Treasure:
 				case MapNodeType.RestSite:
 				case MapNodeType.Mystery:
 				case MapNodeType.Store:
+					GameManager.instance.DoEvent(node);
 					break;
 				case MapNodeType.NormalEncounter:
 				case MapNodeType.FleetEncounter:
 				case MapNodeType.Boss:
 				default:
+					GameManager.instance.StartNewCombat(node);
 					break;
 			}
-			onComplete();
+
+			
 		}
 	}
 }

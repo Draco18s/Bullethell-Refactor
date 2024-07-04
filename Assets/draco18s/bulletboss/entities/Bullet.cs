@@ -144,6 +144,7 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern = Timeline.CloneFrom(p);
 			pattern.InitOrReset(false);
 			pattern.ResetForNewLoopIteration();
+			pattern.ApplyModifiers(this);
 		}
 
 		public virtual void DestroySelf()

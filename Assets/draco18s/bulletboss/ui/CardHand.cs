@@ -46,7 +46,7 @@ namespace Assets.draco18s.bulletboss.ui
 				Card card = CardLibrary.instance.Draw();
 				if (card == null) break;
 
-				CardUI cardUI = Instantiate(GameAssets.instance.cardUIObject, transform).GetComponent<CardUI>();
+				CardUI cardUI = Instantiate(GameAssets.instance.playableUIObject, transform).GetComponent<CardUI>();
 				cardUI.SetData(card);
 			}
 		}
@@ -66,7 +66,7 @@ namespace Assets.draco18s.bulletboss.ui
 
 		public void Insert(Card card)
 		{
-			CardUI cardUI = Instantiate(GameAssets.instance.cardUIObject, transform).GetComponent<CardUI>();
+			CardUI cardUI = Instantiate(GameAssets.instance.playableUIObject, transform).GetComponent<CardUI>();
 			cardUI.SetData(card);
 		}
 
