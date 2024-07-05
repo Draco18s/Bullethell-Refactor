@@ -7252,11 +7252,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6357696589804883065, guid: 16fa7b5957626a24babf6826fdd5f574, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 135
       objectReference: {fileID: 0}
     - target: {fileID: 6357696589804883065, guid: 16fa7b5957626a24babf6826fdd5f574, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -290
       objectReference: {fileID: 0}
     - target: {fileID: 6357696589804883065, guid: 16fa7b5957626a24babf6826fdd5f574, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7273,6 +7273,10 @@ PrefabInstance:
     - target: {fileID: 6357696589804883066, guid: 16fa7b5957626a24babf6826fdd5f574, type: 3}
       propertyPath: m_Name
       value: View Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 6357696589804883066, guid: 16fa7b5957626a24babf6826fdd5f574, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8092,7 +8096,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000062483494}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1910024956

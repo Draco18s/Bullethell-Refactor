@@ -2,7 +2,7 @@
 using Assets.draco18s.bulletboss.map;
 using UnityEngine;
 
-namespace Assets.draco18s.bulletboss
+namespace Assets.draco18s.bulletboss.map
 {
 	[CreateAssetMenu(fileName = "Location", menuName = "Map/Location")]
 	public class LocationType : ScriptableObject

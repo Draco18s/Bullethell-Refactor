@@ -1,7 +1,9 @@
 ﻿using Assets.draco18s.util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -55,28 +57,55 @@ namespace Assets.draco18s.bulletboss.map
 			int numOfPreBossNodes = config.numOfPreBossNodes.GetValue();
 
 			List<int> candidateXs = new List<int>();
-			for (int i = 0; i < config.GridWidth; i++)
-				candidateXs.Add(i);
+			for (int j = 0; j < config.GridWidth; j++)
+				candidateXs.Add(j);
 
 			candidateXs.Shuffle();
 			IEnumerable<int> startingXs = candidateXs.Take(numOfStartingNodes);
-			List<Vector2Int> startingPoints = (from x in startingXs select new Vector2Int(x, 0)).ToList();
+			List<Vector2Int> startingPoints = startingXs.Select(x => new Vector2Int(x, 0)).ToList();
 
 			candidateXs.Shuffle();
 			IEnumerable<int> preBossXs = candidateXs.Take(numOfPreBossNodes);
-			List<Vector2Int> preBossPoints = (from x in preBossXs select new Vector2Int(x, finalNode.y - 1)).ToList();
+			List<Vector2Int> preBossPoints = preBossXs.Select(x => new Vector2Int(x, finalNode.y - 1)).ToList();
 
 			int numOfPaths = Mathf.Max(numOfStartingNodes, numOfPreBossNodes) + Mathf.Max(0, config.extraPaths);
-			for (int i = 0; i < numOfPaths; ++i)
+
+			numOfPaths = Mathf.Min(numOfPaths, MaxUniquePaths(config.GridWidth, (config.layers.Count - 1)));
+			int maxTries = numOfPaths * 10;
+			int i = 0;
+			for (; i < numOfPaths && maxTries > 0; ++i)
 			{
 				Vector2Int startNode = startingPoints[i % numOfStartingNodes];
 				Vector2Int endNode = preBossPoints[i % numOfPreBossNodes];
 				List<Vector2Int> path = Path(startNode, endNode, config);
 				path.Add(finalNode);
-				paths.Add(path);
-			}
 
+				if(IsUnique(path, paths))
+					paths.Add(path);
+				else
+				{
+					maxTries--;
+					i--;
+				}
+			}
+			
 			return paths;
+		}
+
+		private static int MaxUniquePaths(int wid, int high)
+		{
+			if (wid == 1 || high == 1) return 1;
+			return MaxUniquePaths(wid, high - 1) + MaxUniquePaths(wid - 1, high);
+		}
+
+		private static bool IsUnique(List<Vector2Int> pathA, List<List<Vector2Int>> paths)
+		{
+			return !paths.Any(pathB => pathB.Count == pathA.Count && !pathA.Where((t, i) => t != pathB[i]).Any());
+		}
+
+		private static bool AreSamePath(List<Vector2Int> pathA, List<Vector2Int> pathB)
+		{
+			return !pathA.Where((t, i) => t != pathB[i]).Any();
 		}
 
 		private static Vector2Int GetFinalNode(MapConfig config)
