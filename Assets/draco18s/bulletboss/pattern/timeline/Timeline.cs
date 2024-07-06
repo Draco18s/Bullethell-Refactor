@@ -69,6 +69,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		public void ResetForNewLoopIteration()
 		{
 			currentTime = 0;
+			InitOrReset(loopsOnTimelineEnd);
 			foreach (KeyValuePair<int, Card> module in activeRuntimePattern)
 			{
 				module.Value.pattern.ResetForNewLoopIteration();
@@ -324,10 +325,8 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				if (jObject.ContainsKey("timeline"))
 					runObj.activeRuntimePattern = jObject.GetValue("timeline").Value<Dictionary<int, PatternModule>>().ToDictionary(k => k.Key, k => new Card(k.Value));
 				runObj.overrideDuration = jObject.GetValue("overrideDuration").Value<float>();
-
 				runObj.activeRuntimeModifiers = jObject.GetValue("activeModifiers").Value<List<string>>().Select(k => new Card(CardLibrary.instance.GetModifierByName(k))).ToList();
-
-
+				
 				return runObj;
 			}
 
@@ -335,6 +334,11 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			{
 				return typeof(Timeline).IsAssignableFrom(objectType);
 			}
+		}
+
+		public float GetCurrentTime()
+		{
+			return this.currentTime;
 		}
 	}
 }

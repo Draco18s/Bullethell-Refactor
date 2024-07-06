@@ -12,10 +12,10 @@ namespace Assets.draco18s.bulletboss.map
 		private SerializedProperty layersProp;
 		private void OnEnable()
 		{
-			layersProp = this.serializedObject.FindProperty(nameof(MapConfig.layers));
+			layersProp = serializedObject.FindProperty(nameof(MapConfig.layers));
 			listView = new ReorderableList(serializedObject, layersProp)
 			{
-				drawElementCallback = (rect, index, active, focused) =>
+				drawElementCallback = (rect, index, _, _) =>
 				{
 					rect.y -= 1;
 					rect.x += 8;
@@ -25,31 +25,25 @@ namespace Assets.draco18s.bulletboss.map
 					int eInd = nodeTypeProp.enumValueIndex;
 					rect.height = EditorGUIUtility.singleLineHeight;
 					elem.isExpanded = EditorGUI.Foldout(rect, elem.isExpanded, ((MapNodeType)eInd).ToString());
-					if (elem.isExpanded)
-					{
-						rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-						EditorGUI.PropertyField(rect, nodeTypeProp);
-						rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-						EditorGUI.PropertyField(rect, elem.FindPropertyRelative(nameof(MapLayer.distanceFromPreviousLayer)));
-						rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-						EditorGUI.PropertyField(rect, elem.FindPropertyRelative(nameof(MapLayer.nodesApartDistance)));
-						rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-						EditorGUI.PropertyField(rect, elem.FindPropertyRelative(nameof(MapLayer.randomizePosition)));
-						rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-						EditorGUI.PropertyField(rect, elem.FindPropertyRelative(nameof(MapLayer.randomizeNodes)));
-					}
+					if (!elem.isExpanded) return;
+					rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+					EditorGUI.PropertyField(rect, nodeTypeProp);
+					rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+					EditorGUI.PropertyField(rect, elem.FindPropertyRelative(nameof(MapLayer.distanceFromPreviousLayer)));
+					rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+					EditorGUI.PropertyField(rect, elem.FindPropertyRelative(nameof(MapLayer.nodesApartDistance)));
+					rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+					EditorGUI.PropertyField(rect, elem.FindPropertyRelative(nameof(MapLayer.randomizePosition)));
+					rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+					EditorGUI.PropertyField(rect, elem.FindPropertyRelative(nameof(MapLayer.randomizeNodes)));
 				},
-				elementHeightCallback = index =>
-				{
-
-					return EditorGUI.GetPropertyHeight(layersProp.GetArrayElementAtIndex(index)); //layersProp.GetArrayElementAtIndex(index).isExpanded ? EditorGUIUtility.singleLineHeight : 1;
-				}
+				elementHeightCallback = index => EditorGUI.GetPropertyHeight(layersProp.GetArrayElementAtIndex(index))
 			};
 		}
 
 		public override void OnInspectorGUI()
 		{
-			var blueprintsProp = serializedObject.FindProperty(nameof(MapConfig.nodeBlueprints));
+			SerializedProperty blueprintsProp = serializedObject.FindProperty(nameof(MapConfig.nodeBlueprints));
 			EditorGUILayout.PropertyField(blueprintsProp);
 			if (GUILayout.Button("Find all Blueprints"))
 			{

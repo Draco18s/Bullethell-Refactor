@@ -160,7 +160,8 @@ namespace Assets.draco18s.bulletboss.pattern
 						editableKeyframe.SetEditableType(Keyframe.EditTypes.Linear, patternType.allowedValueRange, newValue, true, 100, UpdateValue);
 						break;
 					case ChangeType.Time:
-						Debug.Log($"Change time says duration is {changeDuration}");
+						editableKeyframe.SetEditableType(Keyframe.EditTypes.Linear, patternType.allowedValueRange, newValue, true, 100, UpdateValue);
+						//Debug.Log($"Change time says duration is {changeDuration}");
 						break;
 				}
 				if (patternType.preconfigured || patternType.allowedDurationRange.Range <= float.Epsilon)

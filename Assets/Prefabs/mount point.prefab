@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 778798223601149578}
   - component: {fileID: 4554754477576682967}
   m_Layer: 5
-  m_Name: hard-point
+  m_Name: mount point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

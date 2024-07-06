@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.map;
 using Assets.draco18s.bulletboss.ui;
 using Assets.draco18s.serialization;
@@ -41,6 +43,9 @@ namespace Assets.draco18s.bulletboss
 		public Texture2D heatmap => bulletHeatmap;
 		public bool doHeatmap => false;
 
+		public PlayerProgress aiPlayerData { get; protected set; }
+		private readonly List<GameObject> playerShips = new List<GameObject>();
+
 		void Awake()
 		{
 			endTurnBtn.onClick.AddListener(EndTurn);
@@ -49,6 +54,7 @@ namespace Assets.draco18s.bulletboss
 
 			CurrentMap = MapGenerator.GenerateMap(conf);
 			mapCanvas.enabled = false;
+			aiPlayerData = new PlayerProgress();
 		}
 
 		// todo: save game
@@ -150,21 +156,31 @@ namespace Assets.draco18s.bulletboss
 			bulletContainer.Clear();
 			if (node.locType.nodeType == MapNodeType.NormalEncounter || node.locType.nodeType == MapNodeType.Boss)
 			{
-				SetupPlayers(1);
+				SetupPlayers(new []{ (aiPlayerData.shipAILevel, aiPlayerData.weaponLevel) });
 			}
 			if (node.locType.nodeType == MapNodeType.FleetEncounter)
 			{
-				SetupPlayers(3);
+				SetupPlayers(new[]
+				{
+					(aiPlayerData.shipAILevel-1, aiPlayerData.weaponLevel-2),
+					(aiPlayerData.shipAILevel,   aiPlayerData.weaponLevel),
+					(aiPlayerData.shipAILevel-1, aiPlayerData.weaponLevel-2)
+				});
 			}
 			gameState = GameState.Combat;
 			mapCanvas.enabled = false;
 			NewTurn();
 		}
 
-		private void SetupPlayers(int count)
+		private void SetupPlayers((int shipAILv, int weaponLv)[] aiSetupValues)
 		{
-			//aiPlayerPrefab
-			//aiPlayerContainer
+			aiPlayerContainer.Clear();
+			foreach ((int shipAILv, int weaponLv) in aiSetupValues)
+			{
+				//aiPlayerPrefab
+				//aiPlayerContainer
+				//playerShips.Add(go);
+			}
 		}
 
 		public void NewTurn()
@@ -192,7 +208,18 @@ namespace Assets.draco18s.bulletboss
 
 		private int GetDrawCount()
 		{
+			// todo: upgradeable?
 			return 5;
+		}
+
+		public void CheckGameOver(Player player)
+		{
+			playerShips.Remove(player.gameObject);
+			aiPlayerData.AddFinalGems(player.collectedGems, true);
+			if (playerShips.Count == 0)
+			{
+				// show map probably
+			}
 		}
 	}
 }

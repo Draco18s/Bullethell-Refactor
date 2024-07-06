@@ -34,7 +34,7 @@ namespace Assets.draco18s.bulletboss
 			foreach (PatternModuleType module in modules)
 			{
 				moduleRegistry.Add(GetModuleName(module), module);
-				if (module.rarity > NamedRarity.Rare) continue;
+				if (module.rarity > NamedRarity.Uncommon) continue;
 				collection.Add(new Card(module));
 			}
 			foreach (TimelineModifierType modifier in modifiers)

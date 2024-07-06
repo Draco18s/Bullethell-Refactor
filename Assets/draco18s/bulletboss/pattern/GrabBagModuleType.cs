@@ -36,6 +36,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				GrabBagModule mod = new GrabBagModule(grabBagTypeData);
 				mod.pattern = Timeline.CloneFrom(pattern);
 				mod.pattern.InitOrReset();
+				mod.pattern.SetModuleType(mod);
 				return mod;
 			}
 

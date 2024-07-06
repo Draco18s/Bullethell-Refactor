@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 558da12261e84b7478c2e8d25f0c8614, type: 3}
-  m_Name: Fleet
+  m_Script: {fileID: 11500000, guid: 299f1c8a388ad1743a4789bc38b1cd03, type: 3}
+  m_Name: Weapon Overclock
   m_EditorClassIdentifier: 
-  _nodeType: 1
-  _description: Elite encounter
-  _icon: {fileID: 21300000, guid: 4919d227e9e320e4f956954dc6192dc2, type: 3}
+  upgradeType: 3
+  upgradeAmount: 1

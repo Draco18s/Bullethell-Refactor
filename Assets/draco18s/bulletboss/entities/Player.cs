@@ -8,15 +8,30 @@ using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.entities
 {
-	public class Player : MountPoint
+	public class Player : MonoBehaviour
 	{
+		[SerializeField] private int baseHP;
+		[SerializeField] private GameObject mountPointPrefab;
+
 		public int currentHP { get; protected set; }
 		public int maximumHP { get; protected set; }
-
-
-		protected override void ChildUpdate()
+		public int collectedGems { get; protected set; } = 0;
+		
+		void OnTriggerEnter2D(Collider2D other)
 		{
-
+			if (other.gameObject.layer == LayerMask.NameToLayer("Powerups"))
+			{
+				
+			}
+			if (other.gameObject.layer == LayerMask.NameToLayer("EnemyBullets"))
+			{
+				currentHP--;
+				if (currentHP <= 0)
+				{
+					GameManager.instance.CheckGameOver(this);
+					this.gameObject.SetActive(false);
+				}
+			}
 		}
 	}
 }

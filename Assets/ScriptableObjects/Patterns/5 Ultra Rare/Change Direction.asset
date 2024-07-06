@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rarity: 5
   description: Quick, very wide change in direction.
-  icon: {fileID: -721436081, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  icon: {fileID: 389862214, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
   preconfigured: 0
   unique: 0
   killOnComplete: 0

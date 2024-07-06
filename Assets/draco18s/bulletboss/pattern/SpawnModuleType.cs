@@ -45,6 +45,9 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				SpawnModule mod = new SpawnModule(patternType);
 				mod.spawnAngle = spawnAngle;
+				mod.pattern = Timeline.CloneFrom(pattern);
+				mod.pattern.InitOrReset();
+				mod.pattern.SetModuleType(mod);
 				return mod;
 			}
 			

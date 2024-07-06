@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using static Assets.draco18s.bulletboss.pattern.ChangeModuleType;
 using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
+using Unity.Sentis.Layers;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
@@ -42,6 +43,9 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				LoopModule mod = new LoopModule(patternType);
 				mod.numLoops = numLoops;
+				mod.pattern = Timeline.CloneFrom(pattern);
+				mod.pattern.InitOrReset();
+				mod.pattern.SetModuleType(mod);
 				return mod;
 			}
 
@@ -50,7 +54,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				LoopModuleType result = CreateInstance<LoopModuleType>();
 				result.name = patternType.name;
 				result.preconfigured = result.preconfiguredPattern = true;
-				result.pattern = Timeline.CloneForAsset(pattern);
+				result.pattern = Timeline.CloneForAsset(childPattern);
 				result.iterations = numLoops;
 				result.allowedValueRange = patternType.allowedValueRange;
 				return result;
