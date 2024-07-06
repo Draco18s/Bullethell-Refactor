@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a349b16367ecdfa48a5b8a0b3581e100, type: 3}
   m_Name: Instant Spawn MedCir
   m_EditorClassIdentifier: 
-  rarity: 6
-  description: Basic blue shot. Unlimited angle adjustment.
-  icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 6
+  _description: Basic blue shot. Unlimited angle adjustment.
+  _icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0
@@ -25,6 +25,7 @@ MonoBehaviour:
     patternObjects:
       keys: 
       values: []
+  maxObjects: -1
   duration: 0.005
   prefab: {fileID: 778798223601149580, guid: 7c4c3f1104f5da94aabcf78a0459a4f4, type: 3}
   killParent: 0

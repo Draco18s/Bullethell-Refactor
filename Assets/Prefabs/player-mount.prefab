@@ -54,3 +54,4 @@ MonoBehaviour:
   shape: 0
   size: 0
   sprite: {fileID: 0}
+  Damage: 1

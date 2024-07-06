@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
   m_Name: Double Shot
   m_EditorClassIdentifier: 
-  rarity: 0
-  description: 
-  icon: {fileID: 0}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 0
+  _description: 
+  _icon: {fileID: 0}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
@@ -27,6 +27,4 @@ MonoBehaviour:
       values:
       - {fileID: 11400000, guid: 14e773e665959bf41a39031ee08e7584, type: 2}
       - {fileID: 11400000, guid: 72542e1b91173fe4a9ae5f88be81838f, type: 2}
-  allowedValueRange:
-    min: 0
-    max: 0
+  maxObjects: -1

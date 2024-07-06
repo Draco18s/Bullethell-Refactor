@@ -23,19 +23,20 @@ namespace Assets.draco18s.bulletboss.entities
 			Large,
 		}
 
-		[SerializeField, FormerlySerializedAs("mainWeapon")] protected Timeline serializedPattern;
+		[SerializeField] protected Timeline serializedPattern;
 		[SerializeField] protected float baseSpeed;
 		[SerializeField] protected BulletShape shape;
 		[SerializeField] protected BulletSize size;
 		[SerializeField] protected Image sprite;
 		protected Timeline pattern;
+		protected Bullet parentShot;
 
 		public float speed { get; protected set; }
-		protected Bullet parentShot;
 		public BulletShape bulletShape => shape;
 		public BulletSize bulletSize => size;
 
 		public float Speed => speed;
+		public int Damage = 1;
 
 		private void Start()
 		{

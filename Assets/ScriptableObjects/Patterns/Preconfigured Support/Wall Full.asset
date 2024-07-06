@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
   m_Name: Wall Full
   m_EditorClassIdentifier: 
-  rarity: 0
-  description: 
-  icon: {fileID: 0}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 0
+  _description: 
+  _icon: {fileID: 0}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
@@ -39,6 +39,3 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 1902384722046f34a84efe209c2fa5e4, type: 2}
       - {fileID: 11400000, guid: 8e0e7e19b550d9945b4ce4610d7ef6ca, type: 2}
   maxObjects: 0
-  allowedValueRange:
-    min: 0
-    max: 0

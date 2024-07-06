@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeType: 5
   upgradeAmount: 0.25
+  rarity: 0

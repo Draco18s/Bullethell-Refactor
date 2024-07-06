@@ -1,22 +1,19 @@
-﻿using System.Xml;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.UIElements;
+﻿using UnityEditor;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
 	[CustomEditor(typeof(PatternGroupModuleType), true)]
-	public class GroupModuleType : Editor
+	public class GroupModuleTypeInspector : Editor
 	{
 		public override void OnInspectorGUI()
 		{
-			SerializedProperty rarity = serializedObject.FindProperty("rarity");
-			SerializedProperty unique = serializedObject.FindProperty("unique");
-			SerializedProperty description = serializedObject.FindProperty("description");
-			SerializedProperty icon = serializedObject.FindProperty("icon");
-			SerializedProperty preconfigured = serializedObject.FindProperty("preconfigured");
-			SerializedProperty preconfiguredPattern = serializedObject.FindProperty("preconfiguredPattern");
+			SerializedProperty rarity = serializedObject.FindProperty("_rarity");
+			SerializedProperty unique = serializedObject.FindProperty("_unique");
+			SerializedProperty description = serializedObject.FindProperty("_description");
+			SerializedProperty icon = serializedObject.FindProperty("_icon");
+			SerializedProperty preconfigured = serializedObject.FindProperty("_preconfigured");
 
+			SerializedProperty preconfiguredPattern = serializedObject.FindProperty("preconfiguredPattern");
 			SerializedProperty maxObjects = serializedObject.FindProperty("maxObjects");
 			SerializedProperty pattern = serializedObject.FindProperty("pattern");
 
@@ -42,7 +39,7 @@ namespace Assets.draco18s.bulletboss.pattern
 					EditorGUILayout.PropertyField(maxObjects);
 				}
 			}
-
+			
 			serializedObject.ApplyModifiedProperties();
 		}
 	}

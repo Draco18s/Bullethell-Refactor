@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c4489a2aa520b54283b8439382ce745, type: 3}
   m_Name: Loop Thrice
   m_EditorClassIdentifier: 
-  rarity: 4
-  description: Do a child pattern thrice
-  icon: {fileID: 534465353, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 4
+  _description: Do a child pattern thrice
+  _icon: {fileID: 534465353, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0

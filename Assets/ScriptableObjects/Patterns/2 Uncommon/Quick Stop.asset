@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90012b29ac64e4545ae4f59ea1097790, type: 3}
   m_Name: Quick Stop
   m_EditorClassIdentifier: 
-  rarity: 2
-  description: Very fast speed change to zero.
-  icon: {fileID: -1774684600, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 2
+  _description: Very fast speed change to zero.
+  _icon: {fileID: -1774684600, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   changeType: 0
   allowedValueRange:
     min: 0
@@ -28,5 +28,5 @@ MonoBehaviour:
     max: 0
   changeDuration: 0.2
   allowedDurationRange:
-    min: 0
-    max: 0
+    min: 0.2
+    max: 0.2

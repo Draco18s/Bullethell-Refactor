@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e24b31e2fc27482409100feba21e25f1, type: 3}
   m_Name: Homing Shot
   m_EditorClassIdentifier: 
-  rarity: 3
-  description: Bullet turns towards the nearest target.
-  icon: {fileID: 1007441278, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 3
+  _description: Bullet turns towards the nearest target.
+  _icon: {fileID: 1007441278, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   changeType: 1
   allowedValueRange:
     min: 0

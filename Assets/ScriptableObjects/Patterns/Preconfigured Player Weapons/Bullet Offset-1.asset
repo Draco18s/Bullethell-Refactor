@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a349b16367ecdfa48a5b8a0b3581e100, type: 3}
   m_Name: Bullet Offset-1
   m_EditorClassIdentifier: 
-  rarity: 0
-  description: 
-  icon: {fileID: 0}
-  preconfigured: 0
-  unique: 0
-  killOnComplete: 0
+  _rarity: 0
+  _description: 
+  _icon: {fileID: 0}
+  _preconfigured: 0
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
@@ -28,6 +28,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: a29f59625923c4241b72e4853589136c, type: 2}
       - {fileID: 11400000, guid: b9c49336ad4027c4ba28af70cc217791, type: 2}
       - {fileID: 11400000, guid: 55e18f6d8e2b2394fbef79fd889a0d2e, type: 2}
+  maxObjects: -1
   duration: 0.333
   prefab: {fileID: 778798223601149580, guid: 6010b6c9fcae355418ba3f290d7a72ec, type: 3}
   killParent: 0

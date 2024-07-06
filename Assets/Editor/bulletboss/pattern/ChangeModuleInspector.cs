@@ -1,20 +1,18 @@
 ﻿using UnityEditor;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
 	[CustomEditor(typeof(ChangeModuleType))]
-	public class ChangeModuleEditor : Editor
+	public class ChangeModuleInspector : Editor
 	{
 		public override void OnInspectorGUI()
 		{
-			SerializedProperty rarity = serializedObject.FindProperty("rarity");
-			SerializedProperty unique = serializedObject.FindProperty("unique");
-			SerializedProperty killOnComplete = serializedObject.FindProperty("killOnComplete");
-			SerializedProperty description = serializedObject.FindProperty("description");
-			SerializedProperty icon = serializedObject.FindProperty("icon");
-			SerializedProperty preconfigured = serializedObject.FindProperty("preconfigured");
+			SerializedProperty rarity = serializedObject.FindProperty("_rarity");
+			SerializedProperty unique = serializedObject.FindProperty("_unique");
+			SerializedProperty killOnComplete = serializedObject.FindProperty("_killOnComplete");
+			SerializedProperty description = serializedObject.FindProperty("_description");
+			SerializedProperty icon = serializedObject.FindProperty("_icon");
+			SerializedProperty preconfigured = serializedObject.FindProperty("_preconfigured");
 
 			SerializedProperty changeType = serializedObject.FindProperty("changeType");
 			SerializedProperty allowedRange = serializedObject.FindProperty("allowedValueRange");
@@ -46,7 +44,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				EditorGUILayout.PropertyField(allowedRange);
 				EditorGUILayout.PropertyField(allowedDurationRange);
 			}
-
+			
 			serializedObject.ApplyModifiedProperties();
 		}
 	}

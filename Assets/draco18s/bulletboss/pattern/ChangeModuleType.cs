@@ -88,9 +88,9 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				ChangeModuleType result = CreateInstance<ChangeModuleType>();
 				result.name = patternType.name;
-				result.preconfigured = true;
-				result.rarity = patternTypeData.rarity;
-				result.unique = true;
+				result._preconfigured = true;
+				result._rarity = patternTypeData.rarity;
+				result._unique = true;
 				result.newValue = newValue;
 				result.changeDuration = changeDuration;
 				result.changeType = patternType.changeType;

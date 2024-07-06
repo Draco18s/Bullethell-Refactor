@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90012b29ac64e4545ae4f59ea1097790, type: 3}
   m_Name: Random Direction
   m_EditorClassIdentifier: 
-  rarity: 4
-  description: Turns to a random direction over 0.5 seconds.
-  icon: {fileID: -721436081, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 4
+  _description: Turns to a random direction over 0.5 seconds.
+  _icon: {fileID: -721436081, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   changeType: 1
   allowedValueRange:
     min: -75

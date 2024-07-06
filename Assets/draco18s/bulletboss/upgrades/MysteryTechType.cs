@@ -17,5 +17,6 @@ namespace Assets.draco18s.bulletboss.upgrades
 
 		[SerializeField] private TechUpgradeType upgradeType;
 		[SerializeField] private float upgradeAmount;
+		[SerializeField] private NamedRarity rarity;
 	}
 }

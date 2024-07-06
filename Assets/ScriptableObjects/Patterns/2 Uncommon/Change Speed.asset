@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90012b29ac64e4545ae4f59ea1097790, type: 3}
   m_Name: Change Speed
   m_EditorClassIdentifier: 
-  rarity: 2
-  description: Fast, minor change in speed.
-  icon: {fileID: 1993398875, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 0
-  unique: 0
-  killOnComplete: 0
+  _rarity: 2
+  _description: Fast, minor change in speed.
+  _icon: {fileID: 1993398875, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 0
+  _unique: 0
+  _killOnComplete: 0
   changeType: 0
   allowedValueRange:
     min: 0.75

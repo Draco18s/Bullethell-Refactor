@@ -6,15 +6,16 @@ using UnityEngine.UIElements;
 namespace Assets.draco18s.bulletboss.pattern
 {
 	[CustomEditor(typeof(LoopModuleType))]
-	public class LoopModuleTypeEditor : Editor
+	public class LoopModuleTypeInspector : Editor
 	{
 		public override void OnInspectorGUI()
 		{
-			SerializedProperty rarity = serializedObject.FindProperty("rarity");
-			SerializedProperty unique = serializedObject.FindProperty("unique");
-			SerializedProperty description = serializedObject.FindProperty("description");
-			SerializedProperty icon = serializedObject.FindProperty("icon");
-			SerializedProperty preconfigured = serializedObject.FindProperty("preconfigured");
+			SerializedProperty rarity = serializedObject.FindProperty("_rarity");
+			SerializedProperty unique = serializedObject.FindProperty("_unique");
+			SerializedProperty description = serializedObject.FindProperty("_description");
+			SerializedProperty icon = serializedObject.FindProperty("_icon");
+			SerializedProperty preconfigured = serializedObject.FindProperty("_preconfigured");
+
 			SerializedProperty preconfiguredPattern = serializedObject.FindProperty("preconfiguredPattern");
 			SerializedProperty maxObjects = serializedObject.FindProperty("maxObjects");
 			SerializedProperty allowedMaxObjRange = serializedObject.FindProperty("allowedMaxObjValueRange");
@@ -48,7 +49,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				EditorGUILayout.PropertyField(allowedRange);
 			}
-
+			
 			serializedObject.ApplyModifiedProperties();
 		}
 	}

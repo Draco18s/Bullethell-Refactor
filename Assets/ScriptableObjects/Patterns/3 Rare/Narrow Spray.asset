@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
   m_Name: Narrow Spray
   m_EditorClassIdentifier: 
-  rarity: 3
-  description: A spray of 7 shots in a 12 degree cone.
-  icon: {fileID: -501359276, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 3
+  _description: A spray of 7 shots in a 12 degree cone.
+  _icon: {fileID: -501359276, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 1

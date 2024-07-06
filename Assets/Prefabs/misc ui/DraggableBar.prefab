@@ -301,6 +301,7 @@ MonoBehaviour:
   handle: {fileID: 8281753230452384698}
   changeBar: {fileID: 6725686752498783062}
   label: {fileID: 6145382516972102557}
+  scalar: 1
 --- !u!1 &8984503029306167412
 GameObject:
   m_ObjectHideFlags: 0

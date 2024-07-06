@@ -58,7 +58,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				PatternGroupModuleType result = CreateInstance<PatternGroupModuleType>();
 				result.name = patternType.name;
-				result.preconfigured = result.preconfiguredPattern = true;
+				result._preconfigured = result.preconfiguredPattern = true;
 				result.pattern = Timeline.CloneForAsset(pattern);
 				return result;
 			}

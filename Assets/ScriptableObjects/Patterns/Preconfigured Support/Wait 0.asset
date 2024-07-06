@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90012b29ac64e4545ae4f59ea1097790, type: 3}
   m_Name: Wait 0
   m_EditorClassIdentifier: 
-  rarity: 1
-  description: Helpful module to provide a delay, particularly at the end of a loop.
-  icon: {fileID: -1400366468, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 1
+  _description: Helpful module to provide a delay, particularly at the end of a loop.
+  _icon: {fileID: -1400366468, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   changeType: 3
   allowedValueRange:
     min: 0
@@ -28,5 +28,5 @@ MonoBehaviour:
     max: 0
   changeDuration: 0.1
   allowedDurationRange:
-    min: 25
-    max: 35
+    min: 0.1
+    max: 0.1

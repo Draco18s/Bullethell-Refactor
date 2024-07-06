@@ -12,22 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
   m_Name: Split Shot
   m_EditorClassIdentifier: 
-  rarity: 5
-  description: Bullet splits into three in a 60 degree spread.
-  icon: {fileID: 606242878, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 5
+  _description: Bullet splits into three in a 60 degree spread.
+  _icon: {fileID: 606242878, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 010000000200000003000000
       values:
       - {fileID: 11400000, guid: dcfd057b779ca904f8c3cf2dd0851c2d, type: 2}
       - {fileID: 11400000, guid: 81881ed9c0c71b34a9c8905a91d0d21a, type: 2}
       - {fileID: 11400000, guid: 3ceae0836e307134095ada0189a55c53, type: 2}
-  allowedValueRange:
-    min: 0
-    max: 0
+  maxObjects: -1

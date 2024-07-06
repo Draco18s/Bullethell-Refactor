@@ -12,21 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
   m_Name: Side Shots
   m_EditorClassIdentifier: 
-  rarity: 0
-  description: Two shots to the sides
-  icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
-  preconfigured: 0
-  unique: 0
-  killOnComplete: 0
+  _rarity: 0
+  _description: Two shots to the sides
+  _icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  _preconfigured: 0
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 0100000002000000
       values:
       - {fileID: 11400000, guid: 50d4b693357de7342bb2f4b54db0ec47, type: 2}
       - {fileID: 11400000, guid: 0cf9c1ae5bf8fe54c82bdb344795dbd0, type: 2}
-  allowedValueRange:
-    min: 0
-    max: 0
+  maxObjects: -1

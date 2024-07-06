@@ -85,13 +85,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedPattern:
     runtimeEditable: 0
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 
       values: []
   baseSpeed: 1
   shape: 2
   size: 0
+  sprite: {fileID: 0}
+  Damage: 1
 --- !u!61 &5087092003196121229
 BoxCollider2D:
   m_ObjectHideFlags: 0

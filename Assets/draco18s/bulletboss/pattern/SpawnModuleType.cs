@@ -55,7 +55,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				SpawnModuleType result = CreateInstance<SpawnModuleType>();
 				result.name = patternType.name;
-				result.preconfigured = result.preconfiguredPattern = true;
+				result._preconfigured = result.preconfiguredPattern = true;
 				result.pattern = Timeline.CloneForAsset(pattern);
 				result.initialAngle = spawnAngle;
 				result.angleLimit = patternType.angleLimit;

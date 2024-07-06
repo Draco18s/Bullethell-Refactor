@@ -6,19 +6,33 @@ using Assets.draco18s.serialization;
 using Assets.draco18s.util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
+using static UnityEngine.GraphicsBuffer;
 using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
 
 namespace Assets.draco18s.bulletboss.pattern
 {
 	public abstract class PatternModuleType : ScriptableObject
 	{
-		public NamedRarity rarity;
-		public string description;
-		public Sprite icon;
-		public bool preconfigured;
-		public bool unique = false;
-		public bool killOnComplete = false;
+		[SerializeField] protected NamedRarity _rarity;
+		[SerializeField] protected string _description;
+		[SerializeField] protected Sprite _icon;
+		[SerializeField] protected bool _preconfigured;
+		[SerializeField] protected bool _unique = false;
+		[SerializeField] protected bool _killOnComplete = false;
+		public NamedRarity rarity => _rarity;
+		public string description => _description;
+		public Sprite icon => _icon;
+		public bool preconfigured => _preconfigured;
+		public bool unique => _unique;
+		public bool killOnComplete => _killOnComplete;
+
+		private void OnValidate()
+		{
+			EditorUtility.SetDirty(this);
+		}
 
 		public abstract PatternModule GetRuntimeObject();
 		public virtual bool CanAddModule(PatternModuleType module)

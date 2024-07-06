@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a349b16367ecdfa48a5b8a0b3581e100, type: 3}
   m_Name: Spawn Bullet
   m_EditorClassIdentifier: 
-  rarity: 1
-  description: Basic blue shot. Narrow angle adjustment.
-  icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 1
+  _description: Basic blue shot. Narrow angle adjustment.
+  _icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0

@@ -12,19 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c677d3f7f3a586040b684616bfacf769, type: 3}
   m_Name: Grab Bag
   m_EditorClassIdentifier: 
-  rarity: 1
-  description: Each time this runs, a random child is selected to be run.
-  icon: {fileID: -50723215, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 0
-  unique: 0
-  killOnComplete: 0
+  _rarity: 1
+  _description: Each time this runs, a random child is selected to be run.
+  _icon: {fileID: -50723215, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 0
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0
-    upgrades: []
+    modifiers: []
     patternObjects:
       keys: 
       values: []
-  allowedValueRange:
-    min: 0
-    max: 0
+  maxObjects: -1

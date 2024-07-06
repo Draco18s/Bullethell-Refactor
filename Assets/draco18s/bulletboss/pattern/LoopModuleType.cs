@@ -53,7 +53,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				LoopModuleType result = CreateInstance<LoopModuleType>();
 				result.name = patternType.name;
-				result.preconfigured = result.preconfiguredPattern = true;
+				result._preconfigured = result.preconfiguredPattern = true;
 				result.pattern = Timeline.CloneForAsset(childPattern);
 				result.iterations = numLoops;
 				result.allowedValueRange = patternType.allowedValueRange;

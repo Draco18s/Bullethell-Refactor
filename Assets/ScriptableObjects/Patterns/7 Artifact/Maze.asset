@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c677d3f7f3a586040b684616bfacf769, type: 3}
   m_Name: Maze
   m_EditorClassIdentifier: 
-  rarity: 7
-  description: Fires randomized walls with gaps
-  icon: {fileID: -1102161253, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 1
-  unique: 0
-  killOnComplete: 0
+  _rarity: 7
+  _description: Fires randomized walls with gaps
+  _icon: {fileID: -1102161253, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
@@ -31,6 +31,3 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 4990f84e3e5112246b76fc7d7d2034e3, type: 2}
       - {fileID: 11400000, guid: ad41f297deed4b642af4a1f4003e1852, type: 2}
   maxObjects: 0
-  allowedValueRange:
-    min: 0
-    max: 0

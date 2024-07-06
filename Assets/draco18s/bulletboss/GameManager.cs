@@ -221,5 +221,10 @@ namespace Assets.draco18s.bulletboss
 				// show map probably
 			}
 		}
+
+		public void CheckGameOver(BossEntity boss)
+		{
+			
+		}
 	}
 }

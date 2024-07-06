@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90012b29ac64e4545ae4f59ea1097790, type: 3}
   m_Name: Change Direction
   m_EditorClassIdentifier: 
-  rarity: 6
-  description: Quick, unlimited change in direction.
-  icon: {fileID: 389862214, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  preconfigured: 0
-  unique: 0
-  killOnComplete: 0
+  _rarity: 6
+  _description: Quick, unlimited change in direction.
+  _icon: {fileID: 389862214, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _preconfigured: 0
+  _unique: 0
+  _killOnComplete: 0
   changeType: 1
   allowedValueRange:
     min: -180
