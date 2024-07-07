@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.map;
 using Assets.draco18s.bulletboss.ui;
+using Assets.draco18s.bulletboss.upgrades;
 using Assets.draco18s.serialization;
 using Assets.draco18s.util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.UnityConverters;
 using TMPro;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
 using static Assets.draco18s.bulletboss.GameManager;
+using static TreeEditor.TreeEditorHelper;
 
 namespace Assets.draco18s.bulletboss
 {
@@ -147,7 +150,27 @@ namespace Assets.draco18s.bulletboss
 
 		public void DoEvent(MapNode node)
 		{
+			MysteryTechType reward = null;
+			switch (node.locType.nodeType)
+			{
+				case MapNodeType.Mystery:
+				case MapNodeType.Treasure:
+					reward = node.locType.techConfig.techOptions.GetRandom();
+					break;
+				case MapNodeType.Store:
+					DisplayStore();
+					reward = node.locType.techConfig.techOptions.GetRandom();
+					break;
+				case MapNodeType.RestSite:
+					aiPlayerData.Rest();
+					break;
+			}
+			aiPlayerData.AcquireItem(reward);
+		}
 
+		private void DisplayStore()
+		{
+			
 		}
 
 		public void StartNewCombat(MapNode node)
@@ -156,30 +179,33 @@ namespace Assets.draco18s.bulletboss
 			bulletContainer.Clear();
 			if (node.locType.nodeType == MapNodeType.NormalEncounter || node.locType.nodeType == MapNodeType.Boss)
 			{
-				SetupPlayers(new []{ (aiPlayerData.shipAILevel, aiPlayerData.weaponLevel) });
+				SetupPlayers(aiPlayerData, new[]{0});
 			}
 			if (node.locType.nodeType == MapNodeType.FleetEncounter)
 			{
-				SetupPlayers(new[]
-				{
-					(aiPlayerData.shipAILevel-1, aiPlayerData.weaponLevel-2),
-					(aiPlayerData.shipAILevel,   aiPlayerData.weaponLevel),
-					(aiPlayerData.shipAILevel-1, aiPlayerData.weaponLevel-2)
-				});
+				SetupPlayers(aiPlayerData, new[] { 0, -2, -2 });
 			}
 			gameState = GameState.Combat;
 			mapCanvas.enabled = false;
 			NewTurn();
 		}
 
-		private void SetupPlayers((int shipAILv, int weaponLv)[] aiSetupValues)
+		private void SetupPlayers(PlayerProgress aiData, int[] modifiers)
 		{
 			aiPlayerContainer.Clear();
-			foreach ((int shipAILv, int weaponLv) in aiSetupValues)
+			int i = -1;
+			foreach (int mod in modifiers)
 			{
-				//aiPlayerPrefab
-				//aiPlayerContainer
-				//playerShips.Add(go);
+				GameObject go = Instantiate(aiPlayerPrefab, aiPlayerContainer);
+				go.transform.localPosition = Vector3.zero;
+				playerShips.Add(go);
+				if (mod != 0)
+				{
+					go.transform.localPosition += Vector3.left * i * 2;
+					i *= -1;
+				}
+
+				go.GetComponent<Player>().SetStats(aiData, mod);
 			}
 		}
 

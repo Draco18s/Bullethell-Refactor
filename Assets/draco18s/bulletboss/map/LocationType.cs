@@ -13,6 +13,7 @@ namespace Assets.draco18s.bulletboss.map
 		[SerializeField] private MysteryTechConfig _techConfig;
 
 		public MapNodeType nodeType => _nodeType;
+		public MysteryTechConfig techConfig => _techConfig;
 		public string description => _description;
 		public Sprite icon => _icon;
 
@@ -21,7 +22,6 @@ namespace Assets.draco18s.bulletboss.map
 			switch (_nodeType)
 			{
 				case MapNodeType.Mystery:
-					break;
 				case MapNodeType.Treasure:
 				case MapNodeType.RestSite:
 				case MapNodeType.Store:

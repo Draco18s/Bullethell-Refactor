@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.draco18s.bulletboss.upgrades
 {
@@ -15,8 +16,11 @@ namespace Assets.draco18s.bulletboss.upgrades
 			Speed
 		}
 
-		[SerializeField] private TechUpgradeType upgradeType;
-		[SerializeField] private float upgradeAmount;
-		[SerializeField] private NamedRarity rarity;
+		[SerializeField, FormerlySerializedAs("upgradeType")] private TechUpgradeType _upgradeType;
+		[SerializeField, FormerlySerializedAs("upgradeAmount")] private float _upgradeAmount;
+		[SerializeField, FormerlySerializedAs("rarity")] private NamedRarity _rarity;
+
+		public TechUpgradeType upgradeType => _upgradeType;
+		public float upgradeAmount => _upgradeAmount;
 	}
 }
