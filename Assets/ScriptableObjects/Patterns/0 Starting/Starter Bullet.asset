@@ -32,5 +32,5 @@ MonoBehaviour:
   followParent: 0
   initialAngle: 0
   angleLimit:
-    min: -10
-    max: 10
+    min: -30
+    max: 30

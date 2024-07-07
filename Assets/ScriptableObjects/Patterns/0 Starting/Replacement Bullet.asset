@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a349b16367ecdfa48a5b8a0b3581e100, type: 3}
-  m_Name: Spawn Bullet
+  m_Name: Replacement Bullet
   m_EditorClassIdentifier: 
-  _rarity: 5
-  _description: Basic blue shot. Unlimited angle adjustment.
+  _rarity: 4
+  _description: Basic blue shot that kills its parent bullet when spawned. Unlimited
+    allowable starting angle.
   _icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
-  _preconfigured: 1
+  _preconfigured: 0
   _unique: 0
   _killOnComplete: 0
   preconfiguredPattern: 0
@@ -26,11 +27,11 @@ MonoBehaviour:
       keys: 
       values: []
   maxObjects: -1
-  duration: 1
+  duration: 0
   prefab: {fileID: 778798223601149580, guid: 6010b6c9fcae355418ba3f290d7a72ec, type: 3}
-  killParent: 0
+  killParent: 1
   followParent: 0
   initialAngle: 0
   angleLimit:
-    min: -180
-    max: 180
+    min: -60
+    max: 60

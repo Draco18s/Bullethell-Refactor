@@ -10,6 +10,7 @@ namespace Assets.draco18s.bulletboss.map
 		[SerializeField] private MapNodeType _nodeType;
 		[SerializeField] private string _description;
 		[SerializeField] private Sprite _icon;
+		[SerializeField] private MysteryTechConfig _techConfig;
 
 		public MapNodeType nodeType => _nodeType;
 		public string description => _description;
@@ -19,9 +20,10 @@ namespace Assets.draco18s.bulletboss.map
 		{
 			switch (_nodeType)
 			{
+				case MapNodeType.Mystery:
+					break;
 				case MapNodeType.Treasure:
 				case MapNodeType.RestSite:
-				case MapNodeType.Mystery:
 				case MapNodeType.Store:
 					GameManager.instance.DoEvent(node);
 					break;
@@ -32,8 +34,6 @@ namespace Assets.draco18s.bulletboss.map
 					GameManager.instance.StartNewCombat(node);
 					break;
 			}
-
-			
 		}
 	}
 }

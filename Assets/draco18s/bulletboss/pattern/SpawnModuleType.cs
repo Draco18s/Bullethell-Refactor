@@ -80,6 +80,10 @@ namespace Assets.draco18s.bulletboss.pattern
 
 				GameObject go = Instantiate(patternType.prefab, parentShot.transform.position, parentShot.transform.rotation * q, GameManager.instance.bulletParentContainer);
 				Bullet shot = go.GetComponent<Bullet>();
+				if (parentShot is MountPoint)
+				{
+					shot.Damage = parentShot.Damage;
+				}
 				shot.SetPattern(timeline);
 				if(followParent)
 					shot.SetParent(parentShot);

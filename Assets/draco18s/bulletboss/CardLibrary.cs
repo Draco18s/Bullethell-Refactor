@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
-using Assets.draco18s.bulletboss.ui;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using UnityEngine;
-using static Assets.draco18s.bulletboss.pattern.timeline.TimelineModifierType;
 
 namespace Assets.draco18s.bulletboss
 {
@@ -18,6 +15,7 @@ namespace Assets.draco18s.bulletboss
 		[SerializeField] private TimelineModifierType[] modifiers;
 		private Dictionary<string, PatternModuleType> moduleRegistry;
 		private Dictionary<string, TimelineModifierType> modifierRegistry;
+		private Dictionary<NamedRarity, List<Card>> cardPools;
 
 		public Deck collection { get; protected set; }
 
@@ -27,6 +25,11 @@ namespace Assets.draco18s.bulletboss
 			collection = new Deck();
 			moduleRegistry = new Dictionary<string, PatternModuleType>();
 			modifierRegistry = new Dictionary<string, TimelineModifierType>();
+			cardPools = new Dictionary<NamedRarity, List<Card>>();
+			foreach (NamedRarity r in Enum.GetValues(typeof(NamedRarity)))
+			{
+				cardPools.Add(r, new List<Card>());
+			}
 		}
 
 		void Start()
@@ -34,18 +37,20 @@ namespace Assets.draco18s.bulletboss
 			foreach (PatternModuleType module in modules)
 			{
 				moduleRegistry.Add(GetModuleName(module), module);
+				cardPools[module.rarity].Add(new Card(module));
+
 				if (module.rarity > NamedRarity.Uncommon) continue;
 				collection.Add(new Card(module));
 			}
 			foreach (TimelineModifierType modifier in modifiers)
 			{
 				if (modifier.rarity != NamedRarity.Starting) continue;
+				cardPools[modifier.rarity].Add(new Card(modifier));
+
 				collection.Add(new Card(modifier));
 				modifierRegistry.Add(modifier.name, modifier);
 			}
 			collection.Reset();
-
-			//DeckUI.instance.SetDeck(collection);
 		}
 
 		public Card Draw()

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Fleet
   m_EditorClassIdentifier: 
   _nodeType: 1
-  _description: Elite encounter
+  _description: Player brings allies!
   _icon: {fileID: 21300000, guid: 4919d227e9e320e4f956954dc6192dc2, type: 3}
+  _techConfig: {fileID: 0}

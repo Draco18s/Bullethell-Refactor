@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spawn Bullet
   m_EditorClassIdentifier: 
   _rarity: 3
-  _description: Basic blue shot. Moderate angle adjustment.
+  _description: Basic blue shot. Unlimited angle adjustment.
   _icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
   _preconfigured: 1
   _unique: 0
@@ -32,5 +32,5 @@ MonoBehaviour:
   followParent: 0
   initialAngle: 0
   angleLimit:
-    min: -45
-    max: 45
+    min: -180
+    max: 180

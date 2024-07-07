@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Device
   m_EditorClassIdentifier: 
   _nodeType: 6
-  _description: Unknown
+  _description: Player recieves a random bonus.
   _icon: {fileID: 21300000, guid: f73aa89edd030c8489a22493ab7fa4ac, type: 3}
+  _techConfig: {fileID: 11400000, guid: e899e5283a612af478863b0a1c647973, type: 2}
