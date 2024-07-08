@@ -127,6 +127,14 @@ namespace Assets.draco18s.util {
 			queue.AddRange(list);
 		}
 
+		public static void Unqueue<T>(this Queue<T> queue, T item)
+		{
+			List<T> list = new List<T>(queue);
+			queue.Clear();
+			queue.Enqueue(item);
+			queue.AddRange(list);
+		}
+
 		public static void AddRange<T>(this Queue<T> queue, IEnumerable<T> range)
 		{
 			range.ForEach(queue.Enqueue);

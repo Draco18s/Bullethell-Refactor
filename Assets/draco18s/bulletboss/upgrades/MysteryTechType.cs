@@ -1,26 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Assets.draco18s.bulletboss.entities;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Assets.draco18s.bulletboss.upgrades
 {
-	[CreateAssetMenu(menuName = "Tech Upgrade")]
+	[CreateAssetMenu(menuName = "Upgrades/Mystery Tech")]
 	public class MysteryTechType : ScriptableObject
 	{
-		public enum TechUpgradeType
+		[SerializeField] private string description;
+		[SerializeField] private Sprite icon;
+		[SerializeField] private NamedRarity rarity;
+
+		public void ApplyItem(Player aiPlayer, MysteryTechType tech)
 		{
-			Hull,
-			Armor,
-			Shield,
-			Damage,
-			Weapon,
-			Speed
+
 		}
-
-		[SerializeField, FormerlySerializedAs("upgradeType")] private TechUpgradeType _upgradeType;
-		[SerializeField, FormerlySerializedAs("upgradeAmount")] private float _upgradeAmount;
-		[SerializeField, FormerlySerializedAs("rarity")] private NamedRarity _rarity;
-
-		public TechUpgradeType upgradeType => _upgradeType;
-		public float upgradeAmount => _upgradeAmount;
 	}
 }

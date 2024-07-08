@@ -10,10 +10,10 @@ namespace Assets.draco18s.bulletboss.map
 		[SerializeField] private MapNodeType _nodeType;
 		[SerializeField] private string _description;
 		[SerializeField] private Sprite _icon;
-		[SerializeField] private MysteryTechConfig _techConfig;
+		[SerializeField] private BasicTechConfig _techConfig;
 
 		public MapNodeType nodeType => _nodeType;
-		public MysteryTechConfig techConfig => _techConfig;
+		public BasicTechConfig techConfig => _techConfig;
 		public string description => _description;
 		public Sprite icon => _icon;
 

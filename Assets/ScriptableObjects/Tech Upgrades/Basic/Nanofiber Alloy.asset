@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 299f1c8a388ad1743a4789bc38b1cd03, type: 3}
-  m_Name: Weapon Overclock
+  m_Name: Nanofiber Alloy
   m_EditorClassIdentifier: 
-  upgradeType: 3
-  upgradeAmount: 1
-  rarity: 4
+  _upgradeType: 0
+  _upgradeAmount: 2

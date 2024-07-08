@@ -19,6 +19,9 @@ namespace Assets.draco18s.bulletboss
 		public float damageLevel { get; protected set; } = 0;
 		public float shieldLevel { get; protected set; } = 0;
 
+		public IReadOnlyList<MysteryTechType> advancedTech => _advancedTech;
+		private List<MysteryTechType> _advancedTech = new List<MysteryTechType>();
+
 		private int expToLevel = 1000;
 		private bool lastCombatWasKilled;
 
@@ -41,24 +44,29 @@ namespace Assets.draco18s.bulletboss
 
 		public void AcquireItem(MysteryTechType tech)
 		{
+			_advancedTech.Add(tech);
+		}
+
+		public void AcquireItem(BasicTechType tech)
+		{
 			switch (tech.upgradeType)
 			{
-				case MysteryTechType.TechUpgradeType.Armor:
+				case BasicTechType.EffectedSystem.Armor:
 					armorLevel += tech.upgradeAmount;
 					break;
-				case MysteryTechType.TechUpgradeType.Hull:
+				case BasicTechType.EffectedSystem.Hull:
 					hullLevel += tech.upgradeAmount;
 					break;
-				case MysteryTechType.TechUpgradeType.Weapon:
+				case BasicTechType.EffectedSystem.Weapon:
 					weaponLevel += tech.upgradeAmount;
 					break;
-				case MysteryTechType.TechUpgradeType.Speed:
+				case BasicTechType.EffectedSystem.Speed:
 					engineLevel += tech.upgradeAmount;
 					break;
-				case MysteryTechType.TechUpgradeType.Damage:
+				case BasicTechType.EffectedSystem.Damage:
 					damageLevel += tech.upgradeAmount;
 					break;
-				case MysteryTechType.TechUpgradeType.Shield:
+				case BasicTechType.EffectedSystem.Shield:
 					shieldLevel += tech.upgradeAmount;
 					break;
 			}

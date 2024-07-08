@@ -5,25 +5,38 @@ using Assets.draco18s.util;
 namespace Assets.draco18s.bulletboss.cards {
 	public class Deck
 	{
-		private readonly List<Card> fullCollection;
+		[Flags]
+		public enum AddType
+		{
+			None = 0,
+			BaseDeck = 1 << 0,
+			DiscardPile = BaseDeck | 1 << 1,
+			DrawPile = BaseDeck | 1 << 2,
+
+			Shuffle_First = 1 << 3,
+			Shuffle_After = 1 << 4,
+
+			OnTop = 1 << 5,
+			OnBottom = 1 << 6,
+			Anywhere = OnTop | Shuffle_After,
+		}
 		private readonly Queue<Card> activeDeck;
 		private readonly Queue<Card> activeDiscard;
-		private readonly List<Card> allCards;
+		private readonly List<Card> unmodifiedDeck;
 
 		public event Action<int> OnSizeChange = delegate(int i) {  };
 
 		public Deck()
 		{
-			allCards = new List<Card>();
+			unmodifiedDeck = new List<Card>();
 			activeDeck = new Queue<Card>();
 			activeDiscard = new Queue<Card>();
-			fullCollection = new List<Card>();
 		}
 
 		public void Reset()
 		{
 			activeDeck.Clear();
-			activeDeck.AddRange(allCards);
+			activeDeck.AddRange(unmodifiedDeck);
 			Shuffle();
 			OnSizeChange(activeDeck.Count);
 		}
@@ -50,10 +63,39 @@ namespace Assets.draco18s.bulletboss.cards {
 			activeDeck.Shuffle();
 		}
 
-		public void Add(Card card)
+		public void Add(Card card, AddType method)
 		{
-			fullCollection.Add(card);
-			allCards.Add(card);
+			if(method.HasFlag(AddType.BaseDeck))
+			{
+				unmodifiedDeck.Add(card);
+			}
+
+			if (method.HasFlag(AddType.DiscardPile))
+			{
+				if (method.HasFlag(AddType.Shuffle_First))
+					activeDiscard.Shuffle();
+
+				if (method.HasFlag(AddType.OnTop))
+					activeDiscard.Unqueue(card);
+				else if (method.HasFlag(AddType.OnBottom))
+					activeDiscard.Enqueue(card);
+
+				if (method.HasFlag(AddType.Shuffle_After))
+					activeDiscard.Shuffle();
+			}
+			else if (method.HasFlag(AddType.DrawPile))
+			{
+				if (method.HasFlag(AddType.Shuffle_First))
+					activeDeck.Shuffle();
+
+				if (method.HasFlag(AddType.OnTop))
+					activeDeck.Unqueue(card);
+				else if (method.HasFlag(AddType.OnBottom))
+					activeDeck.Enqueue(card);
+
+				if (method.HasFlag(AddType.Shuffle_After))
+					activeDeck.Shuffle();
+			}
 		}
 
 		public int Count()

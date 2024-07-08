@@ -28,8 +28,6 @@ namespace Assets.draco18s.bulletboss
 		public static GameManager instance;
 		public Transform bulletParentContainer => bulletContainer;
 
-		[SerializeField] private GameObject aiPlayerPrefab;
-
 		[SerializeField] private Button endTurnBtn;
 		[SerializeField] private Canvas interfaceCanvas;
 		[SerializeField] private Canvas mapCanvas;
@@ -150,7 +148,7 @@ namespace Assets.draco18s.bulletboss
 
 		public void DoEvent(MapNode node)
 		{
-			MysteryTechType reward = null;
+			BasicTechType reward = null;
 			switch (node.locType.nodeType)
 			{
 				case MapNodeType.Mystery:
@@ -196,7 +194,7 @@ namespace Assets.draco18s.bulletboss
 			int i = -1;
 			foreach (int mod in modifiers)
 			{
-				GameObject go = Instantiate(aiPlayerPrefab, aiPlayerContainer);
+				GameObject go = Instantiate(GameAssets.instance.aiPlayerObject, aiPlayerContainer);
 				go.transform.localPosition = Vector3.zero;
 				playerShips.Add(go);
 				if (mod != 0)

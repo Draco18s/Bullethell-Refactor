@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 299f1c8a388ad1743a4789bc38b1cd03, type: 3}
   m_Name: Armor Plating
   m_EditorClassIdentifier: 
-  upgradeType: 1
-  upgradeAmount: 0.5
-  rarity: 3
+  _upgradeType: 1
+  _upgradeAmount: 0.3334

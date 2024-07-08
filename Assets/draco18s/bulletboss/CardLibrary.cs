@@ -16,16 +16,18 @@ namespace Assets.draco18s.bulletboss
 		private Dictionary<string, PatternModuleType> moduleRegistry;
 		private Dictionary<string, TimelineModifierType> modifierRegistry;
 		private Dictionary<NamedRarity, List<Card>> cardPools;
+		private List<Card> unlockedCards;
 
-		public Deck collection { get; protected set; }
+		public Deck activeDeck { get; protected set; }
 
 		void Awake()
 		{
 			instance = this;
-			collection = new Deck();
+			activeDeck = new Deck();
 			moduleRegistry = new Dictionary<string, PatternModuleType>();
 			modifierRegistry = new Dictionary<string, TimelineModifierType>();
 			cardPools = new Dictionary<NamedRarity, List<Card>>();
+			unlockedCards = new List<Card>();
 			foreach (NamedRarity r in Enum.GetValues(typeof(NamedRarity)))
 			{
 				cardPools.Add(r, new List<Card>());
@@ -40,22 +42,24 @@ namespace Assets.draco18s.bulletboss
 				cardPools[module.rarity].Add(new Card(module));
 
 				if (module.rarity > NamedRarity.Uncommon) continue;
-				collection.Add(new Card(module));
+				activeDeck.Add(new Card(module), Deck.AddType.BaseDeck);
+				unlockedCards.Add(new Card(module));
 			}
 			foreach (TimelineModifierType modifier in modifiers)
 			{
 				if (modifier.rarity != NamedRarity.Starting) continue;
 				cardPools[modifier.rarity].Add(new Card(modifier));
 
-				collection.Add(new Card(modifier));
+				activeDeck.Add(new Card(modifier), Deck.AddType.BaseDeck);
 				modifierRegistry.Add(modifier.name, modifier);
+				unlockedCards.Add(new Card(modifier));
 			}
-			collection.Reset();
+			activeDeck.Reset();
 		}
 
 		public Card Draw()
 		{
-			return collection.Draw();
+			return activeDeck.Draw();
 		}
 
 		public PatternModuleType GetModuleByName(string id)
@@ -71,7 +75,7 @@ namespace Assets.draco18s.bulletboss
 		public void Discard(Card cardRef)
 		{
 			if(cardRef.isEphemeral) return;
-			collection.Discard(cardRef);
+			activeDeck.Discard(cardRef);
 		}
 
 		public string GetModuleName(PatternModuleType module)

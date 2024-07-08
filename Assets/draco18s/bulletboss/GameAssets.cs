@@ -8,8 +8,11 @@ namespace Assets.draco18s.bulletboss
 	{
 		public static GameAssets instance;
 		public GameObject playableUIObject => _playableCardUIPrefab;
+		public GameObject viewyableUIObject => _viewCardUIPrefab;
+		public GameObject aiPlayerObject => _aiPlayerPrefab;
 
-		[SerializeField, FormerlySerializedAs("_cardUIObject")] private GameObject _playableCardUIPrefab;
+		[SerializeField] private GameObject _playableCardUIPrefab;
+		[SerializeField] private GameObject _aiPlayerPrefab;
 		[SerializeField] private GameObject _viewCardUIPrefab;
 
 		void Awake()
