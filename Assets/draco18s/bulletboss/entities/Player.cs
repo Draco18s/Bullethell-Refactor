@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.draco18s.bulletboss.pattern.timeline;
+using Assets.draco18s.bulletboss.upgrades;
 using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.entities
@@ -47,11 +48,19 @@ namespace Assets.draco18s.bulletboss.entities
 			currentHP = maximumHP = baseHP + (int)Mathf.Max(data.hullLevel+mod,0);
 			currentShield = maximumShield = baseHP + (int)Mathf.Max(data.shieldLevel+mod,0);
 			armor = (int)Mathf.Max(data.armorLevel + mod, 0);
-			
+
+			foreach (MysteryTechType d in data.advancedTech)
+			{
+				d.ApplyItem(this, data, mod);
+			}
+		}
+
+		public void AddGun(PlayerProgress data, int mod)
+		{
 			GameObject mount = Instantiate(mountPointPrefab, transform);
 			mount.transform.localPosition = Vector3.zero;
-			Bullet b = mount.GetComponent<Bullet>();
-			b.Damage = (int)Mathf.Max(data.damageLevel + mod, 1);
+			MountPoint b = mount.GetComponent<MountPoint>();
+			b.Damage = (int)Mathf.Max(data.damageLevel + mod/2f, 1);
 		}
 	}
 }

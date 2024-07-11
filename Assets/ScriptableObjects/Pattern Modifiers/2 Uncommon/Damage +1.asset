@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 299f1c8a388ad1743a4789bc38b1cd03, type: 3}
-  m_Name: Engine Booster
+  m_Script: {fileID: 11500000, guid: f3caf457f4424964ab75641c9c88b5b9, type: 3}
+  m_Name: Damage +1
   m_EditorClassIdentifier: 
-  _upgradeType: 5
-  _upgradeAmount: 0.25
+  description: Increased Bullet Damage
+  rarity: 2
+  icon: {fileID: 765289114, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  moduleType: 1
+  applyRecursively: 0
+  damageIncreaseAmount: 1

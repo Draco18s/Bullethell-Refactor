@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 299f1c8a388ad1743a4789bc38b1cd03, type: 3}
-  m_Name: Engine Booster
+  m_Script: {fileID: 11500000, guid: 9c398c1e44dbf5445ae422e3b2b8d8cb, type: 3}
+  m_Name: Rest Upgrade Config
   m_EditorClassIdentifier: 
-  _upgradeType: 5
-  _upgradeAmount: 0.25
+  _techOptions:
+  - {fileID: 11400000, guid: d8977c6fb52d5ce449cf3b31a305ee91, type: 2}
+  - {fileID: 11400000, guid: dbbff74e49df5bc49999c7f38f13ec88, type: 2}

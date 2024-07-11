@@ -10,28 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a349b16367ecdfa48a5b8a0b3581e100, type: 3}
-  m_Name: Replacement Bullet
+  m_Name: Fragment Bullet
   m_EditorClassIdentifier: 
   _rarity: 0
-  _description: Basic blue shot that kills its parent bullet when spawned. Unlimited
-    allowable starting angle.
-  _icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
-  _preconfigured: 0
+  _description: 
+  _icon: {fileID: 1128709544, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  _preconfigured: 1
   _unique: 0
   _killOnComplete: 0
-  preconfiguredPattern: 0
+  preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
     modifiers: []
     patternObjects:
-      keys: 
-      values: []
+      keys: 0000000001000000
+      values:
+      - {fileID: 11400000, guid: 11c33bae0a851764c869c54202d817b3, type: 2}
+      - {fileID: 11400000, guid: f2e7b3b8046b3f14a8e7621329a40cb9, type: 2}
   maxObjects: -1
-  duration: 0
+  duration: 1
   prefab: {fileID: 778798223601149580, guid: 6010b6c9fcae355418ba3f290d7a72ec, type: 3}
-  killParent: 1
+  killParent: 0
   followParent: 0
   initialAngle: 0
   angleLimit:
-    min: -60
-    max: 60
+    min: 0
+    max: 0

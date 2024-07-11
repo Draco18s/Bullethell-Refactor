@@ -1,4 +1,5 @@
-﻿using Assets.draco18s.bulletboss.pattern.timeline;
+﻿using Assets.draco18s.bulletboss.cards;
+using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.bulletboss.ui;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -23,6 +24,11 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			TimelineUI.instance.Select(pattern);
 			pattern.InitOrReset();
+		}
+
+		public bool AddModifier(TimelineModifierType modifier)
+		{
+			return pattern.AddAIPlayerModifier(new Card(modifier));
 		}
 	}
 }

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
+  m_Name: Fragmentation Group
+  m_EditorClassIdentifier: 
+  _rarity: 0
+  _description: 
+  _icon: {fileID: 0}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
+  preconfiguredPattern: 1
+  pattern:
+    runtimeEditable: 0
+    modifiers: []
+    patternObjects:
+      keys: 000000000100000002000000
+      values:
+      - {fileID: 11400000, guid: 758ffc5c9e7fa444aaf0a677888e58b4, type: 2}
+      - {fileID: 11400000, guid: 758ffc5c9e7fa444aaf0a677888e58b4, type: 2}
+      - {fileID: 11400000, guid: 758ffc5c9e7fa444aaf0a677888e58b4, type: 2}
+  maxObjects: -1

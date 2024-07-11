@@ -12,12 +12,17 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public override bool CanAddModule(Bullet shot, PatternModuleType module)
 		{
-			return true;
+			return module.GetType() == typeof(SpawnModuleType);
 		}
 
-		public override void ApplyModifier(Bullet shot)
+		public override void ApplyModifier_TimelineInit(Bullet shot)
 		{
 			shot.Damage += damageIncreaseAmount;
+		}
+
+		public override void ApplyModifier_OnCollision(Bullet shot)
+		{
+			
 		}
 	}
 }

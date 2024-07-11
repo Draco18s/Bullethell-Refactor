@@ -7,19 +7,21 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 	{
 		public enum ModuleType
 		{
-			Sprite
+			Sprite, Damage, OnHit, OnSpawn
 		}
 
 		public string description;
 		public NamedRarity rarity;
 		public Sprite icon;
 		public ModuleType moduleType;
+		public bool applyRecursively;
 
 		public virtual bool CanAddModule(Bullet shot, PatternModuleType module)
 		{
 			return true;
 		}
 
-		public abstract void ApplyModifier(Bullet shot);
+		public abstract void ApplyModifier_TimelineInit(Bullet shot);
+		public abstract void ApplyModifier_OnCollision(Bullet shot);
 	}
 }

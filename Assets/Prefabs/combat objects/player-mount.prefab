@@ -46,10 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedPattern:
     runtimeEditable: 0
-    modifiers: []
+    modifiers:
+    - {fileID: 11400000, guid: 42ae886abfeecaf45a6c38c16734e33a, type: 2}
     patternObjects:
-      keys: 
-      values: []
+      keys: 00000000
+      values:
+      - {fileID: 11400000, guid: 1a1485aa33d1c624580c93bcef1e9e8c, type: 2}
   baseSpeed: 5
   shape: 0
   size: 0

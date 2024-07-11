@@ -282,6 +282,13 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			ValidateModules();
 		}
 
+		public bool AddAIPlayerModifier(Card card)
+		{
+			if (activeRuntimeModifiers.Count >= 5) return false;
+			activeRuntimeModifiers.Add(card);
+			return true;
+		}
+
 		public void RemoveModifier(CardUI cardUI)
 		{
 			activeRuntimeModifiers.Remove(cardUI.cardRef);
@@ -294,7 +301,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			foreach (Card m in activeRuntimeModifiers)
 			{
 				if(!m.isActive) continue;
-				m.timelineModifier.ApplyModifier(bullet);
+				m.timelineModifier.ApplyModifier_TimelineInit(bullet);
 			}
 		}
 

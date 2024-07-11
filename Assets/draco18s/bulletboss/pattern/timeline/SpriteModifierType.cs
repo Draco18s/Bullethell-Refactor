@@ -16,9 +16,14 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			return shot.bulletSize == allowedBulletSize && shot.bulletShape == allowedBulletShape;
 		}
 
-		public override void ApplyModifier(Bullet shot)
+		public override void ApplyModifier_TimelineInit(Bullet shot)
 		{
 			shot.SetSprite(replacement);
+		}
+
+		public override void ApplyModifier_OnCollision(Bullet shot)
+		{
+			
 		}
 	}
 }
