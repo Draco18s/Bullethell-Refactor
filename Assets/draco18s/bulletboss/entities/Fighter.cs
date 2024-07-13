@@ -6,8 +6,23 @@ using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.entities
 {
-	public class MountPoint : Bullet
+	public class Fighter : Bullet
 	{
+		public int maximumHP { get; protected set; } = 1;
+		public int currentHP { get; protected set; } = 1;
+
+		[UsedImplicitly]
+		void OnTriggerEnter2D(Collider2D other)
+		{
+			if (other.gameObject.layer == LayerMask.NameToLayer("PlayerBullets"))
+			{
+				Bullet b = other.GetComponent<Bullet>();
+				currentHP -= b.Damage;
+				b.DoOnDamageEffects();
+				b.DestroySelf();
+			}
+		}
+
 		[UsedImplicitly]
 		void Start()
 		{

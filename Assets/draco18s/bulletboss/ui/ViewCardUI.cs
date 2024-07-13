@@ -1,9 +1,5 @@
 ﻿using Assets.draco18s.bulletboss.cards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +26,7 @@ namespace Assets.draco18s.bulletboss.ui
 		public Card cardRef { get; protected set; }
 		private bool lastEphemeral = false;
 
+		[UsedImplicitly]
 		void Awake()
 		{
 			//selfCanvas = transform.GetComponent<Canvas>();
@@ -37,6 +34,7 @@ namespace Assets.draco18s.bulletboss.ui
 			//time = 1;
 		}
 
+		[UsedImplicitly]
 		void Update() {
 			if (cardRef.isEphemeral != lastEphemeral)
 			{

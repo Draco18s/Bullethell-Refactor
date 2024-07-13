@@ -6,15 +6,11 @@ using Assets.draco18s.bulletboss.ui;
 using Assets.draco18s.bulletboss.upgrades;
 using Assets.draco18s.serialization;
 using Assets.draco18s.util;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.UnityConverters;
-using TMPro;
-using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
-using static Assets.draco18s.bulletboss.GameManager;
-using static TreeEditor.TreeEditorHelper;
 
 namespace Assets.draco18s.bulletboss
 {
@@ -47,6 +43,7 @@ namespace Assets.draco18s.bulletboss
 		public PlayerProgress aiPlayerData { get; protected set; }
 		private readonly List<GameObject> playerShips = new List<GameObject>();
 
+		[UsedImplicitly]
 		void Awake()
 		{
 			endTurnBtn.onClick.AddListener(EndTurn);
@@ -78,6 +75,7 @@ namespace Assets.draco18s.bulletboss
 
 		private float timer = 1;
 
+		[UsedImplicitly]
 		private void Update()
 		{
 			if (!doHeatmap) return;

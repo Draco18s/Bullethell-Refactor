@@ -3,6 +3,7 @@ using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.ui;
 using Assets.draco18s.serialization;
 using Assets.draco18s.util;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Unity.Sentis.Layers;
@@ -33,6 +34,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			return new ChangeModule(this);
 		}
 
+		[UsedImplicitly]
 		private void OnValidate()
 		{
 			if(preconfigured)
@@ -137,7 +139,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				return timeElapsed >= changeDuration;
 			}
 
-			public override void ResetForNewLoopIteration()
+			public override void ResetForNewLoopIteration(Bullet shot)
 			{
 				oldValue = float.NegativeInfinity;
 				timeElapsed = 0;

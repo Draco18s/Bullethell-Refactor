@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assets.draco18s.bulletboss.entities;
+﻿using Assets.draco18s.bulletboss.entities;
 using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.pattern.timeline
@@ -34,6 +29,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		private void SpawnNewBullet(Bullet parentShot, Timeline timeline)
 		{
+			Debug.Log("Ahoy");
 			Quaternion q = Quaternion.Euler(0, 0, initialAngle);
 
 			GameObject go = Instantiate(prefab, parentShot.transform.position, parentShot.transform.rotation * q, GameManager.instance.bulletParentContainer);

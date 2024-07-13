@@ -81,7 +81,7 @@ namespace Assets.draco18s.bulletboss.pattern
 		/// </summary>
 		public abstract bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved);
 
-		public abstract void ResetForNewLoopIteration();
+		public abstract void ResetForNewLoopIteration(Bullet shot);
 
 		public abstract void ConfigureKeyframe(RectTransform keyframeBar, DraggableElement handle, Keyframe editableKeyframe);
 

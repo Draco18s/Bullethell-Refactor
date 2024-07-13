@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assets.draco18s.bulletboss.pattern.timeline;
-using Assets.draco18s.bulletboss.upgrades;
+﻿using Assets.draco18s.bulletboss.upgrades;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.entities
@@ -22,7 +17,8 @@ namespace Assets.draco18s.bulletboss.entities
 		public int collectedGems { get; protected set; } = 0;
 
 		private int minDamage = 1;
-		
+
+		[UsedImplicitly]
 		void OnTriggerEnter2D(Collider2D other)
 		{
 			if (other.gameObject.layer == LayerMask.NameToLayer("Powerups"))

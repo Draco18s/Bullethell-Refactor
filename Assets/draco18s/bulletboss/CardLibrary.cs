@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.draco18s.bulletboss
@@ -20,6 +21,7 @@ namespace Assets.draco18s.bulletboss
 
 		public Deck activeDeck { get; protected set; }
 
+		[UsedImplicitly]
 		void Awake()
 		{
 			instance = this;
@@ -34,6 +36,7 @@ namespace Assets.draco18s.bulletboss
 			}
 		}
 
+		[UsedImplicitly]
 		void Start()
 		{
 			foreach (PatternModuleType module in modules)

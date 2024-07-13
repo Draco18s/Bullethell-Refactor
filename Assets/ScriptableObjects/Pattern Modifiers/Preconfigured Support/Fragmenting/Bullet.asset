@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a349b16367ecdfa48a5b8a0b3581e100, type: 3}
+  m_Name: Bullet
+  m_EditorClassIdentifier: 
+  _rarity: 0
+  _description: 
+  _icon: {fileID: 1128709544, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  _preconfigured: 1
+  _unique: 0
+  _killOnComplete: 0
+  preconfiguredPattern: 1
+  pattern:
+    runtimeEditable: 0
+    modifiers: []
+    patternObjects:
+      keys: 0200000003000000ffffffff0100000064000000
+      values:
+      - {fileID: 11400000, guid: 11c33bae0a851764c869c54202d817b3, type: 2}
+      - {fileID: 11400000, guid: f2e7b3b8046b3f14a8e7621329a40cb9, type: 2}
+      - {fileID: 11400000, guid: dcb8db4aedc24b342bad7bea2fa14c66, type: 2}
+      - {fileID: 11400000, guid: 55e18f6d8e2b2394fbef79fd889a0d2e, type: 2}
+      - {fileID: 11400000, guid: a6ca8c7794b37ce40bab658502e7d9a1, type: 2}
+  maxObjects: -1
+  duration: 1
+  prefab: {fileID: 778798223601149580, guid: 6010b6c9fcae355418ba3f290d7a72ec, type: 3}
+  killParent: 0
+  followParent: 0
+  initialAngle: 0
+  angleLimit:
+    min: 0
+    max: 0

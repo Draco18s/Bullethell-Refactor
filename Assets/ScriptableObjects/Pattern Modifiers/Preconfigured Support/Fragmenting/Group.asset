@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
-  m_Name: Fragmentation Group
+  m_Name: Group
   m_EditorClassIdentifier: 
   _rarity: 0
   _description: 
@@ -23,9 +23,8 @@ MonoBehaviour:
     runtimeEditable: 0
     modifiers: []
     patternObjects:
-      keys: 000000000100000002000000
+      keys: 0000000001000000
       values:
-      - {fileID: 11400000, guid: 758ffc5c9e7fa444aaf0a677888e58b4, type: 2}
       - {fileID: 11400000, guid: 758ffc5c9e7fa444aaf0a677888e58b4, type: 2}
       - {fileID: 11400000, guid: 758ffc5c9e7fa444aaf0a677888e58b4, type: 2}
   maxObjects: -1

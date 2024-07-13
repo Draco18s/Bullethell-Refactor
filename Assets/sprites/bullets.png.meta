@@ -1655,6 +1655,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: beam_1
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 792
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31931cde36428964eb2087f5327e42f3
+      internalID: -495188911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1732,6 +1753,7 @@ TextureImporter:
       64: -79734006
       65: -592136980
       66: 1666734489
+      beam_1: -495188911
       bullets_0: 1362779737
       bullets_1: 1664924701
       fighter-entry: 645378431

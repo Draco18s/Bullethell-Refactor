@@ -5,9 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.draco18s.serialization;
 using UnityEngine;
-using Assets.draco18s.bulletboss.cards;
-using Assets.draco18s.bulletboss.pattern.timeline;
-using Assets.draco18s.bulletboss.pattern;
 using Newtonsoft.Json.Linq;
 
 namespace Assets.draco18s.bulletboss.map

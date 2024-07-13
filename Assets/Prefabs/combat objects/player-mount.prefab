@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5958129955437499780}
   - component: {fileID: 7445825034768551646}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: player-mount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,8 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedPattern:
     runtimeEditable: 0
-    modifiers:
-    - {fileID: 11400000, guid: 42ae886abfeecaf45a6c38c16734e33a, type: 2}
+    modifiers: []
     patternObjects:
       keys: 00000000
       values:

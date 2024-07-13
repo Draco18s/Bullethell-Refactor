@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Assets.draco18s.util;
+using JetBrains.Annotations;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
-using Unity.Sentis;
-using Unity.Sentis.Layers;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Random = UnityEngine.Random;
 
 namespace Assets.draco18s.bulletboss.entities
 {
@@ -27,6 +21,7 @@ namespace Assets.draco18s.bulletboss.entities
 		private float prob = 1.15f;
 		private Vector3 oobPos = new Vector3(0, -100, 0);
 
+		[UsedImplicitly]
 		protected override void Awake()
 		{
 			base.Awake();
@@ -34,6 +29,7 @@ namespace Assets.draco18s.bulletboss.entities
 			xpos = -4;
 		}
 
+		[UsedImplicitly]
 		public override void OnEpisodeBegin()
 		{
 			base.OnEpisodeBegin();
@@ -94,6 +90,7 @@ namespace Assets.draco18s.bulletboss.entities
 			}
 		}
 
+		[UsedImplicitly]
 		public override void CollectObservations(VectorSensor sensor)
 		{
 			Color w = Color.white;
@@ -214,6 +211,7 @@ namespace Assets.draco18s.bulletboss.entities
 		private const float perUpdateScore = 0.005f;
 
 
+		[UsedImplicitly]
 		public override void OnActionReceived(ActionBuffers actionBuffers)
 		{
 			Vector2 controlSignal = Vector2.zero;
@@ -401,6 +399,7 @@ namespace Assets.draco18s.bulletboss.entities
 			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.up * 1, (s < 0.001 ? Color.clear : (controlSignal.y > -0.05 ? Color.red : col2)), 0.02f);
 		}
 
+		[UsedImplicitly]
 		void OnTriggerEnter2D(Collider2D other)
 		{
 			if (other.gameObject.layer == LayerMask.NameToLayer("Powerups"))

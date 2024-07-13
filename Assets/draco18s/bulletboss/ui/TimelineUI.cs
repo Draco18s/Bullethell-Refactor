@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.draco18s.bulletboss.cards;
-using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.serialization;
 using Assets.draco18s.util;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Newtonsoft.Json.UnityConverters;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace Assets.draco18s.bulletboss.ui
 {
@@ -30,6 +27,7 @@ namespace Assets.draco18s.bulletboss.ui
 		public Timeline currentTimeline => timelines.Peek();
 		private Canvas canvas;
 
+		[UsedImplicitly]
 		void Awake()
 		{
 			instance = this;

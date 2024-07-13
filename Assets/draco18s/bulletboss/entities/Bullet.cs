@@ -1,9 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.util;
+using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Assets.draco18s.bulletboss.entities
@@ -28,7 +28,21 @@ namespace Assets.draco18s.bulletboss.entities
 		[SerializeField] protected BulletShape shape;
 		[SerializeField] protected BulletSize size;
 		[SerializeField] protected Image sprite;
-		protected Timeline pattern;
+		protected Timeline _pattern;
+		protected int patternHash = 0;
+		protected Timeline pattern
+		{
+			get
+			{
+				return _pattern;
+			}
+			set
+			{
+				_pattern = value;
+				patternHash = _pattern.GetHashCode();
+			}
+		}
+
 		protected Bullet parentShot;
 
 		public float speed { get; protected set; }
@@ -38,19 +52,21 @@ namespace Assets.draco18s.bulletboss.entities
 		public float Speed => speed;
 		public int Damage = 1;
 
+		[UsedImplicitly]
 		private void Start()
 		{
 			speed = baseSpeed;
 			serializedPattern.InitOrReset();
-			pattern ??= Timeline.CloneFrom(serializedPattern);
-			pattern.SetOverrideDuration(20);
+			//pattern ??= Timeline.CloneFrom(serializedPattern);
+			pattern?.SetOverrideDuration(20);
 		}
 
+		[UsedImplicitly]
 		private void FixedUpdate()
 		{
 			if (GameManager.instance == null || GameManager.instance.gameState != GameManager.GameState.Combat && GameManager.instance.gameState != GameManager.GameState.Editing) return;
-			pattern.RuntimeUpdate(this, Time.fixedDeltaTime);
 			if (pattern == null) return;
+			pattern.RuntimeUpdate(this, Time.fixedDeltaTime);
 			OnUpdate(Time.fixedDeltaTime);
 			ChildUpdate();
 		}
@@ -59,12 +75,6 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 
 		}
-
-		/*private void Update()
-		{
-			if (pattern == null) return;
-			OnUpdate(Time.deltaTime);
-		}*/
 
 		private Vector2Int lastWrite = new Vector2Int(-1000,-1000);
 
@@ -144,7 +154,7 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			pattern = Timeline.CloneFrom(p);
 			pattern.InitOrReset(false);
-			pattern.ResetForNewLoopIteration();
+			pattern.ResetForNewLoopIteration(this);
 			pattern.ApplyModifiers(this);
 		}
 
@@ -161,6 +171,33 @@ namespace Assets.draco18s.bulletboss.entities
 		public void SetSprite(Sprite newIcon)
 		{
 			sprite.sprite = newIcon;
+		}
+
+		public void ApplyTimelineModifier(Card modifier)
+		{
+			pattern.AddModifier(modifier);
+		}
+
+		public List<Card> GetPatternModifiers()
+		{
+			return pattern.GetModifiers();
+		}
+
+		public void DoOnDamageEffects()
+		{
+			pattern.DamageTaken(this);
+		}
+
+		public void SetCanCollide(bool v)
+		{
+			foreach (Collider2D c in GetComponentsInChildren<Collider2D>())
+			{
+				c.enabled = !v;
+			}
+			foreach (SpriteRenderer s in GetComponentsInChildren<SpriteRenderer>())
+			{
+				s.color = new Color(1, 1, 1, (v ? 1 : 0.2f));
+			}
 		}
 	}
 }

@@ -66,13 +66,17 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			loopsOnTimelineEnd = allowedToLoop;
 		}
 
-		public void ResetForNewLoopIteration()
+		public void ResetForNewLoopIteration(Bullet shot)
 		{
 			currentTime = 0;
 			InitOrReset(loopsOnTimelineEnd);
 			foreach (KeyValuePair<int, Card> module in activeRuntimePattern)
 			{
-				module.Value.pattern.ResetForNewLoopIteration();
+				module.Value.pattern.ResetForNewLoopIteration(shot);
+				if (module.Key <= 0)
+				{
+					module.Value.pattern.DoShotStep(shot, 0, out _);
+				}
 			}
 		}
 
@@ -154,18 +158,20 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 			foreach (Card card in activeRuntimeModifiers)
 			{
-				CardUI uiCard = uiLookup[card];
+				bool b = activeRuntimeModifiers
+					.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
+					.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) <= 1;
+				card.SetDisabled(b);
 
-				bool b = activeRuntimeModifiers.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) > 1;
+				if (!uiLookup.TryGetValue(card, out CardUI uiCard)) continue;
+				
 				if(b)
 				{
 					uiCard.Disable("Cannot have two Sprite modifiers");
-					card.SetDisabled(true);
 				}
 				else
 				{
 					uiCard.Enable();
-					card.SetDisabled(false);
 				}
 			}
 
@@ -201,7 +207,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				currentTime -= GetDuration();
 				foreach (KeyValuePair<int, Card> module in activeRuntimePattern)
 				{
-					module.Value.pattern.ResetForNewLoopIteration();
+					module.Value.pattern.ResetForNewLoopIteration(bullet);
 				}
 			}
 			return completed;
@@ -242,6 +248,8 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				timeline.activeRuntimePattern[kvp.Key] = new Card(kvp.Value.pattern.Clone());
 				timeline.patternObjects[kvp.Key] = kvp.Value.pattern.patternTypeData;
 			}
+			foreach (Card card in original.activeRuntimeModifiers)
+				timeline.activeRuntimeModifiers.Add(new Card(card.timelineModifier));
 			timeline.runtimeEditable = original.runtimeEditable;
 			return timeline;
 		}
@@ -277,8 +285,13 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public void AddModifier(CardUI cardUI)
 		{
-			activeRuntimeModifiers.Add(cardUI.cardRef);
 			uiLookup.Add(cardUI.cardRef, cardUI);
+			AddModifier(cardUI.cardRef);
+		}
+
+		public void AddModifier(Card card)
+		{
+			activeRuntimeModifiers.Add(card);
 			ValidateModules();
 		}
 
@@ -302,7 +315,35 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			{
 				if(!m.isActive) continue;
 				m.timelineModifier.ApplyModifier_TimelineInit(bullet);
+				if (m.timelineModifier.applyRecursively)
+				{
+					bullet.ApplyTimelineModifier(m);
+				}
 			}
+		}
+
+		public void DamageTaken(Bullet bullet)
+		{
+			Debug.Log("Ahoy 1");
+			foreach (Card m in activeRuntimeModifiers)
+			{
+				if (!m.isActive)
+				{
+					Debug.Log($"{m.name} is not active");
+					continue;
+				}
+				m.timelineModifier.ApplyModifier_OnCollision(bullet);
+			}
+		}
+
+		public float GetCurrentTime()
+		{
+			return currentTime;
+		}
+
+		public List<Card> GetModifiers()
+		{
+			return activeRuntimeModifiers;
 		}
 
 		public class Converter : JsonConverter
@@ -341,11 +382,6 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			{
 				return typeof(Timeline).IsAssignableFrom(objectType);
 			}
-		}
-
-		public float GetCurrentTime()
-		{
-			return this.currentTime;
 		}
 	}
 }

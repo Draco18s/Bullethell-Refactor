@@ -63,10 +63,10 @@ namespace Assets.draco18s.bulletboss.pattern
 				return result;
 			}
 
-			public override void ResetForNewLoopIteration()
+			public override void ResetForNewLoopIteration(Bullet shot)
 			{
 				foreach (KeyValuePair<int, Card> grp in childPattern.GetModules())
-					grp.Value.pattern.ResetForNewLoopIteration();
+					grp.Value.pattern.ResetForNewLoopIteration(shot);
 			}
 
 			public override void ConfigureKeyframe(RectTransform keyframeBar, DraggableElement handle, Keyframe editableKeyframe)

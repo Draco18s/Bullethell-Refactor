@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.bulletboss.ui;
@@ -91,9 +94,15 @@ namespace Assets.draco18s.bulletboss.pattern
 				spawned = true;
 				spawnCount++;
 				shot.gameObject.name += " - " + spawnCount;
+				
+				foreach (Card m in parentShot.GetPatternModifiers())
+				{
+					if(m.timelineModifier.applyRecursively || parentShot is MountPoint)
+						shot.ApplyTimelineModifier(m);
+				}
 			}
 
-			public override void ResetForNewLoopIteration()
+			public override void ResetForNewLoopIteration(Bullet shot)
 			{
 				spawned = false;
 			}

@@ -71,10 +71,10 @@ namespace Assets.draco18s.bulletboss.pattern
 				return numLoops > 0 && loopCounter >= numLoops;
 			}
 
-			public override void ResetForNewLoopIteration()
+			public override void ResetForNewLoopIteration(Bullet shot)
 			{
 				loopCounter = 0;
-				childPattern.ResetForNewLoopIteration();
+				childPattern.ResetForNewLoopIteration(shot);
 			}
 
 			public override void ConfigureKeyframe(RectTransform keyframeBar, DraggableElement handle, Keyframe editableKeyframe)

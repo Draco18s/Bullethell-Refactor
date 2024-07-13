@@ -352,8 +352,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 378549656}
   m_HandleRect: {fileID: 378549655}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.9945889
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5298,7 +5298,7 @@ PrefabInstance:
     - target: {fileID: 4554754477576682967, guid: 677b6b65f13b10b49bdb498500b84b0e, type: 3}
       propertyPath: serializedPattern.patternObjects.values.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 0de657ef73592bc489168130963ddb86, type: 2}
+      objectReference: {fileID: 11400000, guid: 0a4195400ee248e4aa6d196bd11cca7b, type: 2}
     m_RemovedComponents:
     - {fileID: 778798223601149576, guid: 677b6b65f13b10b49bdb498500b84b0e, type: 3}
     m_RemovedGameObjects: []
@@ -8095,7 +8095,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00016785134}
+  m_AnchoredPosition: {x: 0, y: -0.000043451786}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1910024956
@@ -9018,6 +9018,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fighter
       objectReference: {fileID: 0}
+    - target: {fileID: 157272956274834827, guid: 4cf96ab63d83dd84583dc60beedb7e9d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1499219946757833892, guid: 4cf96ab63d83dd84583dc60beedb7e9d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -9117,7 +9121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2867227927382654730, guid: 24102d45bdf90a942a64e7ef397bdc5d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3467993571876731271, guid: 24102d45bdf90a942a64e7ef397bdc5d, type: 3}
       propertyPath: m_Pivot.x
@@ -9177,11 +9181,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3467993571876731271, guid: 24102d45bdf90a942a64e7ef397bdc5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -2.49
       objectReference: {fileID: 0}
     - target: {fileID: 3467993571876731271, guid: 24102d45bdf90a942a64e7ef397bdc5d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -1.12
       objectReference: {fileID: 0}
     - target: {fileID: 3467993571876731271, guid: 24102d45bdf90a942a64e7ef397bdc5d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

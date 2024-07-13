@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1499219946757833892}
   - component: {fileID: 6413264943395452402}
   - component: {fileID: 6287321804261751030}
+  - component: {fileID: 3900578418388870361}
   m_Layer: 12
   m_Name: Fighter
   m_TagString: Untagged
@@ -100,6 +101,29 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.25
+--- !u!114 &3900578418388870361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157272956274834827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f43a065ed37ba584f9beec6146d8ee4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedPattern:
+    runtimeEditable: 0
+    modifiers: []
+    patternObjects:
+      keys: 
+      values: []
+  baseSpeed: 0
+  shape: 0
+  size: 2
+  sprite: {fileID: 0}
+  Damage: 1
 --- !u!1 &5854543614390376726
 GameObject:
   m_ObjectHideFlags: 0
