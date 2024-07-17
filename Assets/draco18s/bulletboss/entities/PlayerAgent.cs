@@ -55,7 +55,7 @@ namespace Assets.draco18s.bulletboss.entities
 				go.transform.localPosition = p;
 			}
 			num = prob > 0.999f ? 16 : Mathf.RoundToInt(Random.value * 16 * (1 - prob) + prob * 16);
-			for (int i = 0; i < num && spawnShots; i++)
+			/*for (int i = 0; i < num && spawnShots; i++)
 			{
 				GameObject go = Instantiate(bulletPrefab, gameContainer);
 				Vector3 p;
@@ -65,7 +65,7 @@ namespace Assets.draco18s.bulletboss.entities
 				} while (Vector3.Distance(p, transform.localPosition) < 1.5f);
 				go.transform.localPosition = p;
 				go.transform.localScale = Vector3.one * ((Random.value / 2) + 0.5f);
-			}
+			}*/
 			/*for (int i = 0; i < 5; i++)
 			{
 				float x = (Random.value * 0.25f) + ((i+2) * 3.25f);
@@ -105,7 +105,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 			foreach (Collider2D c in objs)
 			{
-				c.gameObject.GetComponentInChildren<SpriteRenderer>().color = w;
+				//c.gameObject.GetComponentInChildren<SpriteRenderer>().color = w;
 			}
 			
 			sensor.AddObservation(prevMove.x);
@@ -219,7 +219,7 @@ namespace Assets.draco18s.bulletboss.entities
 			controlSignal.y = actionBuffers.ContinuousActions[1];
 			float mag = Mathf.Clamp01(controlSignal.magnitude);
 			controlSignal = controlSignal.normalized * mag;
-
+			
 			float d = Vector2.Angle(prevMove.normalized, controlSignal / mag);
 			d /= 180;
 			Color cc = new Color(1, 1-Mathf.Sqrt(d), 0, Mathf.Sqrt(d));
@@ -419,7 +419,7 @@ namespace Assets.draco18s.bulletboss.entities
 				//bonus = Mathf.Max(1, bonus+1);
 				//MaxStep += 100;
 			}
-			if (other.gameObject.layer == LayerMask.NameToLayer("EnemyBullets"))
+			/*if (other.gameObject.layer == LayerMask.NameToLayer("EnemyBullets"))
 			{
 				//GameManager.instance.hitsCount++;
 				//GameManager.instance.hitsTxt.text = GameManager.instance.hitsCount.ToString();
@@ -437,13 +437,18 @@ namespace Assets.draco18s.bulletboss.entities
 				go.transform.localScale = Vector3.one * ((Random.value / 2) + 0.5f);
 				//bonus -= 1;
 				//MaxStep /= 2;
-			}
+			}*/
 		}
 
 		static float Cross(Vector3 point1, Vector3 point2)
 		{
 			//we don't care about z
 			return point1.x * point2.y - point1.y * point2.x;
+		}
+
+		public void SetContainer(Transform bulletContainer)
+		{
+			gameContainer = bulletContainer;
 		}
 	}
 }

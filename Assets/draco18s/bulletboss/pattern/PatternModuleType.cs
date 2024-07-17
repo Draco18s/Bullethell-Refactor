@@ -4,6 +4,7 @@ using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.bulletboss.ui;
 using Assets.draco18s.serialization;
 using Assets.draco18s.util;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
@@ -16,24 +17,37 @@ namespace Assets.draco18s.bulletboss.pattern
 {
 	public abstract class PatternModuleType : ScriptableObject
 	{
+		[Flags]
+		public enum ModuleClassification
+		{
+			None = 0,
+			Transform = 1<<0,
+			Spawn = 1<<1,
+			Group = 1<<2,
+			Effect = 1<<3,
+		}
+		
 		[SerializeField] protected NamedRarity _rarity;
 		[SerializeField] protected string _description;
 		[SerializeField] protected Sprite _icon;
+		[SerializeField] protected ModuleClassification _classification;
 		[SerializeField] protected bool _preconfigured;
 		[SerializeField] protected bool _unique = false;
 		[SerializeField] protected bool _killOnComplete = false;
+		public virtual ModuleClassification moduleTypeClass => _classification;
 		public NamedRarity rarity => _rarity;
 		public string description => _description;
 		public Sprite icon => _icon;
 		public bool preconfigured => _preconfigured;
 		public bool unique => _unique;
 		public bool killOnComplete => _killOnComplete;
-
+#if UNITY_EDITOR
+		[UsedImplicitly]
 		private void OnValidate()
 		{
 			EditorUtility.SetDirty(this);
 		}
-
+#endif
 		public abstract PatternModule GetRuntimeObject();
 		public virtual bool CanAddModule(PatternModuleType module)
 		{
@@ -48,9 +62,12 @@ namespace Assets.draco18s.bulletboss.pattern
 
 	public abstract class TimelinePatternModuleType : PatternModuleType
 	{
+		public ModuleClassification AllowedChildren => _allowedChildrenClasses;
+		[SerializeField] protected ModuleClassification _allowedChildrenClasses;
 		[SerializeField] protected bool preconfiguredPattern;
 		[SerializeField] protected Timeline pattern = new Timeline();
 		[SerializeField] protected int maxObjects =-1;
+		public virtual ModuleClassification moduleTypeClass => ModuleClassification.Group;
 
 		public bool GetIsPatternPreconfigured()
 		{
@@ -65,6 +82,11 @@ namespace Assets.draco18s.bulletboss.pattern
 		public override int GetMaxChildren()
 		{
 			return maxObjects;
+		}
+
+		public override bool CanAddModule(PatternModuleType module)
+		{
+			return _allowedChildrenClasses.HasFlag(module.moduleTypeClass);
 		}
 	}
 	

@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Loop Twice
   m_EditorClassIdentifier: 
   _rarity: 1
-  _description: Do a child pattern twice
+  _description: Create a pattern of up to 8 cards that runs twice.
   _icon: {fileID: 534465353, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _classification: 0
   _preconfigured: 1
   _unique: 0
   _killOnComplete: 0
+  _allowedChildrenClasses: -1
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0
@@ -25,7 +27,7 @@ MonoBehaviour:
     patternObjects:
       keys: 
       values: []
-  maxObjects: 10
+  maxObjects: 8
   iterations: 2
   allowedValueRange:
     min: 0

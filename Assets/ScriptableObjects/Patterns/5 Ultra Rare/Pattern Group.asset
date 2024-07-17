@@ -10,23 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 582f092247470c148ad108c8fc176f72, type: 3}
-  m_Name: Double Shot
+  m_Name: Pattern Group
   m_EditorClassIdentifier: 
-  _rarity: 0
-  _description: 
-  _icon: {fileID: 0}
+  _rarity: 5
+  _description: Combines multiple bullet movement effects into one, allowing them
+    to act simultaneously.
+  _icon: {fileID: -501359276, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
   _classification: 0
-  _preconfigured: 1
+  _preconfigured: 0
   _unique: 0
   _killOnComplete: 0
-  _allowedChildrenClasses: 0
-  preconfiguredPattern: 1
+  _allowedChildrenClasses: 9
+  preconfiguredPattern: 0
   pattern:
-    runtimeEditable: 0
+    runtimeEditable: 1
     modifiers: []
     patternObjects:
-      keys: 0100000002000000
-      values:
-      - {fileID: 11400000, guid: 14e773e665959bf41a39031ee08e7584, type: 2}
-      - {fileID: 11400000, guid: 72542e1b91173fe4a9ae5f88be81838f, type: 2}
+      keys: 
+      values: []
   maxObjects: -1

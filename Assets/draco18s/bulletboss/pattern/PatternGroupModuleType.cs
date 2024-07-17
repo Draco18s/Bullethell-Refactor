@@ -21,11 +21,6 @@ namespace Assets.draco18s.bulletboss.pattern
 			return new PatternGroup(this);
 		}
 
-		public override bool CanAddModule(PatternModuleType module)
-		{
-			return module is SpawnModuleType or PatternGroupModuleType;
-		}
-
 		[JsonResolver(typeof(Converter))]
 		public class PatternGroup : TimelinePatternModule<PatternGroupModuleType>
 		{

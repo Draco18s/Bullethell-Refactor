@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.draco18s.bulletboss.cards;
+using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.serialization;
 using Assets.draco18s.util;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using TMPro;
 #if UNITY_EDITOR
 using UnityEditor;
+using Random = UnityEngine.Random;
 #endif
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +20,8 @@ namespace Assets.draco18s.bulletboss.ui
 {
 	public class TimelineUI : MonoBehaviour
 	{
+		[SerializeField] private GameObject importExportContainer;
+		[SerializeField] private TMP_InputField importExportField;
 		[SerializeField] private Button saveAssetButton;
 		[SerializeField] private Transform cardContainer;
 		[SerializeField] private Transform modifierContainer;
@@ -35,16 +40,16 @@ namespace Assets.draco18s.bulletboss.ui
 			canvas = GetComponent<Canvas>();
 			canvas.enabled = false;
 			parentPatternBtn.onClick.AddListener(SelectParentPattern);
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 			saveAssetButton.onClick.AddListener(SaveAsset);
-#else
-			saveAssetButton.gameObject.SetActive(false);
-#endif
+//#else
+//			saveAssetButton.gameObject.SetActive(false);
+//#endif
 		}
 
 		private void SaveAsset()
 		{
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
 			if (currentTimeline.runtimeModule != null)
 			{
 				PatternModuleType so = currentTimeline.runtimeModule.ExportAsScriptableObject();
@@ -65,7 +70,9 @@ namespace Assets.draco18s.bulletboss.ui
 #else
 			
 			string json2 = JsonConvert.SerializeObject(currentTimeline.GetModules().ToDictionary(kvp => kvp.Key, kvp => kvp.Value.pattern), Formatting.Indented, ContractResolver.jsonSettings);
-			Debug.Log(json2);
+			//Debug.Log(json2);
+			importExportField.text = json2;
+			importExportContainer.SetActive(true);
 #endif
 		}
 

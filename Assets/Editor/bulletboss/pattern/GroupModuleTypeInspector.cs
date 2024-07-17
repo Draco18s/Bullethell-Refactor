@@ -13,6 +13,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			SerializedProperty icon = serializedObject.FindProperty("_icon");
 			SerializedProperty preconfigured = serializedObject.FindProperty("_preconfigured");
 
+			SerializedProperty allowedChildren = serializedObject.FindProperty("_allowedChildrenClasses");
 			SerializedProperty preconfiguredPattern = serializedObject.FindProperty("preconfiguredPattern");
 			SerializedProperty maxObjects = serializedObject.FindProperty("maxObjects");
 			SerializedProperty pattern = serializedObject.FindProperty("pattern");
@@ -22,6 +23,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			EditorGUI.EndDisabledGroup();
 
 			EditorGUILayout.PropertyField(rarity);
+			EditorGUILayout.PropertyField(allowedChildren);
 			EditorGUILayout.PropertyField(unique);
 			EditorGUILayout.PropertyField(description);
 			EditorGUILayout.PropertyField(icon);

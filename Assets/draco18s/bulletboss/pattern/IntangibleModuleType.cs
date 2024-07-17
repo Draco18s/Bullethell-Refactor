@@ -13,6 +13,7 @@ namespace Assets.draco18s.bulletboss.pattern
 	[CreateAssetMenu(menuName = "Pattern/Intangible")]
 	public class IntangibleModuleType : PatternModuleType
 	{
+		public virtual ModuleClassification moduleTypeClass => ModuleClassification.Effect;
 		[SerializeField] private float duration;
 		[SerializeField] private FloatRange allowedDurationRange;
 
@@ -20,7 +21,7 @@ namespace Assets.draco18s.bulletboss.pattern
 		{
 			return new IntangibleModule(this);
 		}
-
+#if UNITY_EDITOR
 		[UsedImplicitly]
 		private void OnValidate()
 		{
@@ -30,7 +31,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				allowedDurationRange = new FloatRange(duration, duration);
 			}
 		}
-
+#endif
 		public class IntangibleModule : PatternModule<IntangibleModuleType>
 		{
 			protected float timeElapsed;

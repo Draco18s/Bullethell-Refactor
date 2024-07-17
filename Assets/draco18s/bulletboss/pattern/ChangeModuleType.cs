@@ -20,6 +20,7 @@ namespace Assets.draco18s.bulletboss.pattern
 		{
 			Speed,Direction,Size,Time
 		}
+		public virtual ModuleClassification moduleTypeClass => ModuleClassification.Transform;
 
 		[SerializeField] protected ChangeType changeType;
 		[SerializeField] private FloatRange allowedValueRange;
@@ -33,7 +34,7 @@ namespace Assets.draco18s.bulletboss.pattern
 		{
 			return new ChangeModule(this);
 		}
-
+#if UNITY_EDITOR
 		[UsedImplicitly]
 		private void OnValidate()
 		{
@@ -46,7 +47,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				allowedDurationRange = new FloatRange(changeDuration, changeDuration);
 			}
 		}
-
+#endif
 		[JsonResolver(typeof(Converter))]
 		public class ChangeModule : PatternModule<ChangeModuleType>
 		{

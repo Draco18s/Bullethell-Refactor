@@ -17,6 +17,7 @@ namespace Assets.draco18s.bulletboss.pattern
 	[CreateAssetMenu(menuName = "Pattern/New Spawn Pattern")]
 	public class SpawnModuleType : TimelinePatternModuleType
 	{
+		public virtual ModuleClassification moduleTypeClass => ModuleClassification.Spawn;
 		[SerializeField] private float duration;
 		[SerializeField] private GameObject prefab;
 		[SerializeField] private bool killParent;

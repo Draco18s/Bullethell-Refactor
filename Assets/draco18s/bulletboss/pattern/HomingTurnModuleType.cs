@@ -3,6 +3,7 @@ using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.serialization;
 using Assets.draco18s.util;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -16,12 +17,13 @@ namespace Assets.draco18s.bulletboss.pattern
 		{
 			changeType = ChangeType.Direction;
 		}
-
+#if UNITY_EDITOR
+		[UsedImplicitly]
 		void OnValidate()
 		{
 			changeType = ChangeType.Direction;
 		}
-
+#endif
 		public override PatternModule GetRuntimeObject()
 		{
 			return new HomingTurnModule(this);

@@ -25,6 +25,7 @@ namespace Assets.draco18s.bulletboss
 		public Transform bulletParentContainer => bulletContainer;
 
 		[SerializeField] private Button endTurnBtn;
+		[SerializeField] private Button discardAndDrawBtn;
 		[SerializeField] private Canvas interfaceCanvas;
 		[SerializeField] private Canvas mapCanvas;
 		[SerializeField] private Transform aiPlayerContainer;
@@ -47,6 +48,7 @@ namespace Assets.draco18s.bulletboss
 		void Awake()
 		{
 			endTurnBtn.onClick.AddListener(EndTurn);
+			discardAndDrawBtn.onClick.AddListener(DiscardAndDraw);
 			StartCoroutine(WaitForReady());
 			instance = this;
 
@@ -202,14 +204,22 @@ namespace Assets.draco18s.bulletboss
 				}
 
 				go.GetComponent<Player>().SetStats(aiData, mod);
+				go.GetComponent<PlayerAgent>().SetContainer(bulletContainer);
 			}
 		}
 
 		public void NewTurn()
 		{
+			aiPlayerContainer.gameObject.SetActive(false);
 			gameState = GameState.Editing;
 			endTurnBtn.gameObject.SetActive(true);
 			interfaceCanvas.enabled = true;
+			CardHand.instance.Draw(GetDrawCount());
+		}
+
+		public void DiscardAndDraw()
+		{
+			CardHand.instance.Discard(-1, true);
 			CardHand.instance.Draw(GetDrawCount());
 		}
 
@@ -219,12 +229,13 @@ namespace Assets.draco18s.bulletboss
 			TimelineUI.instance.Close();
 			CardHand.instance.Discard(-1, true);
 			endTurnBtn.gameObject.SetActive(false);
+			aiPlayerContainer.gameObject.SetActive(true);
 			StartCoroutine(WaitFive());
 		}
 
 		private IEnumerator WaitFive()
 		{
-			yield return new WaitForSecondsRealtime(2.5f);
+			yield return new WaitForSecondsRealtime(25f);
 			NewTurn();// temp
 		}
 
@@ -240,13 +251,18 @@ namespace Assets.draco18s.bulletboss
 			aiPlayerData.AddFinalGems(player.collectedGems, true);
 			if (playerShips.Count == 0)
 			{
-				// show map probably
+				aiPlayerContainer.gameObject.SetActive(false);
+				interfaceCanvas.enabled = false;
+				ShowMap();
 			}
 		}
 
 		public void CheckGameOver(BossEntity boss)
 		{
-			
+			if (boss.GetCurrentSegmentHP() <= 0)
+			{
+				NewTurn();
+			} 
 		}
 	}
 }

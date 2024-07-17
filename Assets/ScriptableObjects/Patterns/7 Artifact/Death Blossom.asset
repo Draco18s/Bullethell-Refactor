@@ -15,9 +15,11 @@ MonoBehaviour:
   _rarity: 7
   _description: Fires 250 bullets in random directions. 30 seconds between barrages.
   _icon: {fileID: -2064506342, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _classification: 0
   _preconfigured: 1
   _unique: 0
   _killOnComplete: 0
+  _allowedChildrenClasses: 0
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 1

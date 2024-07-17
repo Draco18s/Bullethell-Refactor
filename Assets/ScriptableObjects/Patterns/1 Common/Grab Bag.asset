@@ -15,9 +15,11 @@ MonoBehaviour:
   _rarity: 1
   _description: Each time this runs, a random child is selected to be run.
   _icon: {fileID: -50723215, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _classification: 0
   _preconfigured: 0
   _unique: 0
   _killOnComplete: 0
+  _allowedChildrenClasses: 0
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0

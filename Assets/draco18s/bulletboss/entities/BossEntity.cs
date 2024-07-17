@@ -23,5 +23,10 @@ namespace Assets.draco18s.bulletboss.entities
 				}
 			}
 		}
+
+		public int GetCurrentSegmentHP()
+		{
+			return currentHP[currentSegment];
+		}
 	}
 }

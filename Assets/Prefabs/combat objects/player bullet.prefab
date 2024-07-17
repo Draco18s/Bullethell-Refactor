@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 778798223601149581}
   - component: {fileID: 1982740180085211200}
   - component: {fileID: 2421256366058637111}
-  m_Layer: 0
-  m_Name: bullet sm cirlce
+  m_Layer: 11
+  m_Name: player bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5996330548781755466}
   - component: {fileID: 4096482398320433981}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: spot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6203935351059945815}
   - component: {fileID: 8663178427113676983}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -250,7 +250,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 765289114, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  m_Sprite: {fileID: -1318929588, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

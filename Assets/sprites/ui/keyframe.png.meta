@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: keyframe_0
+      name: keyframe_4
       rect:
         serializedVersion: 2
         x: 0
@@ -144,7 +144,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: keyframe_1
+      name: keyframe_5
       rect:
         serializedVersion: 2
         x: 32
@@ -165,7 +165,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: keyframe_2
+      name: keyframe_0
       rect:
         serializedVersion: 2
         x: 0
@@ -186,7 +186,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: keyframe_3
+      name: keyframe_1
       rect:
         serializedVersion: 2
         x: 32
@@ -207,7 +207,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: keyframe_4
+      name: keyframe_2
       rect:
         serializedVersion: 2
         x: 64
@@ -215,7 +215,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -223,6 +223,27 @@ TextureImporter:
       bones: []
       spriteID: 6673dfc09a5df164f99b4ad653f09a3d
       internalID: -492090175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: keyframe_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4689fd8b05bc40e42ace6c24f5b44bbd
+      internalID: -658735231
       vertices: []
       indices: 
       edges: []
@@ -238,11 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      keyframe_0: 649775281
-      keyframe_1: -1297635348
-      keyframe_2: 524821782
-      keyframe_3: -1984822767
-      keyframe_4: -492090175
+      keyframe_0: 524821782
+      keyframe_1: -1984822767
+      keyframe_2: -492090175
+      keyframe_3: -658735231
+      keyframe_4: 649775281
+      keyframe_5: -1297635348
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

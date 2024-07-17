@@ -28,11 +28,18 @@ namespace Assets.draco18s.bulletboss.entities
 			}
 			if (other.gameObject.layer == LayerMask.NameToLayer("EnemyBullets"))
 			{
+				/*if (other.GetComponent<Bullet>() == null)
+				{
+					Debug.Break();
+					Debug.Log(other.gameObject.name);
+					return;
+				}*/
+
 				var dmg = other.GetComponent<Bullet>().Damage;
 				dmg = Mathf.Max(dmg - armor, minDamage);
 				minDamage = 1 - minDamage;
 				currentHP -= dmg;
-
+				Destroy(other.gameObject);
 				if (currentHP > 0) return;
 				GameManager.instance.CheckGameOver(this);
 				gameObject.SetActive(false);

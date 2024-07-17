@@ -15,9 +15,11 @@ MonoBehaviour:
   _rarity: 0
   _description: Basic blue shot. Minimal angle adjustment, very long reload.
   _icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  _classification: 0
   _preconfigured: 1
   _unique: 0
   _killOnComplete: 0
+  _allowedChildrenClasses: 0
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0

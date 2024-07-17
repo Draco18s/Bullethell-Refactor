@@ -16,9 +16,11 @@ MonoBehaviour:
   _description: Basic blue shot that kills its parent bullet when spawned. Very wide
     allowable starting angle.
   _icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  _classification: 0
   _preconfigured: 0
   _unique: 0
   _killOnComplete: 0
+  _allowedChildrenClasses: 0
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0

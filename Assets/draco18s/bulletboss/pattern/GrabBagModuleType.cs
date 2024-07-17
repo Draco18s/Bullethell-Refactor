@@ -11,6 +11,7 @@ namespace Assets.draco18s.bulletboss.pattern
 	[CreateAssetMenu(menuName = "Pattern/New Grab Bag")]
 	public class GrabBagModuleType : PatternGroupModuleType
 	{
+
 		public override PatternModule GetRuntimeObject()
 		{
 			return new GrabBagModule(this);
