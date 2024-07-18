@@ -31,7 +31,6 @@ MonoBehaviour:
       - {fileID: 11400000, guid: a6ca8c7794b37ce40bab658502e7d9a1, type: 2}
   maxObjects: -1
   duration: 0.1
-  prefab: {fileID: 778798223601149580, guid: 6010b6c9fcae355418ba3f290d7a72ec, type: 3}
   killParent: 0
   followParent: 1
   initialAngle: -100

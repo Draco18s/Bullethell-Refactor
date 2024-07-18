@@ -19,7 +19,7 @@ namespace Assets.draco18s.bulletboss.pattern
 	{
 		public virtual ModuleClassification moduleTypeClass => ModuleClassification.Spawn;
 		[SerializeField] private float duration;
-		[SerializeField] private GameObject prefab;
+		//[SerializeField] private GameObject prefab;
 		[SerializeField] private bool killParent;
 		[SerializeField] private bool followParent;
 		[SerializeField] private float initialAngle;
@@ -65,7 +65,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				result.angleLimit = patternType.angleLimit;
 				result.duration = patternType.duration;
 				result.killParent = patternType.killParent;
-				result.prefab = patternType.prefab;
+				//result.prefab = patternType.prefab;
 				return result;
 			}
 
@@ -82,7 +82,7 @@ namespace Assets.draco18s.bulletboss.pattern
 
 				Quaternion q = Quaternion.Euler(0,0, spawnAngle);
 
-				GameObject go = Instantiate(patternType.prefab, parentShot.transform.position, parentShot.transform.rotation * q, GameManager.instance.bulletParentContainer);
+				GameObject go = Instantiate(timeline.bulletPrefab, parentShot.transform.position, parentShot.transform.rotation * q, GameManager.instance.bulletParentContainer);
 				Bullet shot = go.GetComponent<Bullet>();
 				if (parentShot is MountPoint)
 				{

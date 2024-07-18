@@ -7,7 +7,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 	{
 		public enum ModuleType
 		{
-			Sprite, Damage, OnHit, OnSpawn
+			Sprite, Color, Damage, OnHit, OnSpawn
 		}
 
 		public string description;
@@ -21,6 +21,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			return true;
 		}
 
+		public abstract void ApplyModifier_TimelinePreInit(Timeline timeline);
 		public abstract void ApplyModifier_TimelineInit(Bullet shot);
 		public abstract void ApplyModifier_OnCollision(Bullet shot);
 	}

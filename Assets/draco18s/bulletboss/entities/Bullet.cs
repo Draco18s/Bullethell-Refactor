@@ -25,9 +25,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 		[SerializeField] protected Timeline serializedPattern;
 		[SerializeField] protected float baseSpeed;
-		[SerializeField] protected BulletShape shape;
-		[SerializeField] protected BulletSize size;
-		[SerializeField] protected Image sprite;
+		[SerializeField] protected SpriteRenderer sprite;
 		protected Timeline _pattern;
 		protected int patternHash = 0;
 		protected Timeline pattern
@@ -46,8 +44,6 @@ namespace Assets.draco18s.bulletboss.entities
 		protected Bullet parentShot;
 
 		public float speed { get; protected set; }
-		public BulletShape bulletShape => shape;
-		public BulletSize bulletSize => size;
 
 		public float Speed => speed;
 		public int Damage = 1;
@@ -168,9 +164,9 @@ namespace Assets.draco18s.bulletboss.entities
 			return LayerMask.GetMask(gameObject.layer == LayerMask.NameToLayer("PlayerBullets") ? "Enemy" : "AIPlayer");
 		}
 
-		public void SetSprite(Sprite newIcon)
+		public void SetSpriteColor(Color c)
 		{
-			sprite.sprite = newIcon;
+			sprite.color = c;
 		}
 
 		public void ApplyTimelineModifier(Card modifier)

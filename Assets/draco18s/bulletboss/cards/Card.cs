@@ -10,7 +10,7 @@ namespace Assets.draco18s.bulletboss.cards
 		public TimelineModifierType timelineModifier { get; protected set; }
 		public bool isUnique { get; protected set; }
 		public bool isEphemeral { get; protected set; }
-		public bool isActive { get; protected set; }
+		public bool isActive { get; protected set; } = true;
 		public NamedRarity rarity => pattern?.patternTypeData.rarity ?? timelineModifier.rarity;
 		public string name => pattern?.patternTypeData.name ?? timelineModifier.name;
 		public string description => pattern?.patternTypeData.description ?? timelineModifier.description;

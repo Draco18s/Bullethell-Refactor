@@ -10,10 +10,12 @@ namespace Assets.draco18s.bulletboss
 		public GameObject playableUIObject => _playableCardUIPrefab;
 		public GameObject viewyableUIObject => _viewCardUIPrefab;
 		public GameObject aiPlayerObject => _aiPlayerPrefab;
+		public GameObject defaultBulletPrefab => _defaultBulletPrefab;
 
 		[SerializeField] private GameObject _playableCardUIPrefab;
 		[SerializeField] private GameObject _aiPlayerPrefab;
 		[SerializeField] private GameObject _viewCardUIPrefab;
+		[SerializeField] private GameObject _defaultBulletPrefab;
 
 		void Awake()
 		{

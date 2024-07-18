@@ -23,7 +23,8 @@ MonoBehaviour:
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0
-    modifiers: []
+    modifiers:
+    - {fileID: 11400000, guid: 9527fd95e4280ee4ea596e9137e0e157, type: 2}
     patternObjects:
       keys: 010000000e0000000f000000
       values:
@@ -32,7 +33,6 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 55e18f6d8e2b2394fbef79fd889a0d2e, type: 2}
   maxObjects: -1
   duration: 0.333
-  prefab: {fileID: 778798223601149580, guid: a50b299ab1840ad4ab16d5f7e743f18b, type: 3}
   killParent: 0
   followParent: 0
   initialAngle: 90

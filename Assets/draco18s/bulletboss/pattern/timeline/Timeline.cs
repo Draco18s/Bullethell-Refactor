@@ -31,12 +31,15 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		private float overrideDuration = 0;
 		private PatternModuleType moduleTypeOfThis;
 		[NonSerialized] private PatternModule moduleOfThis;
+		private GameObject _bulletPrefab;
 
 		public PatternModule runtimeModule => moduleOfThis;
 		public bool isEditable => runtimeEditable;
+		public GameObject bulletPrefab => _bulletPrefab;
 
 		public void DeserializeForRuntime()
 		{
+			_bulletPrefab ??= GameAssets.instance.defaultBulletPrefab;
 			activeRuntimeModifiers ??= new List<Card>();
 			activeRuntimePattern ??= new Dictionary<int, Card>();
 			uiLookup ??= new Dictionary<Card, CardUI>();
@@ -64,6 +67,15 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			activeRuntimePattern ??= new Dictionary<int, Card>();
 			uiLookup ??= new Dictionary<Card, CardUI>();
 			loopsOnTimelineEnd = allowedToLoop;
+			foreach (Card m in activeRuntimeModifiers)
+			{
+				if (!m.isActive)
+				{
+					Debug.Log($"{m.name} is inactive");
+					continue;
+				}
+				m.timelineModifier.ApplyModifier_TimelinePreInit(this);
+			}
 		}
 
 		public void ResetForNewLoopIteration(Bullet shot)
@@ -161,6 +173,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				bool b = activeRuntimeModifiers
 					.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
 					.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) <= 1;
+
 				card.SetDisabled(b);
 
 				if (!uiLookup.TryGetValue(card, out CardUI uiCard)) continue;
@@ -233,6 +246,11 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			return max;
 		}
 
+		public void SetBulletPrefab(GameObject prefab)
+		{
+			_bulletPrefab = prefab;
+		}
+
 		public static Timeline CloneFrom(Timeline original)
 		{
 			Timeline timeline = new Timeline();
@@ -240,7 +258,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			original.DeserializeForRuntime();
 			original.InitOrReset();
 			timeline.InitOrReset();
-
+			timeline._bulletPrefab = original._bulletPrefab;
 			timeline.patternObjects = new SerializableDictionary<int, PatternModuleType>();
 			timeline.activeRuntimePattern = new Dictionary<int, Card>();
 			foreach (KeyValuePair<int, Card> kvp in original.activeRuntimePattern)
@@ -324,12 +342,10 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public void DamageTaken(Bullet bullet)
 		{
-			Debug.Log("Ahoy 1");
 			foreach (Card m in activeRuntimeModifiers)
 			{
 				if (!m.isActive)
 				{
-					Debug.Log($"{m.name} is not active");
 					continue;
 				}
 				m.timelineModifier.ApplyModifier_OnCollision(bullet);

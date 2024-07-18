@@ -90,9 +90,7 @@ MonoBehaviour:
       keys: 
       values: []
   baseSpeed: 1
-  shape: 2
-  size: 0
-  sprite: {fileID: 0}
+  sprite: {fileID: 8663178427113676983}
   Damage: 1
 --- !u!61 &5087092003196121229
 BoxCollider2D:

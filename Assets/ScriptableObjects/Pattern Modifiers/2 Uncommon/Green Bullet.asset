@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 211eac562ec63934ea5d2577c2e9e50f, type: 3}
+  m_Script: {fileID: 11500000, guid: 0fbdda9bf4aaeeb40aa432b35e4d8e56, type: 3}
   m_Name: Green Bullet
   m_EditorClassIdentifier: 
-  description: Basic green shot
-  rarity: 1
-  icon: {fileID: 456510937, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  description: 
+  rarity: 2
+  icon: {fileID: 0}
   moduleType: 0
-  allowedBulletShape: 0
-  allowedBulletSize: 0
+  applyRecursively: 0
+  _color: {r: 0, g: 1, b: 0, a: 1}
