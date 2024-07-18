@@ -8,6 +8,7 @@ namespace Assets.draco18s.bulletboss.entities
 {
 	public class MountPoint : Bullet
 	{
+		[SerializeField] private SpriteRenderer selectionFrame;
 		[UsedImplicitly]
 		void Start()
 		{
@@ -20,10 +21,16 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 		}
 
+		public void SetSelected(bool s)
+		{
+			selectionFrame.enabled = s;
+		}
+
 		[UsedImplicitly]
 		private void OnMouseUpAsButton()
 		{
-			TimelineUI.instance.Select(pattern);
+			SetSelected(true);
+			TimelineUI.instance.Select(pattern, this);
 			pattern.InitOrReset();
 		}
 

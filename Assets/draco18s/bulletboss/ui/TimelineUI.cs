@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.draco18s.bulletboss.cards;
+using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.serialization;
@@ -29,6 +30,7 @@ namespace Assets.draco18s.bulletboss.ui
 		public static TimelineUI instance;
 
 		private Stack<Timeline> timelines;
+		private MountPoint lastMountPoint = null;
 		public Timeline currentTimeline => timelines.Peek();
 		private Canvas canvas;
 
@@ -76,8 +78,11 @@ namespace Assets.draco18s.bulletboss.ui
 #endif
 		}
 
-		public void Select(Timeline pattern)
+		public void Select(Timeline pattern, MountPoint mount=null)
 		{
+			lastMountPoint?.SetSelected(false);
+			mount?.SetSelected(true);
+			lastMountPoint = mount;
 			timelines.Clear();
 			timelines.Push(pattern);
 			canvas.enabled = true;
