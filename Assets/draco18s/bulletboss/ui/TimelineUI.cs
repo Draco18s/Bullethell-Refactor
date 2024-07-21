@@ -16,6 +16,7 @@ using Random = UnityEngine.Random;
 #endif
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.draco18s.ui;
 
 namespace Assets.draco18s.bulletboss.ui
 {
@@ -165,6 +166,8 @@ namespace Assets.draco18s.bulletboss.ui
 
 		public void Close()
 		{
+			lastMountPoint?.SetSelected(false);
+			lastMountPoint = null;
 			canvas.enabled = false;
 			timelines.Clear();
 		}

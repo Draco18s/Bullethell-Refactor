@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.draco18s.util;
+using JetBrains.Annotations;
 
 namespace Assets.draco18s.bulletboss.cards {
 	public class Deck
@@ -106,6 +108,20 @@ namespace Assets.draco18s.bulletboss.cards {
 		public void Discard(Card cardRef)
 		{
 			activeDiscard.Enqueue(cardRef);
+		}
+		
+		public IEnumerable<Card> GetDrawPile()
+		{
+			List<Card> deck = new List<Card>(activeDeck);
+			deck.Shuffle();
+			return deck;
+		}
+
+		public IEnumerable<Card> GetDiscardPile()
+		{
+			List<Card> deck = new List<Card>(activeDiscard);
+			deck.Shuffle();
+			return deck;
 		}
 	}
 }

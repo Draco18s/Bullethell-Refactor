@@ -15,6 +15,6 @@ MonoBehaviour:
   description: 
   rarity: 2
   icon: {fileID: 0}
-  moduleType: 0
+  moduleType: 1
   applyRecursively: 0
   _color: {r: 0, g: 1, b: 0, a: 1}
