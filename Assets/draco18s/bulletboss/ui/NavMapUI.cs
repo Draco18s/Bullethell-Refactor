@@ -21,12 +21,6 @@ namespace Assets.draco18s.bulletboss.ui
 			instance = this;
 			nodeContainer.Clear();
 			scrollView.verticalNormalizedPosition = 0;
-			//StartCoroutine(Wait());
-		}
-
-		void Update()
-		{
-			Debug.Log(scrollView.verticalNormalizedPosition);
 		}
 
 		public void UpdateMap(Map map)
@@ -37,7 +31,6 @@ namespace Assets.draco18s.bulletboss.ui
 			{
 				node.SetAvailable(node.node.incoming.Contains(map.path[^1]));
 			}
-			scrollView.verticalNormalizedPosition = 0;
 		}
 
 		public void RenderMap(Map map)
@@ -54,7 +47,6 @@ namespace Assets.draco18s.bulletboss.ui
 				foreach (Vector2Int connection in node.node.outgoing)
 					AddLineConnection(node, GetNode(nodes, connection));
 			}
-			scrollView.verticalNormalizedPosition = 0;
 		}
 
 		private MapNodeUI GetNode(List<MapNodeUI> nodes, Vector2Int p)
