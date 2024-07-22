@@ -26,14 +26,14 @@ namespace Assets.draco18s.bulletboss.cards
 		public Card(PatternModule module, bool ephemeral = false)
 		{
 			pattern = module;
-			isUnique = false;
+			isUnique = module.patternTypeData.unique;
 			isEphemeral = ephemeral;
 		}
 
 		public Card(TimelineModifierType modifier, bool ephemeral = false)
 		{
 			timelineModifier = modifier;
-			isUnique = false;
+			isUnique = modifier.isUnique;
 			isEphemeral = ephemeral;
 		}
 

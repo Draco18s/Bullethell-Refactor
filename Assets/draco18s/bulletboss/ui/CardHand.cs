@@ -34,7 +34,10 @@ namespace Assets.draco18s.bulletboss.ui
 			{
 				foreach (CardUI cardUI in playedCards)
 				{
-					CardLibrary.instance.Discard(new Card(cardUI.cardRef.pattern.patternTypeData));
+					if(cardUI.cardRef.pattern?.patternTypeData != null)
+						CardLibrary.instance.Discard(new Card(cardUI.cardRef.pattern.patternTypeData));
+					else if(cardUI.cardRef.timelineModifier != null)
+						CardLibrary.instance.Discard(new Card(cardUI.cardRef.timelineModifier));
 				}
 			}
 		}

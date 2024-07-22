@@ -475,7 +475,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -483,6 +483,27 @@ TextureImporter:
       bones: []
       spriteID: 5b7adcb74e81eb945a51186cf745942d
       internalID: -1102161253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: card-icons_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 438e2da8c35a48d489e59323807a66fd
+      internalID: -1266522968
       vertices: []
       indices: 
       edges: []
@@ -508,6 +529,7 @@ TextureImporter:
       card-icons_15: 214308059
       card-icons_16: -2064506342
       card-icons_17: -1102161253
+      card-icons_18: -1266522968
       card-icons_2: -501359276
       card-icons_3: 534465353
       card-icons_4: 1993398875

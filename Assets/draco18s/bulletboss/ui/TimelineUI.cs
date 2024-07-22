@@ -29,10 +29,10 @@ namespace Assets.draco18s.bulletboss.ui
 		[SerializeField] private Transform modifierContainer;
 		[SerializeField] private Button parentPatternBtn;
 		public static TimelineUI instance;
+		public Timeline currentTimeline => timelines.Peek();
 
 		private Stack<Timeline> timelines;
 		private MountPoint lastMountPoint = null;
-		public Timeline currentTimeline => timelines.Peek();
 		private Canvas canvas;
 
 		[UsedImplicitly]
@@ -43,11 +43,7 @@ namespace Assets.draco18s.bulletboss.ui
 			canvas = GetComponent<Canvas>();
 			canvas.enabled = false;
 			parentPatternBtn.onClick.AddListener(SelectParentPattern);
-//#if UNITY_EDITOR
 			saveAssetButton.onClick.AddListener(SaveAsset);
-//#else
-//			saveAssetButton.gameObject.SetActive(false);
-//#endif
 		}
 
 		private void SaveAsset()

@@ -954,7 +954,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 287166073}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 1812792943}
@@ -3983,7 +3983,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c1fe8eccb4b56a743a07b9ad203d4e26, type: 2}
   - {fileID: 11400000, guid: 4c894332462723f498ea6073d7f21fb6, type: 2}
   - {fileID: 11400000, guid: cb9590ef284cb364ab1b1e5f44ca2b89, type: 2}
-  - {fileID: 11400000, guid: c28ce774b7520b74e90aebfe185c0095, type: 2}
+  - {fileID: 11400000, guid: 89b588f148d9be548b0449a110ff1fe0, type: 2}
   - {fileID: 11400000, guid: c9a29c3d2bea89041ada40ac7be041c0, type: 2}
   - {fileID: 11400000, guid: 7142fdd323448024b87071dec557c5f4, type: 2}
   - {fileID: 11400000, guid: b170e9f86aa881948ab47a0e5861b1e7, type: 2}
@@ -3991,7 +3991,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bfe6863b7dd0ab74a84d256fddde6aca, type: 2}
   - {fileID: 11400000, guid: 37f2020f90f733c40989cf2a65a62e95, type: 2}
   - {fileID: 11400000, guid: ac197b6762199134c81b671b7b4009a1, type: 2}
-  - {fileID: 11400000, guid: 89b588f148d9be548b0449a110ff1fe0, type: 2}
+  - {fileID: 11400000, guid: c28ce774b7520b74e90aebfe185c0095, type: 2}
   - {fileID: 11400000, guid: a03982458ed5e474bb1a520a57e0f493, type: 2}
   - {fileID: 11400000, guid: a2c3fa3455e34634f8d715539edb797b, type: 2}
   - {fileID: 11400000, guid: 421b23889fd23f046a54e3b8366a4d83, type: 2}
@@ -4017,6 +4017,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4f40aa4536393144a8dd99ad506fd7cc, type: 2}
   - {fileID: 11400000, guid: ded676ccb14da7a40a093d7b5b946560, type: 2}
   modifiers:
+  - {fileID: 11400000, guid: ae60619ab0a218748971bc000f99fdd5, type: 2}
   - {fileID: 11400000, guid: 893ebcc389a2d4f4ebf8021701734891, type: 2}
   - {fileID: 11400000, guid: 365f20b98b3d8d54d88a970595882cbf, type: 2}
   - {fileID: 11400000, guid: ba391c40a3adf5843b851454089690fb, type: 2}
@@ -6502,11 +6503,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6357696589804883065, guid: aba0997de618e8747bfd3ee4244e00ef, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 550.00006
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6357696589804883065, guid: aba0997de618e8747bfd3ee4244e00ef, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -280
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6357696589804883065, guid: aba0997de618e8747bfd3ee4244e00ef, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6526,7 +6527,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6357696589804883066, guid: aba0997de618e8747bfd3ee4244e00ef, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6357696591213720740, guid: aba0997de618e8747bfd3ee4244e00ef, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -7992,8 +7993,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1619877593}
   m_HandleRect: {fileID: 1619877592}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.12857144
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9885,7 +9886,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1776210495}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}

@@ -69,11 +69,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			loopsOnTimelineEnd = allowedToLoop;
 			foreach (Card m in activeRuntimeModifiers)
 			{
-				if (!m.isActive)
-				{
-					Debug.Log($"{m.name} is inactive");
-					continue;
-				}
+				if (!m.isActive) continue;
 				m.timelineModifier.ApplyModifier_TimelinePreInit(this);
 			}
 		}
@@ -172,7 +168,9 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			{
 				bool b = activeRuntimeModifiers
 					.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
-					.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) <= 1;
+					.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) > 1;
+
+				//Debug.Log($"{activeRuntimeModifiers.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType).Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite)}");
 
 				card.SetDisabled(b);
 

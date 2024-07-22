@@ -50,7 +50,7 @@ namespace Assets.draco18s.bulletboss
 			}
 			foreach (TimelineModifierType modifier in modifiers)
 			{
-				if (modifier.rarity != NamedRarity.Starting) continue;
+				if (modifier.rarity > NamedRarity.Uncommon) continue;
 				cardPools[modifier.rarity].Add(new Card(modifier));
 
 				activeDeck.Add(new Card(modifier), Deck.AddType.BaseDeck);

@@ -200,7 +200,7 @@ Shader "Effects/Polychrome"
 				#ifdef UNITY_UI_CLIP_RECT
 				tex.a *= UnityGet2DClipping(i.worldpos.xy, _ClipRect);
 				#endif
-				tex.a = 1.4;
+				//tex.a = _EphemeralStrength > 1.1 ? 1.4 : tex.a;
 				return tex;
 			}
 		ENDCG

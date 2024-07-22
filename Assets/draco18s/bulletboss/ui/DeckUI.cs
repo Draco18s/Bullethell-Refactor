@@ -11,20 +11,15 @@ namespace Assets.draco18s.bulletboss.ui
 		[SerializeField] private Transform cardStack;
 
 		public static DeckUI instance;
-		private Deck deck;
 
 		void Awake()
 		{
 			instance = this;
-		}
 
-		public void SetDeck(Deck collection)
-		{
-			deck = collection;
-			deck.OnSizeChange += UpdateDeckGraphics;
+			CardLibrary.instance.activeDeck.OnSizeChange += UpdateDeckGraphics;
 			GetComponent<Button>().AddHover(p =>
 			{
-				Tooltip.ShowTooltip(p, $"{deck.Count()} Cards Left");
+				Tooltip.ShowTooltip(p, $"{CardLibrary.instance.activeDeck.Count()} Cards Left\nClick to view deck/discard piles", 4);
 			});
 		}
 

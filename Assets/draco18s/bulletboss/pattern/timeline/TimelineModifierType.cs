@@ -14,6 +14,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		public NamedRarity rarity;
 		public Sprite icon;
 		public ModuleType moduleType;
+		public bool isUnique;
 		public bool applyRecursively;
 
 		public virtual bool CanAddModule(Bullet shot, PatternModuleType module)
