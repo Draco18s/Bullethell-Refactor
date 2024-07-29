@@ -29,6 +29,7 @@ namespace Assets.draco18s.bulletboss.entities
 		[SerializeField] protected SpriteRenderer sprite;
 		protected Timeline _pattern;
 		protected int patternHash = 0;
+		protected int penetrationsRemaining = 0;
 		protected Timeline pattern
 		{
 			get
@@ -63,7 +64,7 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			if (GameManager.instance == null || GameManager.instance.gameState != GameManager.GameState.Combat && GameManager.instance.gameState != GameManager.GameState.Editing) return;
 			if (pattern == null) return;
-			pattern.RuntimeUpdate(this, Time.fixedDeltaTime);
+			//pattern.RuntimeUpdate(this, Time.fixedDeltaTime);
 			OnUpdate(Time.fixedDeltaTime);
 			ChildUpdate();
 		}
@@ -78,6 +79,10 @@ namespace Assets.draco18s.bulletboss.entities
 		private void OnUpdate(float dt)
 		{
 			bool kill = pattern.RuntimeUpdate(this, dt);
+			if (this is Fighter)
+			{
+				kill = false;
+			}
 			transform.Translate(Vector3.right * speed * dt, Space.Self);
 			if (parentShot != null)
 			{
@@ -91,7 +96,7 @@ namespace Assets.draco18s.bulletboss.entities
 			
 			if (kill)
 			{
-				DestroySelf();
+				DestroySelf(true);
 				return;
 			}
 
@@ -155,8 +160,9 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern.ApplyModifiers(this);
 		}
 
-		public virtual void DestroySelf()
+		public virtual void DestroySelf(bool ignorePenetrations = false)
 		{
+			if (!ignorePenetrations && penetrationsRemaining-- > 0) return;
 			Destroy(gameObject);
 		}
 

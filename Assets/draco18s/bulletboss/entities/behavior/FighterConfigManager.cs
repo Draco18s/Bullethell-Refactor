@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using JetBrains.Annotations;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Assets.draco18s.bulletboss.entities.behavior
 {
@@ -21,6 +16,12 @@ namespace Assets.draco18s.bulletboss.entities.behavior
 
 		private float spawnInterval = 5;
 		private float spawnTimer = 0;
+
+		[UsedImplicitly]
+		void Awake()
+		{
+			instance = this;
+		}
 
 		public void DoUpdate(float dt)
 		{

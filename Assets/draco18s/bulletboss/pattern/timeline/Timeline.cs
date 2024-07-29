@@ -234,7 +234,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				if (k > idx) break;
 				if (k != idx && k + activeRuntimePattern[k].pattern.duration > idx) continue;
 				bool b = activeRuntimePattern[k].pattern.DoShotStep(bullet, dt, out bool shouldRemove);
-				if (shouldRemove) bullet.DestroySelf();
+				if (shouldRemove) bullet.DestroySelf(true);
 				if(b && activeRuntimePattern[k].pattern.duration < dt)
 				{
 					idx++;

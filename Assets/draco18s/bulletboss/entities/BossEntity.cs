@@ -20,6 +20,7 @@ namespace Assets.draco18s.bulletboss.entities
 				{
 					currentSegment++;
 					GameManager.instance.NewTurn();
+					Debug.Log("Boss HP depleted");
 				}
 			}
 		}

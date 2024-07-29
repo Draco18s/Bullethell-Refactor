@@ -35,8 +35,11 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern.SetEntityOwner(this);
 		}
 
-		public override void DestroySelf()
+		public override void DestroySelf(bool ignorePenetrations=false)
 		{
+			if (!ignorePenetrations && currentHP > 0) return;
+			Destroy(gameObject);
+			this.enabled = false;
 		}
 
 		[UsedImplicitly]
@@ -64,11 +67,10 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			GetComponentInChildren<SpriteRenderer>().sprite = config.sprite;
 			currentHP = maximumHP = config.health;
-			speed = config.speed;
+			speed = config.speed * 0.2f;
 			reward = config.gems;
 			foreach (Timeline pat in config.weaponPatterns)
 			{
-				// instantiate weapon mount
 				AddGun(pat);
 			}
 		}
@@ -76,6 +78,7 @@ namespace Assets.draco18s.bulletboss.entities
 		public void AddGun(Timeline data)
 		{
 			GameObject mount = Instantiate(GameAssets.mountPointPrefab, transform);
+			mount.layer = gameObject.layer;
 			mount.transform.localPosition = Vector3.zero;
 			MountPoint b = mount.GetComponent<MountPoint>();
 			b.SetPattern(data);

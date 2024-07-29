@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.draco18s.util;
 using JetBrains.Annotations;
@@ -32,6 +33,11 @@ namespace Assets.draco18s.bulletboss.entities
 		[UsedImplicitly]
 		public override void OnEpisodeBegin()
 		{
+			if (gameContainer == null)
+			{
+				StartCoroutine(TryAgain());
+				return;
+			}
 			base.OnEpisodeBegin();
 
 			int leftRight = Random.value > 0.5f ? 1 : -1;
@@ -74,6 +80,12 @@ namespace Assets.draco18s.bulletboss.entities
 			}*/
 			prevMove = Vector2.zero;
 			//MaxStep = 20000;
+		}
+
+		private IEnumerator TryAgain()
+		{
+			yield return null;
+			OnEpisodeBegin();
 		}
 
 		private void GenerateVerticalBar(float _x, float _y, GameObject prefab)

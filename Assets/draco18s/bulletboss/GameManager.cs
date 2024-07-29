@@ -83,7 +83,8 @@ namespace Assets.draco18s.bulletboss
 		private void Update()
 		{
 			if (doHeatmap) HeatMapUpdate();
-			FighterConfigManager.instance.DoUpdate(Time.deltaTime);
+			if(gameState == GameState.Combat)
+				FighterConfigManager.instance.DoUpdate(Time.deltaTime);
 		}
 
 		private void HeatMapUpdate()
@@ -232,6 +233,7 @@ namespace Assets.draco18s.bulletboss
 
 		public void EndTurn()
 		{
+			gameState = GameState.Combat;
 			interfaceCanvas.enabled = false;
 			TimelineUI.instance.Close();
 			CardHand.instance.Discard(-1, true);
@@ -244,6 +246,7 @@ namespace Assets.draco18s.bulletboss
 		{
 			yield return new WaitForSecondsRealtime(25f);
 			NewTurn();// temp
+			Debug.Log("WaitFive");
 		}
 
 		private int GetDrawCount()
@@ -269,6 +272,7 @@ namespace Assets.draco18s.bulletboss
 			if (boss.GetCurrentSegmentHP() <= 0)
 			{
 				NewTurn();
+				Debug.Log("CheckGameOver");
 			} 
 		}
 	}

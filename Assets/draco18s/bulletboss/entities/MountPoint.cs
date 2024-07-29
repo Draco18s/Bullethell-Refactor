@@ -9,9 +9,11 @@ namespace Assets.draco18s.bulletboss.entities
 	public class MountPoint : Bullet
 	{
 		[SerializeField] private SpriteRenderer selectionFrame;
+
 		[UsedImplicitly]
 		void Start()
 		{
+			if (pattern != null) return;
 			serializedPattern.DeserializeForRuntime();
 			serializedPattern.InitOrReset(true);
 			pattern = Timeline.CloneFrom(serializedPattern);
@@ -19,7 +21,7 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern.SetMaxChildren(1);
 		}
 
-		public override void DestroySelf()
+		public override void DestroySelf(bool ignorePenetration=false)
 		{
 		}
 

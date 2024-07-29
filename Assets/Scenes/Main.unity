@@ -1141,7 +1141,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 287166073}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 1812792943}
@@ -4483,7 +4483,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fighterPrefab: {fileID: 157272956274834827, guid: 4cf96ab63d83dd84583dc60beedb7e9d, type: 3}
   _fighterSpawnPoints: {fileID: 615573780}
-  _fighterTypes: []
+  _fighterTypes:
+  - {fileID: 11400000, guid: 4650ad7157568444cb4e4f21cf8542b9, type: 2}
+  - {fileID: 11400000, guid: ff47bc5828e5ffa4a80d45b1160ff688, type: 2}
+  - {fileID: 11400000, guid: 3ea971f801ce7b84daaea5a640291dcf, type: 2}
 --- !u!1 &965100407
 GameObject:
   m_ObjectHideFlags: 0
