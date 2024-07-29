@@ -18,6 +18,7 @@ MonoBehaviour:
   _preconfigured: 1
   _unique: 0
   _killOnComplete: 0
+  _allowedChildrenClasses: 0
   preconfiguredPattern: 1
   pattern:
     runtimeEditable: 0

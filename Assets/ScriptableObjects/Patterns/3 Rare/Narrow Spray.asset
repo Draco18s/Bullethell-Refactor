@@ -15,7 +15,6 @@ MonoBehaviour:
   _rarity: 3
   _description: A spray of 7 shots in a 12 degree cone.
   _icon: {fileID: -501359276, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  _classification: 0
   _preconfigured: 1
   _unique: 0
   _killOnComplete: 0

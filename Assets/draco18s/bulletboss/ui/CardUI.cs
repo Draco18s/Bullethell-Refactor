@@ -21,8 +21,7 @@ namespace Assets.draco18s.bulletboss.ui
 		
 		[SerializeField] private Transform hoverTiltCenter;
 		[SerializeField] private Transform hoverPosCenter;
-
-		[SerializeField] private RectTransform tagBar;
+		
 		[SerializeField] private Image tagBG;
 		[SerializeField] private TextMeshProUGUI tagName;
 
@@ -39,6 +38,7 @@ namespace Assets.draco18s.bulletboss.ui
 		private readonly Vector3 origPosition = new Vector3(0,-105,0);
 		private Canvas selfCanvas;
 		private bool lastEphemeral = false;
+		public bool isEnabled { get; private set; } = true;
 
 		void Awake()
 		{
@@ -92,11 +92,12 @@ namespace Assets.draco18s.bulletboss.ui
 				lastEphemeral = cardRef.isEphemeral;
 				bg.enabled = !(cardRef.isUnique || cardRef.isEphemeral);
 				bgShiny.enabled = cardRef.isUnique || cardRef.isEphemeral;
-				bgShiny.GetComponent<Image>().material.SetFloat("_EphemeralStrength", cardRef.isEphemeral ? 1 : 0);
+				//bgShiny.GetComponent<Image>().material.SetFloat("_EphemeralStrength", cardRef.isEphemeral ? 1 : 0);
+				bgShiny.GetComponent<Image>().material = cardRef.isEphemeral ? GameAssets.ephemeralMat : GameAssets.polyChromeMat;
 				Color tColor = cardRef.rarity.GetColor() * (cardRef.isEphemeral ? 0.35f : 1);
 				tColor.a = 1;
 				tagBG.color = tColor;
-				tagName.text = cardRef.isEphemeral ? "Ephemeral" : cardRef.rarity.ToString();
+				tagName.text = cardRef.isEphemeral ? "Ephemeral" : (cardRef.isUnique ? "Unique" : cardRef.rarity.ToString());
 				tagName.color = cardRef.isEphemeral ? Color.white : cardRef.rarity.GetTextColor();
 				lastEphemeral = cardRef.isEphemeral;
 			}
@@ -253,6 +254,8 @@ namespace Assets.draco18s.bulletboss.ui
 
 		public void Disable(string reason)
 		{
+			isEnabled = false;
+			cardRef.SetDisabled(isEnabled);
 			keyframeParent.SetIconColor(Color.gray);
 			keyframeParent.AddHover(p =>
 			{
@@ -262,7 +265,10 @@ namespace Assets.draco18s.bulletboss.ui
 
 		public void Enable()
 		{
+			isEnabled = true;
+			cardRef.SetDisabled(isEnabled);
 			keyframeParent.SetIconColor(Color.white);
+			keyframeParent.RemoveAllHoverEvents();
 		}
 	}
 }

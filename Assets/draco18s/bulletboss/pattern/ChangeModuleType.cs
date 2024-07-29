@@ -20,7 +20,7 @@ namespace Assets.draco18s.bulletboss.pattern
 		{
 			Speed,Direction,Size,Time
 		}
-		public virtual ModuleClassification moduleTypeClass => ModuleClassification.Transform;
+		public override ModuleClassification moduleTypeClass => ModuleClassification.Transform;
 
 		[SerializeField] protected ChangeType changeType;
 		[SerializeField] private FloatRange allowedValueRange;

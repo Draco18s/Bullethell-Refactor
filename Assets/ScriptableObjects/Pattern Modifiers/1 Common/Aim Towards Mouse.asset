@@ -15,6 +15,6 @@ MonoBehaviour:
   description: This shot always orients towards the mouse when spawned.
   rarity: 1
   icon: {fileID: -1266522968, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
-  moduleType: 4
+  moduleType: 5
   isUnique: 0
   applyRecursively: 0

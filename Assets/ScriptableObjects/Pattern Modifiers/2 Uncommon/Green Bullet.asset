@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: 
   rarity: 2
-  icon: {fileID: 0}
+  icon: {fileID: 456510937, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
   moduleType: 1
+  isUnique: 0
   applyRecursively: 0
   _color: {r: 0, g: 1, b: 0, a: 1}

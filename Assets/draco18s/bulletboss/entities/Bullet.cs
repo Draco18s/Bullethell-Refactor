@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.draco18s.bulletboss.cards;
+using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.util;
 using JetBrains.Annotations;
@@ -194,6 +195,11 @@ namespace Assets.draco18s.bulletboss.entities
 			{
 				s.color = new Color(1, 1, 1, (v ? 1 : 0.2f));
 			}
+		}
+
+		public virtual bool CanAddModule(PatternModule refPattern)
+		{
+			return true;
 		}
 	}
 }

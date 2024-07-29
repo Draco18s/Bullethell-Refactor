@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.draco18s.bulletboss.entities;
+using Assets.draco18s.bulletboss.entities.behavior;
 using Assets.draco18s.bulletboss.map;
 using Assets.draco18s.bulletboss.ui;
 using Assets.draco18s.bulletboss.upgrades;
@@ -68,6 +69,7 @@ namespace Assets.draco18s.bulletboss
 			// current map
 			// deck/collection
 			// aiplayer details
+			// fighter config
 		}
 
 		public void LoadGame()
@@ -80,7 +82,12 @@ namespace Assets.draco18s.bulletboss
 		[UsedImplicitly]
 		private void Update()
 		{
-			if (!doHeatmap) return;
+			if (doHeatmap) HeatMapUpdate();
+			FighterConfigManager.instance.DoUpdate(Time.deltaTime);
+		}
+
+		private void HeatMapUpdate()
+		{
 			timer -= Time.deltaTime;
 			if (timer < 0)
 			{
@@ -105,7 +112,7 @@ namespace Assets.draco18s.bulletboss
 					{
 						c.a = 0;
 					}
-					else if(v < 0.25f)
+					else if (v < 0.25f)
 					{
 						c.a = a - 0.015f;
 					}
@@ -194,7 +201,7 @@ namespace Assets.draco18s.bulletboss
 			int i = -1;
 			foreach (int mod in modifiers)
 			{
-				GameObject go = Instantiate(GameAssets.instance.aiPlayerObject, aiPlayerContainer);
+				GameObject go = Instantiate(GameAssets.aiPlayerObject, aiPlayerContainer);
 				go.transform.localPosition = Vector3.zero;
 				playerShips.Add(go);
 				if (mod != 0)

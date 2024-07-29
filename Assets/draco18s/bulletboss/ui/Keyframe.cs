@@ -63,5 +63,10 @@ namespace Assets.draco18s.bulletboss.ui
 		{
 			bg.AddHover(action, true);
 		}
+
+		public void RemoveAllHoverEvents()
+		{
+			bg.RemoveAllHoverEvents();
+		}
 	}
 }

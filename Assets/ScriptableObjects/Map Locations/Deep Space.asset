@@ -15,3 +15,4 @@ MonoBehaviour:
   _nodeType: 0
   _description: Normal encounter
   _icon: {fileID: 21300000, guid: 6135b01004d8248498feb79646601c5e, type: 3}
+  _techConfig: {fileID: 0}

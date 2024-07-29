@@ -15,3 +15,4 @@ MonoBehaviour:
   _nodeType: 5
   _description: Final Showdown
   _icon: {fileID: 1993398875, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _techConfig: {fileID: 0}

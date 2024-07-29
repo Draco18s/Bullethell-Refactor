@@ -17,9 +17,8 @@ namespace Assets.draco18s.bulletboss.pattern
 	[CreateAssetMenu(menuName = "Pattern/New Spawn Pattern")]
 	public class SpawnModuleType : TimelinePatternModuleType
 	{
-		public virtual ModuleClassification moduleTypeClass => ModuleClassification.Spawn;
+		public override ModuleClassification moduleTypeClass => ModuleClassification.Spawn;
 		[SerializeField] private float duration;
-		//[SerializeField] private GameObject prefab;
 		[SerializeField] private bool killParent;
 		[SerializeField] private bool followParent;
 		[SerializeField] private float initialAngle;
@@ -65,7 +64,6 @@ namespace Assets.draco18s.bulletboss.pattern
 				result.angleLimit = patternType.angleLimit;
 				result.duration = patternType.duration;
 				result.killParent = patternType.killParent;
-				//result.prefab = patternType.prefab;
 				return result;
 			}
 
@@ -98,7 +96,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				
 				foreach (Card m in parentShot.GetPatternModifiers())
 				{
-					if(m.timelineModifier.applyRecursively || parentShot is MountPoint)
+					if(m.timelineModifier.applyRecursively || (parentShot is MountPoint && m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite))
 						shot.ApplyTimelineModifier(m);
 				}
 			}

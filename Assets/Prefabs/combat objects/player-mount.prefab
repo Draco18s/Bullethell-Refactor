@@ -52,7 +52,6 @@ MonoBehaviour:
       values:
       - {fileID: 11400000, guid: 1a1485aa33d1c624580c93bcef1e9e8c, type: 2}
   baseSpeed: 5
-  shape: 0
-  size: 0
   sprite: {fileID: 0}
   Damage: 1
+  selectionFrame: {fileID: 0}

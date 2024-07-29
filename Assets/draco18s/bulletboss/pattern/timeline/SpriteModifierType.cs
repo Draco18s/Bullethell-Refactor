@@ -13,15 +13,5 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		{
 			timeline.SetBulletPrefab(prefab);
 		}
-
-		public override void ApplyModifier_TimelineInit(Bullet shot)
-		{
-
-		}
-
-		public override void ApplyModifier_OnCollision(Bullet shot)
-		{
-			
-		}
 	}
 }

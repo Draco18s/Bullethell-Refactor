@@ -16,5 +16,6 @@ MonoBehaviour:
   rarity: 0
   icon: {fileID: 0}
   moduleType: 0
+  isUnique: 0
   applyRecursively: 0
   prefab: {fileID: 778798223601149580, guid: a50b299ab1840ad4ab16d5f7e743f18b, type: 3}

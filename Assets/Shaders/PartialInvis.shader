@@ -74,8 +74,6 @@ Shader "Effects/PartialInvis"
 				float4 vertex   : SV_POSITION;
                 fixed2 normal : NORMAL;
 				float4 uv  : TEXCOORD0;
-				//float2 screenPos   : TEXCOORD2;
-				float4 grabUV   : TEXCOORD1;
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
@@ -91,10 +89,9 @@ Shader "Effects/PartialInvis"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				float2 f1 = TRANSFORM_TEX(v.uv, _MainTex);
-				float2 f2 = ComputeScreenPos(o.vertex);
-				o.uv = float4(f1.x,f1.y,f2.x/(_ScreenParams.x/177),f2.y/(_ScreenParams.y/99.55));
+				float4 f2 = ComputeGrabScreenPos(o.vertex);
+				o.uv = float4(f1.x,f1.y,f2.x/f2.w,f2.y/f2.w);
 				o.normal = v.normal;
-				o.grabUV = ComputeGrabScreenPos(o.vertex);
 				return o;
 			}
 
@@ -104,6 +101,7 @@ Shader "Effects/PartialInvis"
 
 			fixed4 frag(v2f i) : SV_Target
 			{
+				fixed4 render = fixed4(0,0,0,0);
 				int fuzzoffset[51] =
 				{
 					1,-1,1,-1,1,1,-1,
@@ -114,24 +112,37 @@ Shader "Effects/PartialInvis"
 					1,-1,-1,-1,-1,1,1,
 					1,1,-1,1,1,-1,1,1 
 				};
+				int indexoffset[25] =
+				{
+					 3, 89, 11, 29, 71, 7, 31, 61, 73, 2, 17, 41, 67, 37, 59, 13, 53, 19, 47, 79, 97, 23, 5, 43, 83
+				};
 				float scale = 1;
 
-				int X = i.uv.x * (250/scale);
-				int Y = i.uv.w * (350/scale);
-				int ind = ((Y + (350/scale)*X) /*+ (_Time*300)*/) % 51;
+				int X = i.uv.x * (350/scale);
+				int Y = 1 - i.uv.y * (350/scale);
 
-				int offset = fuzzoffset[ind] == -1 ? (fuzzoffset[ind-1] == -1 ? (fuzzoffset[ind-2] == -1 ? (fuzzoffset[ind-3] == -1 ? -4 : -3) : -2) : -1) : 1;
+				float tOff = indexoffset[(int)(_Time*30)%25]+_Time*30;
+				int ind = ((Y + (350/scale)*(X + indexoffset[X%25])) - (int)tOff) % 51;
+
+				while(ind < 0) ind += 51;
+
+				int offset = fuzzoffset[ind] == -1 ? (fuzzoffset[ind-1] == -1 ? (fuzzoffset[ind-2] == -1 ? (fuzzoffset[ind-3] == -1 ? -3 : -2) : -1) : 0) : 1;
 				
-				fixed4 tex = tex2D(_MainTex, float2(i.uv.x, i.uv.y - (offset/_ScreenParams.y*0.2)));
-				float4 p = tex2D(_GrabTexture, float2(i.uv.z, i.uv.w - (offset/_ScreenParams.y*1)));
-				float m = fuzzoffset[ind] == -1 ? (fuzzoffset[ind-1] == -1 ? (fuzzoffset[ind-2] == -1 ? (fuzzoffset[ind-3] == -1 ? .9 : .81) : .73) : .65) : 1;
+				float s = offset/_ScreenParams.y;
 
-				tex.rgb = tex.rgb * (1-m) + p * (m);
+				fixed4 mainTex = tex2D(_MainTex, float2(i.uv.x, i.uv.y - s));
+				float4 grabTex = tex2D(_GrabTexture, float2(i.uv.z, i.uv.w - s));
+
+				offset = -(offset-2);
+				float m = 1 +- (0.12*offset);
+
+				render.rgb = grabTex * m;// + mainTex * (1-m);
+				render.a = mainTex.a;
 
 				#ifdef UNITY_UI_CLIP_RECT
-				tex.a *= UnityGet2DClipping(i.worldpos.xy, _ClipRect);
+				render.a *= UnityGet2DClipping(i.worldpos.xy, _ClipRect);
 				#endif
-				return tex;
+				return render;
 			}
 		ENDCG
 		}

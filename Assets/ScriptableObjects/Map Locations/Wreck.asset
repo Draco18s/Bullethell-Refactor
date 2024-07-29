@@ -15,3 +15,4 @@ MonoBehaviour:
   _nodeType: 3
   _description: Loot
   _icon: {fileID: 21300000, guid: 0061cb47e64e3174d9ddf9e5f677280e, type: 3}
+  _techConfig: {fileID: 0}

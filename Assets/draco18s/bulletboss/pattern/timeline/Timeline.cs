@@ -29,9 +29,12 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		[NonSerialized] public OnTimelineChanged onTimelineChanged = () => { };
 		private bool loopsOnTimelineEnd = true;
 		private float overrideDuration = 0;
+		private int overrideChildLimit = 0;
 		private PatternModuleType moduleTypeOfThis;
 		[NonSerialized] private PatternModule moduleOfThis;
+		[NonSerialized] private Bullet entityOfThis;
 		private GameObject _bulletPrefab;
+		private float _runSpeed = 1;
 
 		public PatternModule runtimeModule => moduleOfThis;
 		public bool isEditable => runtimeEditable;
@@ -39,7 +42,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public void DeserializeForRuntime()
 		{
-			_bulletPrefab ??= GameAssets.instance.defaultBulletPrefab;
+			_bulletPrefab ??= GameAssets.defaultBulletPrefab;
 			activeRuntimeModifiers ??= new List<Card>();
 			activeRuntimePattern ??= new Dictionary<int, Card>();
 			uiLookup ??= new Dictionary<Card, CardUI>();
@@ -61,8 +64,20 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			moduleTypeOfThis = module.patternTypeData;
 		}
 
+		public void SetEntityOwner(Bullet entity)
+		{
+			entityOfThis = entity;
+		}
+
+		public void SetMaxChildren(int maxChildren)
+		{
+			overrideChildLimit = maxChildren;
+		}
+
 		public void InitOrReset(bool allowedToLoop = true)
 		{
+			_bulletPrefab ??= GameAssets.defaultBulletPrefab;
+			_runSpeed = 1;
 			activeRuntimeModifiers ??= new List<Card>();
 			activeRuntimePattern ??= new Dictionary<int, Card>();
 			uiLookup ??= new Dictionary<Card, CardUI>();
@@ -168,19 +183,33 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			{
 				bool b = activeRuntimeModifiers
 					.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
-					.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) > 1;
+					.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) <= 1;
 
-				//Debug.Log($"{activeRuntimeModifiers.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType).Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite)}");
+				//Debug.Log($"{activeRuntimeModifiers.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType).Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite)} => {b}");
 
-				card.SetDisabled(b);
+				
 
 				if (!uiLookup.TryGetValue(card, out CardUI uiCard)) continue;
 				
-				if(b)
+				if (activeRuntimeModifiers
+					   .Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
+					   .Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) > 1)
 				{
 					uiCard.Disable("Cannot have two Sprite modifiers");
 				}
-				else
+				else if (activeRuntimeModifiers
+					         .Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
+					         .Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Color) > 1)
+				{
+					uiCard.Disable("Cannot have two Color modifiers");
+				}
+				else if (activeRuntimeModifiers
+					         .Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
+					         .Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Aim) > 1)
+				{
+					uiCard.Disable("Cannot have two Aim modifiers");
+				}
+				else if (!uiCard.isEnabled)
 				{
 					uiCard.Enable();
 				}
@@ -192,12 +221,14 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		public bool RuntimeUpdate(Bullet bullet, float dt)
 		{
 			if(activeRuntimePattern == null) return true;
+			foreach (Card m in activeRuntimeModifiers)
+			{
+				if (!m.isActive) continue;
+				m.timelineModifier.ApplyModifier_OnUpdate(bullet);
+			}
 			float secondWidth = ((RectTransform)TimelineUI.instance.transform).rect.width / 10;
 			int idx = Mathf.CeilToInt(currentTime * secondWidth);
-
-			//if(activeRuntimePattern.Count > 1)
-			//	Debug.Log("Acting on " + idx + string.Join(',', activeRuntimePattern.OrderBy(x => x.Key).Select(kv => kv.Value.pattern.patternTypeData.name + " @ " + kv.Key)));
-
+			
 			foreach (int k in activeRuntimePattern.Keys.OrderBy(x => x))
 			{
 				if (k > idx) break;
@@ -211,17 +242,16 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				}
 				if(!b) break;
 			}
-			currentTime += dt;
+
+			currentTime += dt * _runSpeed;
 			bool completed = currentTime >= GetDuration();
-			if (completed && loopsOnTimelineEnd)
+			if (!completed || !loopsOnTimelineEnd) return completed;
+			currentTime -= GetDuration();
+			foreach (KeyValuePair<int, Card> module in activeRuntimePattern)
 			{
-				currentTime -= GetDuration();
-				foreach (KeyValuePair<int, Card> module in activeRuntimePattern)
-				{
-					module.Value.pattern.ResetForNewLoopIteration(bullet);
-				}
+				module.Value.pattern.ResetForNewLoopIteration(bullet);
 			}
-			return completed;
+			return true;
 		}
 
 		public void SetOverrideDuration(float duration)
@@ -256,7 +286,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			original.DeserializeForRuntime();
 			original.InitOrReset();
 			timeline.InitOrReset();
-			timeline._bulletPrefab = original._bulletPrefab;
+			timeline._bulletPrefab = original._bulletPrefab ?? GameAssets.defaultBulletPrefab;
 			timeline.patternObjects = new SerializableDictionary<int, PatternModuleType>();
 			timeline.activeRuntimePattern = new Dictionary<int, Card>();
 			foreach (KeyValuePair<int, Card> kvp in original.activeRuntimePattern)
@@ -294,9 +324,9 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public bool CanAdd(PatternModule refPattern)
 		{
-			int max = moduleTypeOfThis?.GetMaxChildren() ?? -1;
+			int max = moduleTypeOfThis?.GetMaxChildren() ?? (overrideChildLimit > 0 ? overrideChildLimit : -1);
 			if (max < 0 || activeRuntimePattern.Count >= max) return false;
-			return moduleTypeOfThis == null || moduleTypeOfThis.CanAddModule(refPattern.patternTypeData);
+			return (moduleTypeOfThis == null || moduleTypeOfThis.CanAddModule(refPattern.patternTypeData)) && (entityOfThis == null || entityOfThis.CanAddModule(refPattern));
 		}
 
 		public void AddModifier(CardUI cardUI)
@@ -358,6 +388,11 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		public List<Card> GetModifiers()
 		{
 			return activeRuntimeModifiers;
+		}
+
+		public void AddSpeedModifier(float multi)
+		{
+			_runSpeed += multi;
 		}
 
 		public class Converter : JsonConverter

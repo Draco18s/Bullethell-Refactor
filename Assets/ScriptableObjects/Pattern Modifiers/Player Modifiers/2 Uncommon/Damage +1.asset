@@ -16,5 +16,6 @@ MonoBehaviour:
   rarity: 2
   icon: {fileID: 765289114, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
   moduleType: 2
+  isUnique: 0
   applyRecursively: 0
   damageIncreaseAmount: 1

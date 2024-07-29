@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PartialInvis
-  m_Shader: {fileID: 4800000, guid: 6bc4cf602170a8b41a9164a2242f9cc2, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7caae011db3b2884588f913f09a4ea92, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

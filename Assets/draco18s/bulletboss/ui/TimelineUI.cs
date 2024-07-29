@@ -147,7 +147,7 @@ namespace Assets.draco18s.bulletboss.ui
 			cardContainer.Clear();
 			foreach (KeyValuePair<int, Card> m in currentTimeline.GetModules())
 			{
-				CardUI cardUI = Instantiate(GameAssets.instance.playableUIObject, cardContainer).GetComponent<CardUI>();
+				CardUI cardUI = Instantiate(GameAssets.playableUIObject, cardContainer).GetComponent<CardUI>();
 				Vector3 p = cardUI.gameObject.transform.localPosition;
 				cardUI.SetData(m.Value);
 				cardUI.gameObject.transform.localPosition = new Vector3(m.Key, p.y, p.z);

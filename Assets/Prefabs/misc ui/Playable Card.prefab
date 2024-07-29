@@ -739,7 +739,6 @@ MonoBehaviour:
   cardDesc: {fileID: 6357696589953164736}
   hoverTiltCenter: {fileID: 1382870382935432626}
   hoverPosCenter: {fileID: 6024819999844621289}
-  tagBar: {fileID: 0}
   tagBG: {fileID: 3652663928442250549}
   tagName: {fileID: 5333811448960215339}
   keyframeParent: {fileID: 3849238012898293806}

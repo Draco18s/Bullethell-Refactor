@@ -50,13 +50,13 @@ namespace Assets.draco18s.ui
 			deckContainer.Clear();
 			foreach (Card card in CardLibrary.instance.activeDeck.GetDrawPile())
 			{
-				GameObject go = Instantiate(GameAssets.instance.viewyableUIObject, deckContainer);
+				GameObject go = Instantiate(GameAssets.viewyableUIObject, deckContainer);
 				go.GetComponent<ViewCardUI>().SetData(card);
 			}
 			discardContainer.Clear();
 			foreach (Card card in CardLibrary.instance.activeDeck.GetDiscardPile())
 			{
-				GameObject go = Instantiate(GameAssets.instance.viewyableUIObject, discardContainer);
+				GameObject go = Instantiate(GameAssets.viewyableUIObject, discardContainer);
 				go.GetComponent<ViewCardUI>().SetData(card);
 			}
 		}

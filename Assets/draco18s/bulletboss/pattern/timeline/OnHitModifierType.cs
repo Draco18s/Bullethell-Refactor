@@ -16,15 +16,6 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		{
 			return module.GetType() == typeof(SpawnModuleType);
 		}
-		public override void ApplyModifier_TimelinePreInit(Timeline timeline)
-		{
-
-		}
-
-		public override void ApplyModifier_TimelineInit(Bullet shot)
-		{
-			
-		}
 
 		public override void ApplyModifier_OnCollision(Bullet shot)
 		{
@@ -33,7 +24,6 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		private void SpawnNewBullet(Bullet parentShot, Timeline timeline)
 		{
-			Debug.Log("Ahoy");
 			Quaternion q = Quaternion.Euler(0, 0, initialAngle);
 
 			GameObject go = Instantiate(prefab, parentShot.transform.position, parentShot.transform.rotation * q, GameManager.instance.bulletParentContainer);

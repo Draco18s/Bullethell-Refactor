@@ -13,7 +13,7 @@ namespace Assets.draco18s.bulletboss.pattern
 	[CreateAssetMenu(menuName = "Pattern/Intangible")]
 	public class IntangibleModuleType : PatternModuleType
 	{
-		public virtual ModuleClassification moduleTypeClass => ModuleClassification.Effect;
+		public override ModuleClassification moduleTypeClass => ModuleClassification.Effect;
 		[SerializeField] private float duration;
 		[SerializeField] private FloatRange allowedDurationRange;
 

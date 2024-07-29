@@ -15,6 +15,8 @@ namespace Assets.draco18s.bulletboss.entities
 			serializedPattern.DeserializeForRuntime();
 			serializedPattern.InitOrReset(true);
 			pattern = Timeline.CloneFrom(serializedPattern);
+			pattern.SetEntityOwner(this);
+			pattern.SetMaxChildren(1);
 		}
 
 		public override void DestroySelf()
@@ -37,6 +39,15 @@ namespace Assets.draco18s.bulletboss.entities
 		public bool AddModifier(TimelineModifierType modifier)
 		{
 			return pattern.AddAIPlayerModifier(new Card(modifier));
+		}
+
+		public void SetPattern(Timeline orig)
+		{
+			orig.DeserializeForRuntime();
+			orig.InitOrReset(true);
+			pattern = Timeline.CloneFrom(orig);
+			pattern.SetEntityOwner(this);
+			pattern.SetMaxChildren(1);
 		}
 	}
 }

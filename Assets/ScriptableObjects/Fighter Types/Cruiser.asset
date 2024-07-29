@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6a4e27d3985d304399020fd70391dd1, type: 3}
+  m_Name: Cruiser
+  m_EditorClassIdentifier: 
+  _icon: {fileID: 21300000, guid: 93793784ac1ac3d4d97acbc809ccd72b, type: 3}
+  _maxHP: 24
+  _speed: 1
+  _gemReward: 8
+  _defaultWeapons:
+  - runtimeEditable: 0
+    modifiers: []
+    patternObjects:
+      keys: 00000000
+      values:
+      - {fileID: 11400000, guid: 0acb1cf3687f31f429d45e8c56124593, type: 2}

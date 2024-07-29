@@ -30,11 +30,10 @@ namespace Assets.draco18s.bulletboss.pattern
 		[SerializeField] protected NamedRarity _rarity;
 		[SerializeField] protected string _description;
 		[SerializeField] protected Sprite _icon;
-		[SerializeField] protected ModuleClassification _classification;
 		[SerializeField] protected bool _preconfigured;
 		[SerializeField] protected bool _unique = false;
 		[SerializeField] protected bool _killOnComplete = false;
-		public virtual ModuleClassification moduleTypeClass => _classification;
+		public virtual ModuleClassification moduleTypeClass => ModuleClassification.None;
 		public NamedRarity rarity => _rarity;
 		public string description => _description;
 		public Sprite icon => _icon;
@@ -67,7 +66,7 @@ namespace Assets.draco18s.bulletboss.pattern
 		[SerializeField] protected bool preconfiguredPattern;
 		[SerializeField] protected Timeline pattern = new Timeline();
 		[SerializeField] protected int maxObjects =-1;
-		public virtual ModuleClassification moduleTypeClass => ModuleClassification.Group;
+		public override ModuleClassification moduleTypeClass => ModuleClassification.Group;
 
 		public bool GetIsPatternPreconfigured()
 		{

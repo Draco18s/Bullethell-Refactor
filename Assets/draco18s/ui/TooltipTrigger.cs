@@ -6,6 +6,9 @@ using System.Collections.Generic;
 namespace Assets.draco18s.ui {
 
 	public static class ButtonExtensions {
+		/*
+		 * Use ICanvasRaycastFilter instead?
+		 */
 		public delegate void OnHoverDelegate(Vector3 pos);
 		public delegate void OnClickDelegate();
 		public static void AddHover(this Button button, OnHoverDelegate callback) {
@@ -41,18 +44,21 @@ namespace Assets.draco18s.ui {
 			AddHover(img, callback, true);
 		}
 		public static void AddHover(this Image img, OnHoverDelegate callback, bool redrawOnUpdate) {
-			Button b = img.GetComponent<Button>();
-			if(b == null) {
-				b = img.gameObject.AddComponent<Button>();
-				ColorBlock cb = b.colors;
-				cb.pressedColor = Color.white;
-			}
-			b.AddHover(callback, redrawOnUpdate);
+			TooltipTrigger trig = img.gameObject.GetComponent<TooltipTrigger>();
+			if (trig == null)
+				trig = img.gameObject.AddComponent<TooltipTrigger>();
+			trig.AddHover(callback, redrawOnUpdate);
 		}
 
 		public static void RemoveAllEvents(this Button button) {
 			TooltipTrigger trig = button.gameObject.GetComponent<TooltipTrigger>();
 			if(trig == null) return;
+			trig.removeAllEvents();
+		}
+		public static void RemoveAllHoverEvents(this Image img)
+		{
+			TooltipTrigger trig = img.gameObject.GetComponent<TooltipTrigger>();
+			if (trig == null) return;
 			trig.removeAllEvents();
 		}
 		public static void OnRightClick(this Button button, OnClickDelegate callback) {

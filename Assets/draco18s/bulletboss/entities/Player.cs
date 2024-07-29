@@ -7,7 +7,6 @@ namespace Assets.draco18s.bulletboss.entities
 	public class Player : MonoBehaviour
 	{
 		[SerializeField] private int baseHP;
-		[SerializeField] private GameObject mountPointPrefab;
 
 		public int currentHP { get; protected set; }
 		public int maximumHP { get; protected set; }
@@ -60,7 +59,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 		public void AddGun(PlayerProgress data, int mod)
 		{
-			GameObject mount = Instantiate(mountPointPrefab, transform);
+			GameObject mount = Instantiate(GameAssets.mountPointPrefab, transform);
 			mount.transform.localPosition = Vector3.zero;
 			MountPoint b = mount.GetComponent<MountPoint>();
 			b.Damage = (int)Mathf.Max(data.damageLevel + mod/2f, 1);
