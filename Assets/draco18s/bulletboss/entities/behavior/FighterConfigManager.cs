@@ -1,4 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Assets.draco18s.util;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.entities.behavior
@@ -17,10 +20,17 @@ namespace Assets.draco18s.bulletboss.entities.behavior
 		private float spawnInterval = 5;
 		private float spawnTimer = 0;
 
+		private List<Transform> spawnPoints;
+
 		[UsedImplicitly]
 		void Awake()
 		{
 			instance = this;
+			spawnPoints = new List<Transform>();
+			foreach (Transform t in _fighterSpawnPoints)
+			{
+				spawnPoints.Add(t);
+			}
 		}
 
 		public void DoUpdate(float dt)
@@ -28,18 +38,21 @@ namespace Assets.draco18s.bulletboss.entities.behavior
 			spawnTimer -= dt;
 			if (spawnTimer <= 0)
 			{
-				int ty = Mathf.FloorToInt(Random.value*(maxFighterLevel-minFighterLevel) + minFighterLevel);
-				int tr = Mathf.FloorToInt(Random.value* _fighterSpawnPoints.childCount);
-				Transform trans = _fighterSpawnPoints.GetChild(tr);
-				SpawnFighter(_fighterTypes[ty], trans);
+				spawnPoints.Shuffle();
+				for (int i = 0; i < 5; i++)
+					SpawnFighter(spawnPoints.Skip(i).First());
 				spawnTimer += spawnInterval;
 			}
 		}
 
-		private void SpawnFighter(FighterConfigType fighterConfig, Transform location)
+		private void SpawnFighter(Transform trans)
 		{
-			GameObject go = Instantiate(_fighterPrefab, location.position, location.rotation, GameManager.instance.bulletParentContainer);
-			go.GetComponent<Fighter>().SetData(fighterConfig);
+			int ty = Mathf.FloorToInt(Random.value * (maxFighterLevel - minFighterLevel) + minFighterLevel);
+			//int tr = Mathf.FloorToInt(Random.value * _fighterSpawnPoints.childCount);
+			//Transform trans = _fighterSpawnPoints.GetChild(tr);
+			GameObject go = Instantiate(_fighterPrefab, trans.position, trans.rotation, GameManager.instance.bulletParentContainer);
+			go.GetComponent<Fighter>().SetData(_fighterTypes[ty]);
+			Debug.Break();
 		}
 	}
 }

@@ -296,6 +296,9 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			}
 			foreach (Card card in original.activeRuntimeModifiers)
 				timeline.activeRuntimeModifiers.Add(new Card(card.timelineModifier));
+
+			timeline.modifiers = original.modifiers;
+
 			timeline.runtimeEditable = original.runtimeEditable;
 			return timeline;
 		}
@@ -359,7 +362,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		{
 			foreach (Card m in activeRuntimeModifiers)
 			{
-				if(!m.isActive) continue;
+				if (!m.isActive) continue;
 				m.timelineModifier.ApplyModifier_TimelineInit(bullet);
 				if (m.timelineModifier.applyRecursively)
 				{

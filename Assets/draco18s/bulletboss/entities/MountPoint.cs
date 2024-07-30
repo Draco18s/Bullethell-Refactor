@@ -42,14 +42,5 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			return pattern.AddAIPlayerModifier(new Card(modifier));
 		}
-
-		public void SetPattern(Timeline orig)
-		{
-			orig.DeserializeForRuntime();
-			orig.InitOrReset(true);
-			pattern = Timeline.CloneFrom(orig);
-			pattern.SetEntityOwner(this);
-			pattern.SetMaxChildren(1);
-		}
 	}
 }

@@ -152,10 +152,10 @@ namespace Assets.draco18s.bulletboss.entities
 			parentShot = bullet;
 		}
 
-		public void SetPattern(Timeline p)
+		public void SetPattern(Timeline p, bool allowLoop=false)
 		{
 			pattern = Timeline.CloneFrom(p);
-			pattern.InitOrReset(false);
+			pattern.InitOrReset(allowLoop);
 			pattern.ResetForNewLoopIteration(this);
 			pattern.ApplyModifiers(this);
 		}

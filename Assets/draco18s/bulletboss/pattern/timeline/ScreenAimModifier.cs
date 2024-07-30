@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assets.draco18s.bulletboss.entities;
+﻿using Assets.draco18s.bulletboss.entities;
 using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.pattern.timeline
@@ -15,7 +10,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public override void ApplyModifier_TimelineInit(Bullet shot)
 		{
-			shot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, _direction));
+			shot.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, _direction));
 		}
 	}
 }

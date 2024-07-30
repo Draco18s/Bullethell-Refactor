@@ -71,6 +71,7 @@ namespace Assets.draco18s.bulletboss.entities
 			reward = config.gems;
 			foreach (Timeline pat in config.weaponPatterns)
 			{
+				pat.DeserializeForRuntime();
 				AddGun(pat);
 			}
 		}
@@ -81,7 +82,9 @@ namespace Assets.draco18s.bulletboss.entities
 			mount.layer = gameObject.layer;
 			mount.transform.localPosition = Vector3.zero;
 			MountPoint b = mount.GetComponent<MountPoint>();
-			b.SetPattern(data);
+			data.DeserializeForRuntime();
+			data.InitOrReset(true);
+			b.SetPattern(data, true);
 		}
 	}
 }
