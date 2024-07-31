@@ -398,6 +398,11 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			_runSpeed += multi;
 		}
 
+		public void SetCurrentTime(float time)
+		{
+			currentTime = time;
+		}
+
 		public class Converter : JsonConverter
 		{
 			public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

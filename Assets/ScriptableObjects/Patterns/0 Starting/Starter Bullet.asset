@@ -27,7 +27,7 @@ MonoBehaviour:
       keys: 
       values: []
   maxObjects: -1
-  duration: 4
+  duration: 2
   killParent: 0
   followParent: 0
   initialAngle: 0

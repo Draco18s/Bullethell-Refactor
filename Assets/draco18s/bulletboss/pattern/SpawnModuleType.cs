@@ -76,10 +76,10 @@ namespace Assets.draco18s.bulletboss.pattern
 
 			private void SpawnNewBullet(Bullet parentShot, float deltaTime, Timeline timeline, bool followParent)
 			{
-				if (spawned) return;
+				if (spawned || deltaTime <= 0) return;
 
 				Quaternion q = Quaternion.Euler(0,0, spawnAngle);
-				GameObject prefab = timeline.bulletPrefab ?? GameAssets.defaultBulletPrefab; //fukin ell, I shouldn't need this
+				GameObject prefab = timeline.bulletPrefab == null ? GameAssets.defaultBulletPrefab : timeline.bulletPrefab; //fukin ell, I shouldn't need this
 				GameObject go = Instantiate(prefab, parentShot.transform.position, parentShot.transform.rotation * q, GameManager.instance.bulletParentContainer);
 				Bullet shot = go.GetComponent<Bullet>();
 				if (parentShot is MountPoint)

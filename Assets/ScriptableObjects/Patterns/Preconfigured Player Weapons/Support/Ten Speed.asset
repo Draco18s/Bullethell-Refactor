@@ -22,7 +22,7 @@ MonoBehaviour:
   allowedValueRange:
     min: 0
     max: 0
-  newValue: 10
+  newValue: 20
   randomRange:
     min: 0
     max: 0

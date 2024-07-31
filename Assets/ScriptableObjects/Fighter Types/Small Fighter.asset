@@ -18,7 +18,8 @@ MonoBehaviour:
   _gemReward: 1
   _defaultWeapons:
   - runtimeEditable: 0
-    modifiers: []
+    modifiers:
+    - {fileID: 11400000, guid: 05b8b367007d2e049bb0514492e012aa, type: 2}
     patternObjects:
       keys: 00000000
       values:

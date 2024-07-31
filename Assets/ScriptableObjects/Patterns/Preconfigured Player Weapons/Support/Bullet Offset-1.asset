@@ -25,13 +25,13 @@ MonoBehaviour:
     modifiers:
     - {fileID: 11400000, guid: 9527fd95e4280ee4ea596e9137e0e157, type: 2}
     patternObjects:
-      keys: 010000000e0000000f000000
+      keys: 010000000700000008000000
       values:
       - {fileID: 11400000, guid: a29f59625923c4241b72e4853589136c, type: 2}
       - {fileID: 11400000, guid: b9c49336ad4027c4ba28af70cc217791, type: 2}
       - {fileID: 11400000, guid: 55e18f6d8e2b2394fbef79fd889a0d2e, type: 2}
   maxObjects: -1
-  duration: 0.333
+  duration: 0.1666667
   killParent: 0
   followParent: 0
   initialAngle: -90

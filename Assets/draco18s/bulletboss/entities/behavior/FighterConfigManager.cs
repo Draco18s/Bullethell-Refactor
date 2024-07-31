@@ -48,11 +48,8 @@ namespace Assets.draco18s.bulletboss.entities.behavior
 		private void SpawnFighter(Transform trans)
 		{
 			int ty = Mathf.FloorToInt(Random.value * (maxFighterLevel - minFighterLevel) + minFighterLevel);
-			//int tr = Mathf.FloorToInt(Random.value * _fighterSpawnPoints.childCount);
-			//Transform trans = _fighterSpawnPoints.GetChild(tr);
 			GameObject go = Instantiate(_fighterPrefab, trans.position, trans.rotation, GameManager.instance.bulletParentContainer);
 			go.GetComponent<Fighter>().SetData(_fighterTypes[ty]);
-			Debug.Break();
 		}
 	}
 }

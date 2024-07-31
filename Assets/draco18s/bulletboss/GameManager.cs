@@ -246,7 +246,6 @@ namespace Assets.draco18s.bulletboss
 		{
 			yield return new WaitForSecondsRealtime(25f);
 			NewTurn();// temp
-			Debug.Log("WaitFive");
 		}
 
 		private int GetDrawCount()

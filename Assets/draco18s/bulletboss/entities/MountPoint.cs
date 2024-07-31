@@ -42,5 +42,10 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			return pattern.AddAIPlayerModifier(new Card(modifier));
 		}
+
+		public void SetCurrentTime(float time)
+		{
+			pattern.SetCurrentTime(time);
+		}
 	}
 }

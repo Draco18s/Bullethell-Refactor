@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.bulletboss.ui;
 using JetBrains.Annotations;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.draco18s.bulletboss.entities
 {
@@ -15,7 +17,7 @@ namespace Assets.draco18s.bulletboss.entities
 		public int reward { get; protected set; } = 0;
 
 		[UsedImplicitly]
-		void OnTriggerEnter2D(Collider2D other)
+		private void OnTriggerEnter2D(Collider2D other)
 		{
 			if (other.gameObject.layer == LayerMask.NameToLayer("PlayerBullets"))
 			{
@@ -23,11 +25,13 @@ namespace Assets.draco18s.bulletboss.entities
 				currentHP -= b.Damage;
 				b.DoOnDamageEffects();
 				b.DestroySelf();
+				if(currentHP <= 0)
+					DestroySelf();
 			}
 		}
 
 		[UsedImplicitly]
-		void Start()
+		private void Start()
 		{
 			serializedPattern.DeserializeForRuntime();
 			serializedPattern.InitOrReset(true);
@@ -39,7 +43,7 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			if (!ignorePenetrations && currentHP > 0) return;
 			Destroy(gameObject);
-			this.enabled = false;
+			enabled = false;
 		}
 
 		[UsedImplicitly]
@@ -67,12 +71,21 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			GetComponentInChildren<SpriteRenderer>().sprite = config.sprite;
 			currentHP = maximumHP = config.health;
-			speed = config.speed * 0.2f;
+			speed = config.speed / 3f;
 			reward = config.gems;
+			float minDur = float.PositiveInfinity;
 			foreach (Timeline pat in config.weaponPatterns)
 			{
 				pat.DeserializeForRuntime();
 				AddGun(pat);
+				minDur = Mathf.Min(minDur, pat.GetDuration());
+			}
+
+			minDur = (Random.value * minDur / 3);
+			MountPoint[] guns = GetComponentsInChildren<MountPoint>();
+			foreach (MountPoint pat in guns)
+			{
+				pat.SetCurrentTime(minDur);
 			}
 		}
 
