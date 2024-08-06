@@ -16,6 +16,7 @@ MonoBehaviour:
   _description: Combines multiple bullet movement effects into one, allowing them
     to act simultaneously.
   _icon: {fileID: -501359276, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _playableCopies: 1
   _preconfigured: 0
   _unique: 1
   _killOnComplete: 0

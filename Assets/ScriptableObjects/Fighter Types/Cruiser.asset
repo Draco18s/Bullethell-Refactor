@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _icon: {fileID: 21300000, guid: 93793784ac1ac3d4d97acbc809ccd72b, type: 3}
   _maxHP: 24
-  _speed: 1
+  _speed: 1.5
   _gemReward: 8
   _defaultWeapons:
   - runtimeEditable: 0

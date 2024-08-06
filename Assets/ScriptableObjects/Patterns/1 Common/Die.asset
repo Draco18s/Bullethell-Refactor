@@ -15,6 +15,7 @@ MonoBehaviour:
   _rarity: 1
   _description: Causes the bullet to die.
   _icon: {fileID: 1851684047, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _playableCopies: 2
   _preconfigured: 1
   _unique: 0
   _killOnComplete: 1

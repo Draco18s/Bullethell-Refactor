@@ -30,6 +30,7 @@ namespace Assets.draco18s.bulletboss.pattern
 		[SerializeField] protected NamedRarity _rarity;
 		[SerializeField] protected string _description;
 		[SerializeField] protected Sprite _icon;
+		[SerializeField] protected int _playableCopies = 1;
 		[SerializeField] protected bool _preconfigured;
 		[SerializeField] protected bool _unique = false;
 		[SerializeField] protected bool _killOnComplete = false;
@@ -40,6 +41,7 @@ namespace Assets.draco18s.bulletboss.pattern
 		public bool preconfigured => _preconfigured;
 		public bool unique => _unique;
 		public bool killOnComplete => _killOnComplete;
+		public int playableCopies => _playableCopies;
 #if UNITY_EDITOR
 		[UsedImplicitly]
 		private void OnValidate()

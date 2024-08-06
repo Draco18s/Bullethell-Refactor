@@ -11,6 +11,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			SerializedProperty unique = serializedObject.FindProperty("_unique");
 			SerializedProperty description = serializedObject.FindProperty("_description");
 			SerializedProperty icon = serializedObject.FindProperty("_icon");
+			SerializedProperty playableCopies = serializedObject.FindProperty("_playableCopies");
 			SerializedProperty preconfigured = serializedObject.FindProperty("_preconfigured");
 
 			SerializedProperty allowedChildren = serializedObject.FindProperty("_allowedChildrenClasses");
@@ -27,6 +28,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			EditorGUILayout.PropertyField(unique);
 			EditorGUILayout.PropertyField(description);
 			EditorGUILayout.PropertyField(icon);
+			EditorGUILayout.PropertyField(playableCopies);
 			EditorGUILayout.PropertyField(preconfigured);
 
 			if (preconfigured.boolValue)

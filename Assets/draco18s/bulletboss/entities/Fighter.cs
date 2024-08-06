@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
@@ -73,23 +74,15 @@ namespace Assets.draco18s.bulletboss.entities
 			currentHP = maximumHP = config.health;
 			speed = config.speed / 3f;
 			reward = config.gems;
-			float minDur = float.PositiveInfinity;
+			float delay = Random.value;
 			foreach (Timeline pat in config.weaponPatterns)
 			{
 				pat.DeserializeForRuntime();
-				AddGun(pat);
-				minDur = Mathf.Min(minDur, pat.GetDuration());
-			}
-
-			minDur = (Random.value * minDur / 3);
-			MountPoint[] guns = GetComponentsInChildren<MountPoint>();
-			foreach (MountPoint pat in guns)
-			{
-				pat.SetCurrentTime(minDur);
+				AddGun(pat,-delay);
 			}
 		}
 
-		public void AddGun(Timeline data)
+		public void AddGun(Timeline data, float delay)
 		{
 			GameObject mount = Instantiate(GameAssets.mountPointPrefab, transform);
 			mount.layer = gameObject.layer;
@@ -98,6 +91,7 @@ namespace Assets.draco18s.bulletboss.entities
 			data.DeserializeForRuntime();
 			data.InitOrReset(true);
 			b.SetPattern(data, true);
+			b.SetCurrentTime(delay);
 		}
 	}
 }

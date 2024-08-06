@@ -25,6 +25,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		//private Dictionary<int, PatternModule> functionalPattern => activeRuntimePattern.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.pattern);
 		private Dictionary<Card, CardUI> uiLookup;
 		private float currentTime;
+
 		public delegate void OnTimelineChanged();
 		[NonSerialized] public OnTimelineChanged onTimelineChanged = () => { };
 		private bool loopsOnTimelineEnd = true;
@@ -91,7 +92,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public void ResetForNewLoopIteration(Bullet shot)
 		{
-			currentTime = 0;
+			currentTime = Mathf.Min(currentTime,0);
 			InitOrReset(loopsOnTimelineEnd);
 			foreach (KeyValuePair<int, Card> module in activeRuntimePattern)
 			{
@@ -115,7 +116,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			activeRuntimePattern.Add(k, card.cardRef);
 			uiLookup.Add(activeRuntimePattern[k], card);
 			ValidateModules();
-			currentTime = 0;
+			currentTime = Mathf.Min(currentTime, 0);
 		}
 
 		public void RemoveModule(CardUI card)
@@ -126,7 +127,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			activeRuntimePattern.Remove(k, out Card m);
 			uiLookup.Remove(m);
 			ValidateModules();
-			currentTime = 0;
+			currentTime = Mathf.Min(currentTime, 0);
 		}
 
 		public void UpdateUIObj(Card module, CardUI cardUI)
@@ -242,7 +243,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				}
 				if(!b) break;
 			}
-
+			Debug.Log(currentTime);
 			currentTime += dt * _runSpeed;
 			bool completed = currentTime >= GetDuration();
 			if (!completed || !loopsOnTimelineEnd) return completed;

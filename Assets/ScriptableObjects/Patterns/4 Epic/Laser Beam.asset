@@ -15,6 +15,7 @@ MonoBehaviour:
   _rarity: 4
   _description: Rapidfiring beam weapon
   _icon: {fileID: -495188911, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  _playableCopies: 1
   _preconfigured: 0
   _unique: 0
   _killOnComplete: 0

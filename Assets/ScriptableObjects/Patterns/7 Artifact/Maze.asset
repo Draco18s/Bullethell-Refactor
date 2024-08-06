@@ -15,6 +15,7 @@ MonoBehaviour:
   _rarity: 7
   _description: Fires randomized walls with gaps
   _icon: {fileID: -1102161253, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _playableCopies: 1
   _preconfigured: 1
   _unique: 0
   _killOnComplete: 0

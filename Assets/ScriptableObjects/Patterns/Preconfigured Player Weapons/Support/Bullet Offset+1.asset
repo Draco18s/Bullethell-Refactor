@@ -15,6 +15,7 @@ MonoBehaviour:
   _rarity: 0
   _description: 
   _icon: {fileID: 0}
+  _playableCopies: 1
   _preconfigured: 0
   _unique: 0
   _killOnComplete: 0

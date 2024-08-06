@@ -15,6 +15,7 @@ MonoBehaviour:
   _rarity: 2
   _description: Moderate change in direction.
   _icon: {fileID: 389862214, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _playableCopies: 4
   _preconfigured: 0
   _unique: 0
   _killOnComplete: 0

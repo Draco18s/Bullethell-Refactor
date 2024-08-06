@@ -15,6 +15,7 @@ MonoBehaviour:
   _rarity: 2
   _description: Turns to a random direction over 1 second.
   _icon: {fileID: -721436081, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _playableCopies: 2
   _preconfigured: 1
   _unique: 0
   _killOnComplete: 0

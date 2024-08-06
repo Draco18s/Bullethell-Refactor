@@ -12,6 +12,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			SerializedProperty killOnComplete = serializedObject.FindProperty("_killOnComplete");
 			SerializedProperty description = serializedObject.FindProperty("_description");
 			SerializedProperty icon = serializedObject.FindProperty("_icon");
+			SerializedProperty playableCopies = serializedObject.FindProperty("_playableCopies");
 			SerializedProperty preconfigured = serializedObject.FindProperty("_preconfigured");
 
 			SerializedProperty changeType = serializedObject.FindProperty("changeType");
@@ -29,6 +30,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			EditorGUILayout.PropertyField(unique);
 			EditorGUILayout.PropertyField(description);
 			EditorGUILayout.PropertyField(icon);
+			EditorGUILayout.PropertyField(playableCopies);
 			EditorGUILayout.PropertyField(changeType);
 			EditorGUILayout.PropertyField(preconfigured);
 			EditorGUILayout.PropertyField(killOnComplete);

@@ -15,6 +15,7 @@ MonoBehaviour:
   _rarity: 0
   _description: Helpful module to provide a delay, particularly at the end of a loop.
   _icon: {fileID: -1400366468, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _playableCopies: 4
   _preconfigured: 0
   _unique: 0
   _killOnComplete: 0

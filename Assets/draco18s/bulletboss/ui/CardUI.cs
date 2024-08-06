@@ -18,6 +18,7 @@ namespace Assets.draco18s.bulletboss.ui
 
 		[SerializeField] private TextMeshProUGUI cardName;
 		[SerializeField] private TextMeshProUGUI cardDesc;
+		[SerializeField] private TextMeshProUGUI cardCount;
 		
 		[SerializeField] private Transform hoverTiltCenter;
 		[SerializeField] private Transform hoverPosCenter;
@@ -159,6 +160,9 @@ namespace Assets.draco18s.bulletboss.ui
 			tagName.text = cardRef.isEphemeral ? "Ephemeral" : cardRef.rarity.ToString();
 			tagName.color = cardRef.isEphemeral ? Color.white : cardRef.rarity.GetTextColor();
 			lastEphemeral = cardRef.isEphemeral;
+
+			cardCount.text = cardRef.count.ToString();
+			cardCount.transform.parent.gameObject.SetActive(cardRef.count > 1);
 		}
 
 		private void EditChildPattern()
@@ -241,7 +245,19 @@ namespace Assets.draco18s.bulletboss.ui
 
 			if (timeline!= null && timeline.CanAdd(this))
 			{
-				timeline.AddModule(this);
+				if (cardRef.count > 1)
+				{
+					CardUI newCardUi = Instantiate(gameObject, transform.parent).GetComponent<CardUI>();
+					newCardUi.SetData(new Card(cardRef.pattern, true));
+					timeline.AddModule(newCardUi);
+					transform.SetParent(CardHand.instance.transform);
+					cardRef.Reduce(1);
+					cardCount.text = cardRef.count.ToString();
+				}
+				else
+				{
+					timeline.AddModule(this);
+				}
 			}
 			else
 			{
