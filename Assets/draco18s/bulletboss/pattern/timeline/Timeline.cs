@@ -92,7 +92,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public void ResetForNewLoopIteration(Bullet shot)
 		{
-			currentTime = Mathf.Min(currentTime,0);
+			currentTime = Mathf.Min(currentTime, 0);
 			InitOrReset(loopsOnTimelineEnd);
 			foreach (KeyValuePair<int, Card> module in activeRuntimePattern)
 			{
@@ -163,8 +163,8 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 					nextOpen += Mathf.CeilToInt(module.pattern.duration * secondWidth);
 				}
 			}
-			
-			KeyValuePair<int, Card>[] tooFar = activeRuntimePattern.Where(kvp => kvp.Key > secondWidth*10).ToArray();
+
+			KeyValuePair<int, Card>[] tooFar = activeRuntimePattern.Where(kvp => kvp.Key > secondWidth * 10).ToArray();
 			foreach (KeyValuePair<int, Card> pair in tooFar)
 			{
 				if (uiLookup.TryGetValue(pair.Value, out CardUI ui))
@@ -188,10 +188,10 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 				//Debug.Log($"{activeRuntimeModifiers.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType).Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite)} => {b}");
 
-				
+
 
 				if (!uiLookup.TryGetValue(card, out CardUI uiCard)) continue;
-				
+
 				if (activeRuntimeModifiers
 					   .Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
 					   .Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) > 1)
@@ -199,14 +199,14 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 					uiCard.Disable("Cannot have two Sprite modifiers");
 				}
 				else if (activeRuntimeModifiers
-					         .Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
-					         .Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Color) > 1)
+							 .Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
+							 .Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Color) > 1)
 				{
 					uiCard.Disable("Cannot have two Color modifiers");
 				}
 				else if (activeRuntimeModifiers
-					         .Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
-					         .Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Aim) > 1)
+							 .Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
+							 .Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Aim) > 1)
 				{
 					uiCard.Disable("Cannot have two Aim modifiers");
 				}
@@ -221,7 +221,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public bool RuntimeUpdate(Bullet bullet, float dt)
 		{
-			if(activeRuntimePattern == null) return true;
+			if (activeRuntimePattern == null) return true;
 			foreach (Card m in activeRuntimeModifiers)
 			{
 				if (!m.isActive) continue;
@@ -229,21 +229,21 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			}
 			float secondWidth = ((RectTransform)TimelineUI.instance.transform).rect.width / 10;
 			int idx = Mathf.CeilToInt(currentTime * secondWidth);
-			
+
 			foreach (int k in activeRuntimePattern.Keys.OrderBy(x => x))
 			{
 				if (k > idx) break;
 				if (k != idx && k + activeRuntimePattern[k].pattern.duration > idx) continue;
 				bool b = activeRuntimePattern[k].pattern.DoShotStep(bullet, dt, out bool shouldRemove);
 				if (shouldRemove) bullet.DestroySelf(true);
-				if(b && activeRuntimePattern[k].pattern.duration < dt)
+				if (b && activeRuntimePattern[k].pattern.duration < dt)
 				{
 					idx++;
 					continue;
 				}
-				if(!b) break;
+				if (!b) break;
 			}
-			Debug.Log(currentTime);
+
 			currentTime += dt * _runSpeed;
 			bool completed = currentTime >= GetDuration();
 			if (!completed || !loopsOnTimelineEnd) return completed;
@@ -416,7 +416,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				if (v.moduleTypeOfThis != null)
 					o.Add(new JProperty("moduleTypeOfThis", CardLibrary.instance.GetModuleName(v.moduleTypeOfThis)));
 				if (v.activeRuntimePattern != null)
-					o.Add(new JProperty("timeline", JToken.FromObject(v.activeRuntimePattern.ToDictionary(k=>k.Key, k=>k.Value.pattern), serializer)));
+					o.Add(new JProperty("timeline", JToken.FromObject(v.activeRuntimePattern.ToDictionary(k => k.Key, k => k.Value.pattern), serializer)));
 				o.Add(new JProperty("overrideDuration", v.overrideDuration));
 				o.Add(new JProperty("activeModifiers", new JArray(v.activeRuntimeModifiers.Select(m => CardLibrary.instance.GetModuleName(m.timelineModifier)))));
 				o.WriteTo(writer);
@@ -432,7 +432,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 					runObj.activeRuntimePattern = jObject.GetValue("timeline").Value<Dictionary<int, PatternModule>>().ToDictionary(k => k.Key, k => new Card(k.Value));
 				runObj.overrideDuration = jObject.GetValue("overrideDuration").Value<float>();
 				runObj.activeRuntimeModifiers = jObject.GetValue("activeModifiers").Value<List<string>>().Select(k => new Card(CardLibrary.instance.GetModifierByName(k))).ToList();
-				
+
 				return runObj;
 			}
 

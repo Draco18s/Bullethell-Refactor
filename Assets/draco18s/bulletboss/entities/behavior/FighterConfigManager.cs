@@ -35,6 +35,7 @@ namespace Assets.draco18s.bulletboss.entities.behavior
 
 		public void DoUpdate(float dt)
 		{
+			return;
 			spawnTimer -= dt;
 			if (spawnTimer <= 0)
 			{

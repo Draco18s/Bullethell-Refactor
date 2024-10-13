@@ -17,7 +17,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 		private int minDamage = 1;
 
-		[UsedImplicitly]
+		/*[UsedImplicitly]
 		void OnTriggerEnter2D(Collider2D other)
 		{
 			if (other.gameObject.layer == LayerMask.NameToLayer("Powerups"))
@@ -27,13 +27,6 @@ namespace Assets.draco18s.bulletboss.entities
 			}
 			if (other.gameObject.layer == LayerMask.NameToLayer("EnemyBullets"))
 			{
-				/*if (other.GetComponent<Bullet>() == null)
-				{
-					Debug.Break();
-					Debug.Log(other.gameObject.name);
-					return;
-				}*/
-
 				var dmg = other.GetComponent<Bullet>().Damage;
 				dmg = Mathf.Max(dmg - armor, minDamage);
 				minDamage = 1 - minDamage;
@@ -43,7 +36,7 @@ namespace Assets.draco18s.bulletboss.entities
 				GameManager.instance.CheckGameOver(this);
 				gameObject.SetActive(false);
 			}
-		}
+		}*/
 
 		public void SetStats(PlayerProgress data, int mod)
 		{

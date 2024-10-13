@@ -56,7 +56,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseHP: 5
-  mountPointPrefab: {fileID: 5958129955437499781, guid: 51fe5c8cc34ce7b4ebf156930e08edc4, type: 3}
 --- !u!114 &6286037221075871277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,9 +78,9 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: fef4c652e8a621a4697a86635040324b, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: dd4910dfa482aae4787cc0ff7558f60a, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 2
+  m_BehaviorType: 0
   m_BehaviorName: Bullethell
   TeamId: 0
   m_UseChildSensors: 1
@@ -108,7 +107,11 @@ MonoBehaviour:
   gemPrefab: {fileID: 778798223601149580, guid: 90f559eaf6b265e4886244babee2533b, type: 3}
   bulletPrefab: {fileID: 778798223601149580, guid: 66acfc4adfdad6f49964b7bddc5653bd, type: 3}
   gameContainer: {fileID: 0}
-  drawDebug: 0
+  drawDebug: 1
+  deterministicDebug: 0
+  doMovement: 1
+  runInfiniteEpisode: 0
+  totalSteps: 0
 --- !u!114 &441775179200771016
 MonoBehaviour:
   m_ObjectHideFlags: 0

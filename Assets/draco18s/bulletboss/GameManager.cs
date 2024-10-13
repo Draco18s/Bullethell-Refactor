@@ -83,7 +83,7 @@ namespace Assets.draco18s.bulletboss
 		private void Update()
 		{
 			if (doHeatmap) HeatMapUpdate();
-			if(gameState == GameState.Combat)
+			if (gameState == GameState.Combat)
 				FighterConfigManager.instance.DoUpdate(Time.deltaTime);
 		}
 
@@ -176,7 +176,7 @@ namespace Assets.draco18s.bulletboss
 
 		private void DisplayStore()
 		{
-			
+
 		}
 
 		public void StartNewCombat(MapNode node)
@@ -185,7 +185,7 @@ namespace Assets.draco18s.bulletboss
 			bulletContainer.Clear();
 			if (node.locType.nodeType == MapNodeType.NormalEncounter || node.locType.nodeType == MapNodeType.Boss)
 			{
-				SetupPlayers(aiPlayerData, new[]{0});
+				SetupPlayers(aiPlayerData, new[] { 0 });
 			}
 			if (node.locType.nodeType == MapNodeType.FleetEncounter)
 			{
@@ -239,7 +239,7 @@ namespace Assets.draco18s.bulletboss
 			CardHand.instance.Discard(-1, true);
 			endTurnBtn.gameObject.SetActive(false);
 			aiPlayerContainer.gameObject.SetActive(true);
-			StartCoroutine(WaitFive());
+			//StartCoroutine(WaitFive());
 		}
 
 		private IEnumerator WaitFive()
@@ -256,14 +256,14 @@ namespace Assets.draco18s.bulletboss
 
 		public void CheckGameOver(Player player)
 		{
-			playerShips.Remove(player.gameObject);
+			/*playerShips.Remove(player.gameObject);
 			aiPlayerData.AddFinalGems(player.collectedGems, true);
 			if (playerShips.Count == 0)
 			{
 				aiPlayerContainer.gameObject.SetActive(false);
 				interfaceCanvas.enabled = false;
 				ShowMap();
-			}
+			}*/
 		}
 
 		public void CheckGameOver(BossEntity boss)
@@ -272,7 +272,7 @@ namespace Assets.draco18s.bulletboss
 			{
 				NewTurn();
 				Debug.Log("CheckGameOver");
-			} 
+			}
 		}
 	}
 }
