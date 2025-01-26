@@ -16,6 +16,7 @@ namespace Assets.draco18s.bulletboss.entities
 		public int collectedGems { get; protected set; } = 0;
 
 		private int minDamage = 1;
+		public bool isMoving = false;
 
 		/*[UsedImplicitly]
 		void OnTriggerEnter2D(Collider2D other)

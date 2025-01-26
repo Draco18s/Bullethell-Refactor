@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Assets.draco18s.util;
 using JetBrains.Annotations;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
-using Unity.Sentis;
-using Unity.Sentis.Layers;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 namespace Assets.draco18s.bulletboss.entities
 {
 	public class PlayerAgent : Agent
 	{
-		[SerializeField] private Player playerShip;
 		[SerializeField] private GameObject gemPrefab;
 		[SerializeField] private GameObject bulletPrefab;
 		[SerializeField] private Transform gameContainer;
@@ -35,7 +28,7 @@ namespace Assets.draco18s.bulletboss.entities
 		private int numGemsSpawned = -1;
 		private int gemsCollected = -1;
 		private float stunTimer = -1;
-		[SerializeField] private long totalSteps = 552000;
+		[SerializeField] private long totalSteps = 0;
 
 		private List<(Vector3, Vector3, Color)> debugLines = new List<(Vector3, Vector3, Color)>();
 
