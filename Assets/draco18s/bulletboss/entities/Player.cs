@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace Assets.draco18s.bulletboss.entities
 {
-	public class Player : MonoBehaviour
+	public class Player : MonoBehaviour, IHasSpeed
 	{
 		[SerializeField] private int baseHP;
+		[SerializeField] private float _speed;
 
 		public int currentHP { get; protected set; }
 		public int maximumHP { get; protected set; }
@@ -14,6 +15,8 @@ namespace Assets.draco18s.bulletboss.entities
 		public int maximumShield { get; protected set; }
 		public int armor { get; protected set; }
 		public int collectedGems { get; protected set; } = 0;
+
+		public float Speed => _speed;
 
 		private int minDamage = 1;
 		public bool isMoving = false;

@@ -53,7 +53,7 @@ namespace Assets.draco18s.bulletboss.entities
 		[UsedImplicitly]
 		private void Start()
 		{
-			speed = baseSpeed;
+			speed = Mathf.Max(baseSpeed, 0.1f);
 			serializedPattern.InitOrReset();
 			//pattern ??= Timeline.CloneFrom(serializedPattern);
 			pattern?.SetOverrideDuration(20);
@@ -74,7 +74,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 		}
 
-		private Vector2Int lastWrite = new Vector2Int(-1000,-1000);
+		private Vector2Int lastWrite = new Vector2Int(-1_000,-1_000);
 
 		private void OnUpdate(float dt)
 		{

@@ -58,7 +58,7 @@ namespace Assets.draco18s.bulletboss.ui
 		private void SaveRecurse(PatternModuleType so, int depth) {
 			string nm = so.name;
 			if (string.IsNullOrEmpty(nm)) nm = so.GetType().Name;
-			AssetDatabase.CreateAsset(so, $"Assets/ScriptableObjects/Export/{depth}_{nm}_{Mathf.FloorToInt(Random.value * 1000000).ToString().PadLeft(6, '0')}.asset");
+			AssetDatabase.CreateAsset(so, $"Assets/ScriptableObjects/Export/{depth}_{nm}_{Mathf.FloorToInt(Random.value * 1_000_000).ToString().PadLeft(6, '0')}.asset");
 			if (so is TimelinePatternModuleType timelineType)
 			{
 				foreach (PatternModuleType obj in timelineType.GetPattern().GetPatternObjects())

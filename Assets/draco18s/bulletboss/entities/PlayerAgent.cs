@@ -62,7 +62,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 			gameContainer.Clear();
 
-			int num = Mathf.FloorToInt(Random.value * 4 + Mathf.FloorToInt(totalSteps/750000f)) + 1 + Mathf.FloorToInt(totalSteps / 1500000f);
+			int num = Mathf.FloorToInt(Random.value * 4 + Mathf.FloorToInt(totalSteps/750_000f)) + 1 + Mathf.FloorToInt(totalSteps / 1_500_000f);
 
 			numGemsSpawned = spawnGems ? num : 0;
 			gemsCollected = 0;
@@ -77,7 +77,7 @@ namespace Assets.draco18s.bulletboss.entities
 				} while (Vector3.Distance(p, transform.localPosition) < 2.0f);
 				go.transform.localPosition = p;
 			}
-			num = Mathf.FloorToInt(Random.value * 6 + Mathf.FloorToInt((totalSteps-250000) / 500000f)) + 2 + Mathf.FloorToInt(totalSteps / 2000000f);
+			num = Mathf.FloorToInt(Random.value * 6 + Mathf.FloorToInt((totalSteps-250_000) / 500_000f)) + 2 + Mathf.FloorToInt(totalSteps / 2_000_000f);
 			for (int i = 0; i < num && spawnShots; i++)
 			{
 				GameObject go = Instantiate(bulletPrefab, gameContainer);
@@ -97,7 +97,7 @@ namespace Assets.draco18s.bulletboss.entities
 			}*/
 			totalSteps += MaxStep;
 			prevMove = Vector2.zero;
-			MaxStep = 3000;
+			MaxStep = 3_000;
 		}
 
 		private IEnumerator TryAgain()
@@ -154,7 +154,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 			List<Collider2D> padObj = objs.Where(c => c.gameObject.layer == l1).ToList();
 
-			IOrderedEnumerable<Collider2D> bul = padObj.PadRight(Mathf.Max(padObj.Count, 5)).OrderBy(a => a == null ? 100000 : Vector3.Distance(a.transform.localPosition.ReplaceZ(0), transform.localPosition.ReplaceZ(0)));
+			IOrderedEnumerable<Collider2D> bul = padObj.PadRight(Mathf.Max(padObj.Count, 5)).OrderBy(a => a == null ? 100_000 : Vector3.Distance(a.transform.localPosition.ReplaceZ(0), transform.localPosition.ReplaceZ(0)));
 
 			//int q = 0;
 			foreach (Collider2D b in bul.Take(3))
@@ -204,7 +204,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 			int l2 = LayerMask.NameToLayer("Powerups");
 			padObj = objs.Where(c => c.gameObject.layer == l2).ToList();
-			bul = padObj.PadRight(Mathf.Max(padObj.Count, 3)).OrderBy(a => a == null ? 100000 : Vector3.Distance(a.transform.position.ReplaceZ(0), transform.position.ReplaceZ(0)));
+			bul = padObj.PadRight(Mathf.Max(padObj.Count, 3)).OrderBy(a => a == null ? 100_000 : Vector3.Distance(a.transform.position.ReplaceZ(0), transform.position.ReplaceZ(0)));
 			foreach (Collider2D b in bul.Take(3))
 			{
 				if (b == null)

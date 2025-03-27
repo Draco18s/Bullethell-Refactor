@@ -111,7 +111,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				switch (patternType.changeType)
 				{
 					case ChangeType.Speed:
-						if (oldValue < -1000)
+						if (oldValue < -1_000)
 						{
 							oldValue = shot.speed;
 							val = Mathf.Lerp(oldValue, targetValue, t);
@@ -119,7 +119,7 @@ namespace Assets.draco18s.bulletboss.pattern
 						shot.ChangeSpeed(val);
 						break;
 					case ChangeType.Direction:
-						if (oldValue < -1000)
+						if (oldValue < -1_000)
 						{
 							oldValue = shot.transform.localEulerAngles.z;
 							targetValue = oldValue + newValue;
@@ -128,7 +128,7 @@ namespace Assets.draco18s.bulletboss.pattern
 						shot.ChangeRotation(val);
 						break;
 					case ChangeType.Size:
-						if (oldValue < -1000)
+						if (oldValue < -1_000)
 						{
 							oldValue = shot.transform.localScale.x;
 							val = Mathf.Lerp(oldValue, targetValue, t);

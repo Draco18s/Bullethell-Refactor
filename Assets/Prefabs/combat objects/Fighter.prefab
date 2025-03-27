@@ -117,9 +117,10 @@ MonoBehaviour:
     runtimeEditable: 0
     modifiers: []
     patternObjects:
-      keys: 
-      values: []
-  baseSpeed: 0
+      keys: 00000000
+      values:
+      - {fileID: 11400000, guid: 0acb1cf3687f31f429d45e8c56124593, type: 2}
+  baseSpeed: 1
   sprite: {fileID: 0}
   Damage: 1
 --- !u!1 &5854543614390376726

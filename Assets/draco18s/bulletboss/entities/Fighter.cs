@@ -20,7 +20,7 @@ namespace Assets.draco18s.bulletboss.entities
 		[UsedImplicitly]
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-			if (other.gameObject.layer == LayerMask.NameToLayer("PlayerBullets"))
+			/*if (other.gameObject.layer == LayerMask.NameToLayer("PlayerBullets"))
 			{
 				Bullet b = other.GetComponent<Bullet>();
 				currentHP -= b.Damage;
@@ -28,7 +28,7 @@ namespace Assets.draco18s.bulletboss.entities
 				b.DestroySelf();
 				if(currentHP <= 0)
 					DestroySelf();
-			}
+			}*/
 		}
 
 		[UsedImplicitly]

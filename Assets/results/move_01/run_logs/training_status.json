@@ -1,0 +1,65 @@
+{
+    "Mover": {
+        "checkpoints": [
+            {
+                "steps": 13498386,
+                "file_path": "results\\move_06\\Mover\\Mover-13498386.onnx",
+                "reward": null,
+                "creation_time": 1742724673.3210852,
+                "auxillary_file_paths": [
+                    "results\\move_06\\Mover\\Mover-13498386.pt"
+                ]
+            },
+            {
+                "steps": 13999930,
+                "file_path": "results\\move_06\\Mover\\Mover-13999930.onnx",
+                "reward": 1.376546441912651,
+                "creation_time": 1742725868.5591,
+                "auxillary_file_paths": [
+                    "results\\move_06\\Mover\\Mover-13999930.pt"
+                ]
+            },
+            {
+                "steps": 14499990,
+                "file_path": "results\\move_06\\Mover\\Mover-14499990.onnx",
+                "reward": 2.3237749804621157,
+                "creation_time": 1742727455.606764,
+                "auxillary_file_paths": [
+                    "results\\move_06\\Mover\\Mover-14499990.pt"
+                ]
+            },
+            {
+                "steps": 14999833,
+                "file_path": "results\\move_06\\Mover\\Mover-14999833.onnx",
+                "reward": 1.5524911866301583,
+                "creation_time": 1742728245.4197307,
+                "auxillary_file_paths": [
+                    "results\\move_06\\Mover\\Mover-14999833.pt"
+                ]
+            },
+            {
+                "steps": 15000190,
+                "file_path": "results\\move_06\\Mover\\Mover-15000190.onnx",
+                "reward": 1.5757075571455061,
+                "creation_time": 1742728245.4787652,
+                "auxillary_file_paths": [
+                    "results\\move_06\\Mover\\Mover-15000190.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 15000190,
+            "file_path": "results\\move_06\\Mover.onnx",
+            "reward": 1.5757075571455061,
+            "creation_time": 1742728245.4787652,
+            "auxillary_file_paths": [
+                "results\\move_06\\Mover\\Mover-15000190.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

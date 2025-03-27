@@ -200,6 +200,7 @@ namespace Assets.draco18s.bulletboss
 		{
 			aiPlayerContainer.Clear();
 			int i = -1;
+			MovementDecider primary = null;
 			foreach (int mod in modifiers)
 			{
 				GameObject go = Instantiate(GameAssets.aiPlayerObject, aiPlayerContainer);
@@ -212,7 +213,19 @@ namespace Assets.draco18s.bulletboss
 				}
 
 				go.GetComponent<Player>().SetStats(aiData, mod);
-				go.GetComponent<PlayerAgent>().SetContainer(bulletContainer);
+				go.GetComponentInChildren<PlayerAgent>()?.SetContainer(bulletContainer);
+				go.GetComponentInChildren<TargetDecider>()?.SetContainer(bulletContainer);
+				go.GetComponentInChildren<MovementDecider>()?.SetContainer(bulletContainer);
+
+				/*if (primary == null)
+				{
+					primary = go.GetComponentInChildren<MovementDecider>();
+					primary.primary = primary;
+				}
+				else
+				{
+					go.GetComponentInChildren<MovementDecider>().primary = primary;
+				}*/
 			}
 		}
 

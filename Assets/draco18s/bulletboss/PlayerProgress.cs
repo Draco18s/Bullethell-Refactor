@@ -19,7 +19,7 @@ namespace Assets.draco18s.bulletboss
 		public IReadOnlyList<MysteryTechType> advancedTech => _advancedTech;
 		private List<MysteryTechType> _advancedTech = new List<MysteryTechType>();
 
-		private int expToLevel = 1000;
+		private int expToLevel = 1_000;
 		private bool lastCombatWasKilled;
 
 		public void AddFinalGems(int gems, bool wasKilled)

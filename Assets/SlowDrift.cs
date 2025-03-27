@@ -16,7 +16,8 @@ public class SlowDrift : MonoBehaviour, IHasSpeed
 		{
 			return;
 		}
-		speed = Random.value/2 + 0.25f;
+
+		speed = Random.value/4 + 0.25f;
 		transform.RotateAround(transform.position, Vector3.forward, Mathf.Floor(Random.value*24) * 15);
 	}
     void FixedUpdate()
