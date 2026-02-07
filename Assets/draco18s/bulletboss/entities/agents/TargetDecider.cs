@@ -1,11 +1,15 @@
 using Assets.draco18s.util;
+using Google.Protobuf.WellKnownTypes;
 using JetBrains.Annotations;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 namespace Assets.draco18s.bulletboss.entities
 {
@@ -15,6 +19,7 @@ namespace Assets.draco18s.bulletboss.entities
 		[SerializeField] private bool drawDebug = false;
 		private Vector3 oobPos = new Vector3(0, 0, -10);
 
+		[SerializeField] private float rewardRatio = 2.25f;
 		private Vector3 prevPosition = Vector3.zero;
 		private const float perUpdateScore = 0.005f;
 
@@ -27,7 +32,8 @@ namespace Assets.draco18s.bulletboss.entities
 
 		MovementDecider md;
 		private float previousBestScore = -5_000;
-		private Vector3 previousBestTarget = new Vector3(0, 0, -10);
+		private Vector3 previousBestTarget = new Vector3(0, -10, 0);
+		private List<Vector3> lastTargets = new List<Vector3>();
 
 		public void AddReward(float amt, string reason)
 		{
@@ -41,6 +47,7 @@ namespace Assets.draco18s.bulletboss.entities
 				Debug.LogError($"Infinity passed to add reward '{reason}'");
 				return;
 			}
+			if (Mathf.Approximately(amt, 0)) return;
 			awards.TryAdd(reason, 0);
 			if (Mathf.Abs(awards[reason]) > 50 /*|| Mathf.Abs(amt)*3000 > 500*/)
 			{
@@ -69,7 +76,15 @@ namespace Assets.draco18s.bulletboss.entities
 			prevPosition = oobPos/10;
 			MaxStep = 3_000;
 			previousBestScore = -5_000;
-			previousBestTarget = oobPos;
+			previousBestTarget = new Vector3(0, -10, 0);
+
+			foreach (MountPoint mp in md.transform.GetComponentsInChildren<MountPoint>(true).PadRight(5))
+			{
+				mp.gameObject.SetActive(Random.value > 0.5f);
+			}
+
+			rewardRatio = Mathf.Max(rewardRatio - 0.005f, 0.1f); // ~1,140,000 steps
+			lastTargets.Clear();
 		}
 
 		public override void CollectObservations(VectorSensor sensor)
@@ -84,72 +99,59 @@ namespace Assets.draco18s.bulletboss.entities
 			sensor.AddObservation(prevPosition.x);
 			sensor.AddObservation(prevPosition.y);
 
-			/*IEnumerable<MountPoint> mounts = gameObject.GetComponentsInChildren<MountPoint>().PadRight(10);
-			foreach (MountPoint mount in mounts.Take(10))
-			{
-				if (mount == null)
-				{
-					sensor.AddObservation(Vector3.zero);
-					continue;
-				}
-				sensor.AddObservation(mount.transform.right);
-			}*/
-
 			int l1 = LayerMask.NameToLayer("EnemyBullets");
 
 			List<Collider2D> padObj = objs.Where(c => c.gameObject.layer == l1).ToList();
 
-			IOrderedEnumerable<Collider2D> bul = padObj.PadRight(50).OrderBy(a => a == null ? 100_000 : Vector3.Distance(a.transform.localPosition.ReplaceZ(0), transform.localPosition.ReplaceZ(0)));
+			IOrderedEnumerable<Collider2D> bul = padObj.PadRight(50).OrderBy(a => a == null ? 100_000 : Vector3.Distance(a.transform.position.ReplaceZ(0), md.transform.position.ReplaceZ(0)));
 
 			//int q = 0;
 			foreach (Collider2D b in bul.Take(35))
 			{
-				AddEnemyObservation(sensor, b);
+				AddBulletObservation(sensor, b);
 				padObj.Remove(b);
 			}
 
 			for (int i = 0; i < 15; i++)
 			{
 				Collider2D b = padObj.GetRandom();
-				AddEnemyObservation(sensor, b);
+				AddBulletObservation(sensor, b);
 				padObj.Remove(b);
 			}
 
 			IOrderedEnumerable<Collider2D> colliders;
-			/*l1 = LayerMask.NameToLayer("Enemy");
-
-			padObj = objs.Where(c => c.gameObject.layer == l1).ToList();
-
-			colliders = padObj.PadRight(25).OrderBy(a => a == null ? 100000 : Vector3.Distance(a.transform.localPosition.ReplaceZ(0), transform.localPosition.ReplaceZ(0)));
-
-			//int q = 0;
-			foreach (Collider2D b in colliders.Take(15))
-			{
-				AddEnemyObservation(sensor, b);
-				padObj.Remove(b);
-			}
-			for (int i = 0; i < 10; i++)
-			{
-				Collider2D b = padObj.GetRandom();
-				AddEnemyObservation(sensor, b);
-				padObj.Remove(b);
-			}*/
 
 			int l2 = LayerMask.NameToLayer("Powerups");
 			padObj = objs.Where(c => c.gameObject.layer == l2).ToList();
 			colliders = padObj.OrderBy(a => a == null ? 100_000 : a.transform.localPosition.y);
 			//foreach (Collider2D b in colliders.PadRight(5))
-			colliders = padObj.PadRight(5).OrderBy(a => a == null ? 100_000 : Vector3.Distance(md.transform.position.ReplaceZ(0), transform.position.ReplaceZ(0)));
+			colliders = padObj.PadRight(5).OrderBy(a => a == null ? 100_000 : Vector3.Distance(a.transform.position.ReplaceZ(0), md.transform.position.ReplaceZ(0)));
 			foreach (Collider2D b in colliders)
 			{
-				if (b == null)
+				AddPowerupObservation(sensor,b);
+				padObj.Remove(b);
+			}
+
+			//mounts
+			foreach (MountPoint mp in md.transform.GetComponentsInChildren<MountPoint>(true).PadRight(5))
+			{
+				if (mp == null || !mp.gameObject.activeSelf)
 				{
-					sensor.AddObservation(oobPos / 10f);
+					sensor.AddObservation(Vector3.up);
 					continue;
 				}
 
-				Vector3 v = (b.transform.localPosition).ReplaceZ(1);
-				sensor.AddObservation(v / 10f);
+				sensor.AddObservation(mp.transform.right.ReplaceZ(mp.GetShotSize()));
+			}
+
+			l1 = LayerMask.NameToLayer("Enemy");
+
+			padObj = objs.Where(c => c.gameObject.layer == l1).ToList();
+
+			colliders = padObj.PadRight(10).OrderBy(a => a == null ? 100000 : Vector3.Distance(a.transform.position.ReplaceZ(0), md.transform.position.ReplaceZ(0)));
+			foreach (Collider2D b in colliders.Take(10))
+			{
+				AddEnemyObservation(sensor, b);
 				padObj.Remove(b);
 			}
 		}
@@ -162,15 +164,30 @@ namespace Assets.draco18s.bulletboss.entities
 				return;
 			}
 
+			Vector3 v = (coll.transform.localPosition).ReplaceZ(1);
+			sensor.AddObservation(v / 10f);
+		}
+
+		private void AddBulletObservation(VectorSensor sensor, Collider2D coll)
+		{
+			if (coll == null)
+			{
+				sensor.AddObservation(oobPos / 10f);
+				sensor.AddObservation(Vector3.zero);
+				return;
+			}
+
 			float colliderSize = 0.1f;
 			if (coll is CircleCollider2D cir)
 			{
 				colliderSize = cir.radius;
 			}
 
-			Vector3 v = (coll.transform.localPosition - GetLocalPos()).ReplaceZ(coll.transform.localScale.x * colliderSize);
+			float bSpeed = coll.GetComponent<IHasSpeed>().Speed;
+			Vector3 v = (coll.transform.localPosition).ReplaceZ(coll.transform.localScale.x * colliderSize);
 
 			sensor.AddObservation(v / 10f);
+			sensor.AddObservation(coll.transform.right * bSpeed / 10);
 		}
 
 		private void AddEnemyObservation(VectorSensor sensor, Collider2D coll)
@@ -189,7 +206,7 @@ namespace Assets.draco18s.bulletboss.entities
 			}
 
 			float bSpeed = coll.GetComponent<IHasSpeed>().Speed;
-			Vector3 v = (coll.transform.localPosition - GetLocalPos()).ReplaceZ(coll.transform.localScale.x * colliderSize);
+			Vector3 v = (coll.transform.localPosition).ReplaceZ(colliderSize);
 
 			sensor.AddObservation(v / 10f);
 			sensor.AddObservation(coll.transform.right * bSpeed / 10);
@@ -204,6 +221,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 			var obs = GetObservations().Skip(2).ToArray();
 
+
 			if (target.x < -8f || target.x > 8f || target.y < -2f || target.y > 2f)
 			{
 				target = new Vector3(Mathf.Clamp(target.x, -8.5f, 8.5f), Mathf.Clamp(target.y, -2.5f, 2.5f), target.z);
@@ -211,33 +229,11 @@ namespace Assets.draco18s.bulletboss.entities
 				//target = ntarget;
 				//controlSignal = (target - GetLocalPos())/10f;
 			}
-
-			Color col2 = Color.yellow;
-			float s;
-			s = 1 - Mathf.Clamp(Mathf.Abs(target.x - -8.5f), 0, 1);
-			col2.a = s * s;
-			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f, "-X edge");
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.left * 1, (s < 0.001 ? Color.clear : (controlSignal.x < 0.05 ? Color.red : col2)), 0.02f);
-
-			s = 1 - Mathf.Clamp(Mathf.Abs(target.x - 8.5f), 0, 1);
-			col2.a = s * s;
-			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f, "+X edge");
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.right * 1, (s < 0.001 ? Color.clear : (controlSignal.x > -0.05 ? Color.red : col2)), 0.02f);
-
-			s = 1 - Mathf.Clamp(Mathf.Abs(target.y - -2.5f), 0, 1);
-			col2.a = s * s;
-			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f, "-Y edge");
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.down * 1, (s < 0.001 ? Color.clear : (controlSignal.y < 0.05 ? Color.red : col2)), 0.02f);
-
-			s = 1 - Mathf.Clamp(Mathf.Abs(target.y - 2.5f), 0, 1);
-			col2.a = s * s;
-			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f, "+Y edge");
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.up * 1, (s < 0.001 ? Color.clear : (controlSignal.y > -0.05 ? Color.red : col2)), 0.02f);
-
+			lastTargets.Add(target);
+			if (lastTargets.Count > 5)
+			{
+				lastTargets.RemoveAt(0);
+			}
 			//target += GetLocalPos();
 
 			/*List<Vector3> mounts = new List<Vector3>();
@@ -254,8 +250,8 @@ namespace Assets.draco18s.bulletboss.entities
 				_speed = 3;
 			}
 
-			float score = CalcScore(obs, target + GetLocalPos(), true);
-			previousBestScore = CalcScore(obs, previousBestTarget + GetLocalPos(), false);
+			float score = CalcScore(obs, target, true);
+			previousBestScore = CalcScore(obs, previousBestTarget, false);
 
 			/*if (prevPosition.y > -1 && md.trainingTargetLocation.y > -10)
 			{
@@ -275,83 +271,163 @@ namespace Assets.draco18s.bulletboss.entities
 			if (previousBestScore > score)
 			{
 				AddReward(-perUpdateScore * Vector3.Distance(prevPosition, controlSignal) * 5, "-s(prev)");
+				//AddReward(-perUpdateScore * Mathf.Sqrt(Mathf.Max(Vector3.Distance(prevPosition, controlSignal), 1)) * 0.333f, "-s(prev)");
 			}
 
 			if (previousBestScore < score)
 			{
 				previousBestScore = score;
-				md.targetLocation = target;
+				//md.targetLocation = target;
 				previousBestTarget = target;
-				if(previousBestScore > -1000)
-					md.AddReward(perUpdateScore * 5, "Better");
-				AddReward( perUpdateScore * Vector3.Distance(prevPosition, controlSignal), "+s(prev)");
+				//if(previousBestScore > -1000)
+				//	AddReward(perUpdateScore * 5, "Better");
+				AddReward( perUpdateScore * Vector3.Distance(prevPosition, controlSignal) * 5, "+s(prev)");
+				foreach (MovementDecider _md in FindObjectsOfType<MovementDecider>())
+				{
+					if(_md.totalSteps > 250_000)
+						_md.targetLocation = target;
+				}
 			}
-			prevPosition = (previousBestTarget)/10f;
+			prevPosition = (previousBestTarget) /10f;
 		}
 
 		private float CalcScore(float[] obs, Vector3 target, bool record)
 		{
 			if (obs.Length == 0) return 0;
 
-			float m1 = Mathf.Clamp(PoissonReward1(Vector3.Distance(md.targetLocation, target)), -1, 1);
-			float m2 = Mathf.Clamp(PoissonReward2(Vector3.Distance(target, md.transform.localPosition)), -1, 1);
-			float a1 = -1;
-			float a2 = 1;
+			float edgeScores = 0;
+
+			Color col2 = Color.yellow;
+			float s;
+			s = 1 - Mathf.Clamp(target.x - -8.5f, 0, 1);
+			col2.a = s * s;
+
+			if (s > 0)
+			{
+				edgeScores += -perUpdateScore * s * s * 2.5f * Mathf.Clamp(rewardRatio, 0.1f, 1);
+				if (record)
+					AddReward(-perUpdateScore * s * s * 2.5f * Mathf.Clamp(rewardRatio, 0.1f, 1), "-X edge");
+			}
+
+			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.left * 1, col2, 0.02f);
+
+			s = 1 - Mathf.Clamp(8.5f - target.x, 0, 1);
+			col2.a = s * s;
+			if (s > 0)
+			{
+				edgeScores += -perUpdateScore * s * s * 2.5f * Mathf.Clamp(rewardRatio, 0.1f, 1);
+				if (record)
+					AddReward(-perUpdateScore * s * s * 2.5f * Mathf.Clamp(rewardRatio, 0.1f, 1), "+X edge");
+			}
+
+			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.right * 1, col2, 0.02f);
+
+			s = 1 - Mathf.Clamp((target.y - -2.5f) * 2, 0, 1);
+			col2.a = s * s;
+			if (s > 0)
+			{
+				edgeScores += -perUpdateScore * s * s * 3.5f * Mathf.Clamp(rewardRatio, 0.1f, 1);
+				if (record)
+					AddReward(-perUpdateScore * s * s * 3.5f * Mathf.Clamp(rewardRatio, 0.1f, 1), "-Y edge");
+			}
+
+			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.down * 1, col2, 0.02f);
+
+			s = 1 - Mathf.Clamp((2.5f - target.y) * 2, 0, 1);
+			col2.a = s * s;
+			if (s > 0)
+			{
+				edgeScores += -perUpdateScore * s * s * 3.5f * Mathf.Clamp(rewardRatio, 0.1f, 1);
+				if (record)
+					AddReward(-perUpdateScore * s * s * 3.5f * Mathf.Clamp(rewardRatio, 0.1f, 1), "+Y edge");
+			}
+
+			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.up * 1, col2, 0.02f);
+
+			//float m1 = Mathf.Clamp(PoissonReward1(Vector3.Distance(md.targetLocation, target)), -1, 1);
+			//float m2 = Mathf.Clamp(PoissonReward2(Vector3.Distance(target, md.transform.localPosition)), -1, 1);
+			
 			float b1 = 1_000;
-			float b2 = 1_000;
-			Vector3 nearestBulletCur = oobPos;
+			float b2 = 0;
+			int bCt = 0;
+			//Vector3 nearestBulletCur = oobPos;
 			Vector3 nearestBulletPred = oobPos;
 
 			int j = 0;
 
 			for (int i = 0; i < 50 * 6; (i, j) = (i + 6, j + 6)) // 50 bullets
 			{
-				Vector3 pos = new Vector3(obs[j + 0], obs[j + 1], obs[j + 2]) * 10f;
-				if (Vector3.Distance(pos, oobPos) < 0.1f) continue;
-				pos = pos.ReplaceZ(0);
-				pos += GetLocalPos();
+				Vector3 pos = new Vector3(obs[j + 0], obs[j + 1], 0) * 10f;
+				float size = obs[j + 2];
+				if (size <= 0) continue;
+
 				Vector3 vel = new Vector3(obs[j + 3], obs[j + 4], 0) * 10f;
 
-				Vector3 pred = pos + vel * Vector3.Distance(target, md.transform.localPosition) / (_speed / 2);
+				float tSec = Vector3.Distance(target, md.transform.localPosition) / (_speed / 2);
 
-				Vector3 dif = pred - target;
-				float df = dif.magnitude / 20;
+				Vector3 pred = pos + vel * tSec * 3f;
 
-				if (b1 > df)
+				Vector3 intersect = GetClosestPointOnLineSegment(pos, pred, target);
+
+				Vector3 dif1 = intersect - target;
+				float df1 = dif1.magnitude / 20;
+				Vector3 dif2 = pred - target;
+				float df2 = dif2.magnitude / 20;
+				Vector3 dif3 = pos - target;
+				float df3 = dif3.magnitude / 20;
+
+				if (b1 > df1)
 				{
-					nearestBulletPred = pred;
-					nearestBulletCur = pos;
+					nearestBulletPred = intersect;
+					//nearestBulletCur = pos;
 				}
 
-				b1 = Mathf.Min(b1, df);
-				b2 = Mathf.Min(b2, df);
+				if(float.IsNormal(df1))
+					b1 = Mathf.Min(b1, df1);
+				if(df1 < 1 || df2 < 1 || df3 < 1)
+				{
+					b2 += Mathf.Min(float.IsNormal(df1) ? df1 : 0 * 3, float.IsNormal(df2) ? df2 : 0 * 3, float.IsNormal(df3) ? df3 : 0 * 3);
+					bCt++;
+				}
 			}
-
-			b1 = Mathf.Min(b1, b2);
 
 			if (b1 > 999)
 				b1 = 0;
-			else if(b1 < 1)
-				b1 = -b1*5;
-			if (b2 < 1)
-				b2 = -b2 * 5;
+			b1 = Mathf.Clamp(b1*20, 0, 1f);
 
+			if(bCt > 0)
+				b2 /= bCt;
 			float m3 = 0;
 			float m4 = 0;
 			float m5 = 1_000;
+			float m6 = 0;
+
 			for (int i = 0; i < 5 * 3; (i, j) = (i + 3, j + 3)) // 5 gems
 			{
-				Vector3 pos = new Vector3(obs[j + 0], obs[j + 1], obs[j + 2]) * 10f;
-				if (Vector3.Distance(pos, oobPos) < 0.1f) continue;
-				pos = pos.ReplaceZ(0);
+				Vector3 pos = new Vector3(obs[j + 0], obs[j + 1], 0) * 10f;
+				float value = obs[j + 2];
+				if (value <= 0) continue;
 				m4++;
-				pos += GetLocalPos();
 				float d = Vector3.Distance(pos, target);
-				m3 += Mathf.Clamp(Mathf.Sqrt(d / 20), 0, 0.6f);
-				m5 = Mathf.Min(m5, d / 20);
+				if (d < 0.5f)
+				{
+					m6 = Mathf.Max(1 / (d + 1f), m6);
+				}
 
-				Color col = new Color(Mathf.Clamp01(d * d / 100), 1 - Mathf.Clamp01(d * d / 100), 0);
-				if (drawDebug && record)  Debug.DrawLine(pos, target, col, 0.02f);
+				if (d >= 8 && i > 0) continue;
+
+				m3 += Mathf.Clamp(Mathf.Sqrt(Mathf.Max(d - (i / 4f), 0f) / 20), 0, 0.6f);
+				m5 = Mathf.Min(m5, d / 20);
+				Color col = new Color(0, 1 - Mathf.Clamp01(d * d / 100), 0, 2f / Time.timeScale);
+				if (drawDebug && record) Debug.DrawLine(pos + GetLocalPos(), target + GetLocalPos(), col, 0.02f);
+
+				Vector3 intersect = GetClosestPointOnLineSegment(md.LocalPos, target + GetLocalPos(), pos + GetLocalPos());
+				float distInt = Vector3.Distance(md.LocalPos, intersect);
+				float distPos = Vector3.Distance(pos + GetLocalPos(), intersect);
+				if (distPos < 0.3f && distInt < Vector3.Distance(md.LocalPos, target + GetLocalPos()) && distInt < Vector3.Distance(target + GetLocalPos(), intersect))
+				{
+					m6 = Mathf.Max(1 / (distPos + 1), m6);
+				}
 			}
 
 			if (m4 > 0)
@@ -363,27 +439,69 @@ namespace Assets.draco18s.bulletboss.entities
 				float d = Vector3.Distance(target, Vector3.zero + GetLocalPos());
 				m3 = Mathf.Clamp(Mathf.Sqrt(d / 20), 0, 0.6f);
 				m5 = Mathf.Clamp(d / 20, 0, 1);
+				//m3 = Mathf.Clamp(Mathf.Sqrt(d)/4.5f, 0, 0.9f);
+				//m5 = Mathf.Clamp(d / 5, 0, 1);
+				Color col = new Color(Mathf.Clamp01(d * d / 100), 1 - Mathf.Clamp01(d * d / 100), 0, 2f / Time.timeScale);
+				if (drawDebug && record) Debug.DrawLine(Vector3.zero + GetLocalPos(), target + GetLocalPos(), col, 0.02f);
 			}
+
+			List<Vector3> mounts = new List<Vector3>();
+			for (int i = 0; i < 5 * 3; (i, j) = (i + 3, j + 3)) // 5 gun mounts
+			{
+				Vector3 dir = new Vector3(obs[j + 0], obs[j + 1], obs[j + 2]);
+				mounts.Add(dir);
+			}
+
+			mounts = mounts.Distinct().ToList();
+			float aim1 = 1_000;
+			for (int i = 0; i < 10 * 6; (i, j) = (i + 6, j + 6)) // 10 enemies
+			{
+				Vector3 pos = new Vector3(obs[j + 0], obs[j + 1], 0) * 10f;
+				Vector3 vel = new Vector3(obs[j + 3], obs[j + 4], obs[j + 5]) * 10f;
+				float size = obs[j + 2]*10;
+				float aim2 = 1_000;
+				if (obs[j + 2] <= 0 || m4 > 0)
+					continue;
+				foreach (Vector3 mpDir in mounts)
+				{
+					//float nDist = Mathf.Min(Mathf.Max((pos - mv).magnitude - size - 0.1f, 0.1f), 0.95f);
+					float arc = (size+mpDir.z) / Mathf.PI * 2;
+					float d2 = Vector2.Angle((pos - target).normalized, mpDir.ReplaceZ(0));
+					d2 /= 180;
+					float d3 = Mathf.Clamp(d2 - arc, -1f, 1f);
+					aim2 = Mathf.Min(d3, aim2);
+					if (drawDebug && record)
+					{
+						if (d3 < 0)
+						{
+							d3 = -d3;
+							Debug.DrawLine(target + GetLocalPos(), target + mpDir + GetLocalPos(), new Color(d3 * 2, 1 - d3, 0, 3f / Time.timeScale), 0.02f);
+						}
+						else
+						{
+							Debug.DrawLine(target + GetLocalPos(), target + mpDir + GetLocalPos(), new Color(d3 + 0.25f, 1 - d3 * 2, 0, 3f / Time.timeScale), 0.02f);
+						}
+					}
+				}
+				aim1 = Mathf.Min(aim1, aim2);
+			}
+
+			aim1 = Mathf.Clamp(aim1, -1, 1);
 
 			float rm3 = m3;
 			float rm5 = m5;
 
 			m3 = Mathf.Pow(m3, 2.5f);
-			m5 = Mathf.Pow(m5, 2.5f);
+			m5 = Mathf.Pow(Mathf.Clamp(rm5, 0, 2), 2.5f);
+			aim1 = Mathf.Sign(aim1) * Mathf.Pow(Mathf.Abs(aim1)*1.5f, 2.5f);
 
 			if (drawDebug && record)
 			{
-				Color col;// = new Color(Mathf.Clamp01(m1 / 2f + 0.5f), 1 - Mathf.Clamp01(m1 / 2f + 0.5f), 0);
-						  //Debug.DrawLine(target, md.targetLocation, col, 0.02f);
+				Color col;
+				col = new Color(Mathf.Clamp01(rm5), 1 - Mathf.Clamp01(rm3), b2);
+				DrawCircle(target + GetLocalPos(), 18, 0.15f, col);
 
-				//col = new Color(b1/20, 0, 0);
-				//Debug.DrawLine(target + Vector3.left * .25f, target + Vector3.right * .25f, col, 0.02f);
-				//Debug.DrawLine(target + Vector3.up * .25f, target + Vector3.down * .25f, col, 0.02f);
-
-				//col = new Color(0, 0, Mathf.Clamp01(m2 * 10 + 0.5f));
-				//Debug.DrawLine(target, md.transform.position, col, 0.02f);
-				col = new Color(Mathf.Clamp01(rm5), 1 - Mathf.Clamp01(rm3), Mathf.Clamp01(b1));
-				DrawCircle(target, 18, 0.15f, col);
+				Debug.DrawLine(target + GetLocalPos(), nearestBulletPred + GetLocalPos(), new Color(1- (b1 / 2.5f), 0, 0, Mathf.Clamp01(5f / Time.timeScale)), 0.02f);
 			}
 
 			if (drawDebug && !record)
@@ -397,13 +515,42 @@ namespace Assets.draco18s.bulletboss.entities
 				//AddReward( perUpdateScore * m1 * 1, "delta-p Targ");
 				//AddReward( perUpdateScore * m2 * 1, "s(Targ)");
 				AddReward(-perUpdateScore * m3 * 0.05f, "s(Gems)");
-				AddReward(-perUpdateScore * m5 * 0.1f, "min(sGems)");
-				//AddReward( perUpdateScore * a1 * 1, "angle Targ");
-				//AddReward( perUpdateScore * a2 * 2, "cumm angle");
-				AddReward( perUpdateScore * Mathf.Abs(b1) * b1 * 10f, "s(Bullet)");
+				AddReward(-perUpdateScore * m5 * 0.3f, "min(sGems)");
+				AddReward( perUpdateScore * m6 * Mathf.Clamp(rewardRatio, 0.1f, 1) * 5, "nailed");
+				AddReward(-perUpdateScore * b1 * b1 * 0.1f, "s(Bullet)");
+				AddReward(-perUpdateScore * Mathf.Clamp01(target.y) * 0.15f, "y");
+				//AddReward(-perUpdateScore * b2 / 5, "sAvg(Bullet)");
+				AddReward( perUpdateScore * Mathf.Abs(aim1) * (aim1 < 0 ? -2 : 0) * Mathf.Clamp(1 - rewardRatio, 0.1f, 1), "t-aim");
 			}
 
-			return (-perUpdateScore * m3 * 0.1f) + (-perUpdateScore * m5 * 0.5f) + (-perUpdateScore * b1 * 0.01f);
+			;
+			return (-perUpdateScore * m3 * 0.05f) + (-perUpdateScore * m5 * 0.3f) + (perUpdateScore * m6 * Mathf.Clamp(rewardRatio, 0.1f, 1) * 5)
+			       + (perUpdateScore * Mathf.Abs(b1) * b1 * 0.1f) + (-perUpdateScore * Mathf.Clamp01(target.y) * 0.05f) 
+			       + (perUpdateScore * Mathf.Abs(aim1) * (aim1 < 0 ? -2f : 0) * Mathf.Clamp(1 - rewardRatio, 0.1f, 1)) + edgeScores;
+		}
+
+		private static Vector2 GetClosestPointOnLineSegment(Vector2 A, Vector2 B, Vector2 P)
+		{
+			Vector2 AP = P - A;       //Vector from A to P   
+			Vector2 AB = B - A;       //Vector from A to B  
+
+			float magnitudeAB = AB.sqrMagnitude;        //Magnitude of AB vector (it's length squared)     
+			float ABAPproduct = Vector2.Dot(AP, AB);    //The DOT product of a_to_p and a_to_b     
+			float distance = ABAPproduct / magnitudeAB; //The normalized "distance" from a to your closest point  
+
+			if (distance < 0)     //Check if P projection is over vectorAB     
+			{
+				return A;
+
+			}
+			else if (distance > 1)
+			{
+				return B;
+			}
+			else
+			{
+				return A + AB * distance;
+			}
 		}
 
 		private Vector3 GetLocalPos()
@@ -415,13 +562,14 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			float angle = 2 * Mathf.PI / seg;
 			Vector3 last = new Vector3(1, 0, 0);
-			for (float a = 0; a < 360; a += angle)
+			for (float a = 0; a < 2 * Mathf.PI; a += angle)
 			{
 				Vector3 p1 = new Vector3(Mathf.Cos(a), Mathf.Sin(a));
 				//debugLines.Add((last*rad+point,p*rad+point,col));
 				Debug.DrawLine(last * rad + point, p1 * rad + point, col, 0.02f);
 				last = p1;
 			}
+			Debug.DrawLine(last * rad + point, new Vector3(1, 0, 0) * rad + point, col, 0.02f);
 		}
 
 
@@ -470,6 +618,32 @@ namespace Assets.draco18s.bulletboss.entities
 		public void SetContainer(Transform bulletContainer)
 		{
 			gameContainer = bulletContainer;
+		}
+
+		public void FighterDamaged(Vector3 p)
+		{
+			float mult = 1;//10 - (md.totalSteps / 1_500_000f);
+			foreach (Vector3 v in lastTargets)
+			{
+				if (Vector3.Distance(v, md.LocalPos) < 0.5f)
+				{
+					AddReward(perUpdateScore * mult, "dmg");
+				}
+			}
+
+			if (md.totalSteps > 1_000_000 && Random.value < 0.1f)
+			{
+				md.SpawnGem(p + (Vector3)Random.insideUnitCircle * 0.5f);
+			}
+		}
+
+		public void GemLost()
+		{
+			if (md.totalSteps < 700_000) return;
+			if (Vector3.Distance(md.targetLocation, md.LocalPos) < 0.3f)
+			{
+				//AddReward(-perUpdateScore * 10f, "gem lost");
+			}
 		}
 	}
 }

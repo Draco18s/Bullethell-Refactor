@@ -36,10 +36,10 @@ public class SlowDrift : MonoBehaviour, IHasSpeed
 		transform.localPosition = transform.localPosition.ReplaceX(Mathf.Clamp(transform.localPosition.x, -9, 9)).ReplaceY(Mathf.Clamp(transform.localPosition.y, -5, 5));
     }
 
-	public void SpecialSetup(float rot, float speed)
+	public void SpecialSetup(float rot, float spd)
 	{
-		this.speed = speed;
-		transform.RotateAround(transform.position, Vector3.forward, Mathf.Floor(rot / 15) * 15);
-		hasInit = true;
+		Init();
+		this.speed = spd;
+		//transform.RotateAround(transform.position, Vector3.forward, Mathf.Floor(rot / 15) * 15);
 	}
 }

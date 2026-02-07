@@ -21,6 +21,11 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern.SetMaxChildren(1);
 		}
 
+		public float GetShotSize()
+		{
+			return pattern?.bulletPrefab?.GetComponent<CircleCollider2D>()?.radius ?? 0.15f;
+		}
+
 		public override void DestroySelf(bool ignorePenetration=false)
 		{
 		}

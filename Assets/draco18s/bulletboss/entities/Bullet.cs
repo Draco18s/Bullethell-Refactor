@@ -48,6 +48,7 @@ namespace Assets.draco18s.bulletboss.entities
 		public float speed { get; protected set; }
 
 		public float Speed => speed;
+
 		public int Damage = 1;
 
 		[UsedImplicitly]
@@ -207,5 +208,7 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			return true;
 		}
+
+		public void SpecialSetup(float rot, float spd) { }
 	}
 }

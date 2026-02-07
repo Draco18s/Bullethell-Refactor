@@ -29,6 +29,10 @@ namespace Assets.draco18s.bulletboss.entities
 				if(currentHP <= 0)
 					DestroySelf();
 			}*/
+			if (other.gameObject.layer == LayerMask.NameToLayer("PlayerBullets"))
+			{
+				transform.parent.parent.GetComponentInChildren<TargetDecider>().FighterDamaged(transform.localPosition);
+			}
 		}
 
 		[UsedImplicitly]

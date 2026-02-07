@@ -9,5 +9,7 @@ namespace Assets.draco18s.bulletboss.entities
 	internal interface IHasSpeed
 	{
 		float Speed { get; }
+
+		void SpecialSetup(float rot, float spd);
 	}
 }

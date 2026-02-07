@@ -61,5 +61,7 @@ namespace Assets.draco18s.bulletboss.entities
 			MountPoint b = mount.GetComponent<MountPoint>();
 			b.Damage = (int)Mathf.Max(data.damageLevel + mod/2f, 1);
 		}
+
+		public void SpecialSetup(float rot, float spd) { }
 	}
 }
