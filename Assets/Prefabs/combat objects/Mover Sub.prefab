@@ -77,10 +77,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 2162586255025275986}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fafcc64b4b9e4e408d20c0c35286653, type: 3}
+  m_Script: {fileID: 11500000, guid: d7a5005394be6404aba5e6f6ac6c59d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 3000
+  MaxStep: 0
+  subTrainerPrefab: {fileID: 0}
+  gemPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 0}
+  fighterPrefab: {fileID: 0}
+  gameContainer: {fileID: 0}
+  drawDebug: 0
+  textDebug: 0
+  deterministicDebug: 0
+  doMovement: 1
+  runInfiniteEpisode: 0
+  targetLocation: {x: 0, y: 0, z: 0}
+  rewardRatio: 2.25
+  totalSteps: 0

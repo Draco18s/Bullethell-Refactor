@@ -639,7 +639,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 		public void GemLost()
 		{
-			if (md.totalSteps < 700_000) return;
+			if (md == null || md.totalSteps < 700_000) return;
 			if (Vector3.Distance(md.targetLocation, md.LocalPos) < 0.3f)
 			{
 				//AddReward(-perUpdateScore * 10f, "gem lost");
