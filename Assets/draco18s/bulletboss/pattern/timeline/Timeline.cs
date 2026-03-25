@@ -143,13 +143,20 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public void ValidateModules()
 		{
-			int nextOpen = 0;
+			int nextOpenSpawn = 0;
+			int nextOpenChange = 0;
 			float secondWidth = ((RectTransform)TimelineUI.instance.transform).rect.width / 10;
-			foreach (int k in activeRuntimePattern.Keys.OrderBy(x => x))
+			foreach (int k in activeRuntimePattern.Keys.OrderBy(x => x).ToArray())
 			{
-				if (k >= nextOpen)
+				Card card = activeRuntimePattern[k];
+				bool isChangeType = card.pattern.patternTypeData is ChangeModuleType;
+				if (k >= nextOpenChange && isChangeType)
 				{
-					nextOpen = k + Mathf.CeilToInt(activeRuntimePattern[k].pattern.duration * secondWidth);
+					nextOpenChange = k + Mathf.CeilToInt(card.pattern.duration * secondWidth);
+				}
+				else if (k >= nextOpenSpawn && !isChangeType)
+				{
+					nextOpenSpawn = k + Mathf.CeilToInt(card.pattern.duration * secondWidth);
 				}
 				else
 				{
@@ -157,10 +164,27 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 					CardUI m = uiLookup[module];
 					if (m == null) continue;
 					Vector3 p = m.gameObject.transform.localPosition;
-					m.gameObject.transform.localPosition = new Vector3(nextOpen, p.y, p.z);
+
+					if (m.cardRef.pattern.patternTypeData is ChangeModuleType pType)
+					{
+						p = p.ReplaceY(p.y + 10);
+					}
+					else
+					{
+						p = p.ReplaceY(p.y - 10);
+					}
+
+					m.gameObject.transform.localPosition = new Vector3((isChangeType ? nextOpenChange : nextOpenSpawn), p.y, p.z);
 					m.gameObject.transform.SetAsFirstSibling();
 					activeRuntimePattern.Add((int)m.gameObject.transform.localPosition.x, module);
-					nextOpen += Mathf.CeilToInt(module.pattern.duration * secondWidth);
+					if (isChangeType)
+					{
+						nextOpenChange = k + Mathf.CeilToInt(module.pattern.duration * secondWidth);
+					}
+					else if (k >= nextOpenSpawn)
+					{
+						nextOpenSpawn = k + Mathf.CeilToInt(module.pattern.duration * secondWidth);
+					}
 				}
 			}
 
@@ -187,8 +211,6 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 					.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) <= 1;
 
 				//Debug.Log($"{activeRuntimeModifiers.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType).Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite)} => {b}");
-
-
 
 				if (!uiLookup.TryGetValue(card, out CardUI uiCard)) continue;
 

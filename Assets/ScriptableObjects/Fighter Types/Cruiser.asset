@@ -22,5 +22,5 @@ MonoBehaviour:
     patternObjects:
       keys: 0000000014000000
       values:
-      - {fileID: 11400000, guid: a2ad7a9c76954e147a39dbc6e80406b8, type: 2}
+      - {fileID: 11400000, guid: 1b24a4586db0d51469235d243c9106b1, type: 2}
       - {fileID: 11400000, guid: f421e2ba724434d44a0d4bc30f0d6113, type: 2}

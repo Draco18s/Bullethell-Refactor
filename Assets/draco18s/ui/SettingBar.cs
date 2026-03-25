@@ -25,7 +25,7 @@ namespace Assets.draco18s.ui
 			target += data.delta;
 
 			changeBar.sizeDelta = new Vector2(Mathf.Clamp(target.x, min, max), changeBar.sizeDelta.y);
-			onUpdate(data.delta.x * scalar);
+			onUpdate(data.delta.x * scalar - 1);
 			label.text = (changeBar.sizeDelta.x / scalar).ToString("F1");
 		}
 

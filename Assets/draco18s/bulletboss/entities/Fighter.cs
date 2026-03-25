@@ -99,10 +99,10 @@ namespace Assets.draco18s.bulletboss.entities
 
 		public void AddGun(Timeline data, float delay)
 		{
-			GameObject mount = Instantiate(GameAssets.mountPointPrefab, transform);
+			GameObject mount = new GameObject($"gun mount - {delay}"); //Instantiate(GameAssets.mountPointPrefab, transform);
 			mount.layer = gameObject.layer;
 			mount.transform.localPosition = Vector3.zero;
-			MountPoint b = mount.GetComponent<MountPoint>();
+			MountPoint b = mount.AddComponent<MountPoint>();
 			b.Start();
 			//data.DeserializeForRuntime();
 			//data.InitOrReset(true);

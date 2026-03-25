@@ -10,6 +10,8 @@ namespace Assets.draco18s.bulletboss.ui
 {
 	public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 	{
+		[SerializeField] private GameObject hidables;
+
 		[SerializeField] private Image bgGlint;
 		[SerializeField] private Image bg;
 		[SerializeField] private Image bgShiny;
@@ -54,6 +56,7 @@ namespace Assets.draco18s.bulletboss.ui
 			canvasParent = handTransform;
 			time = 1;
 			keyframeParent.gameObject.SetActive(false);
+			hidables.SetActive(false);
 		}
 
 		void Update()
@@ -176,6 +179,7 @@ namespace Assets.draco18s.bulletboss.ui
 			isHovered = true;
 			selfCanvas.overrideSorting = true;
 			selfCanvas.sortingOrder = transform.GetSiblingIndex() + 100;
+			hidables.SetActive(true);
 		}
 
 		public void OnPointerExit(PointerEventData eventData)
@@ -183,6 +187,7 @@ namespace Assets.draco18s.bulletboss.ui
 			isHovered = false;
 			selfCanvas.overrideSorting = false;
 			selfCanvas.sortingOrder = transform.GetSiblingIndex();
+			hidables.SetActive(false);
 		}
 
 		public void OnPointerDown(PointerEventData eventData)

@@ -955,6 +955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d613f3b602aee87479bf8444bcdf66b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hidables: {fileID: 4495162397874624089}
   bgGlint: {fileID: 9209916063475503549}
   bg: {fileID: 2026776191788758764}
   bgShiny: {fileID: 3625241573106918678}
@@ -2110,6 +2111,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fadb5f91bbb6384db5c363a539b95e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4495162397874624089 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3735664145319971033, guid: 397b57bd899545441b54e781ddadc8fd, type: 3}
+  m_PrefabInstance: {fileID: 987898952621186688}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7496602429218441850 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7330999197624308986, guid: 397b57bd899545441b54e781ddadc8fd, type: 3}

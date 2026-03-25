@@ -106,6 +106,10 @@ namespace Assets.draco18s.bulletboss.ui
 		public void RemoveModifier(CardUI cardUI)
 		{
 			currentTimeline.RemoveModifier(cardUI);
+			if (cardUI.cardRef.timelineModifier is MouseAimModifier mod)
+			{
+				lastMountPoint.UnapplyTimelineModifier(cardUI.cardRef);
+			}
 		}
 
 		public void AddModule(CardUI cardUI)
@@ -149,6 +153,14 @@ namespace Assets.draco18s.bulletboss.ui
 			{
 				CardUI cardUI = Instantiate(GameAssets.playableUIObject, cardContainer).GetComponent<CardUI>();
 				Vector3 p = cardUI.gameObject.transform.localPosition;
+				if (m.Value.pattern.patternTypeData is ChangeModuleType pType)
+				{
+					p = p.ReplaceY(p.y + 12);
+				}
+				else
+				{
+					p = p.ReplaceY(p.y - 110);
+				}
 				cardUI.SetData(m.Value);
 				cardUI.gameObject.transform.localPosition = new Vector3(m.Key, p.y, p.z);
 				currentTimeline.UpdateUIObj(m.Value, cardUI);

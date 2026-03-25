@@ -45,6 +45,11 @@ namespace Assets.draco18s.bulletboss.entities.behavior
 				return;
 			}
 
+			if (_playerAgent.IsTraining)
+			{
+				return;
+			}
+
 			if (_playerAgent.GetTotalSteps() < 3_000_000)
 				return;
 			spawnTimer -= dt;

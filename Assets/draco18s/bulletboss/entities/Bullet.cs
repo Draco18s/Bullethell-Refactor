@@ -190,6 +190,11 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern.AddModifier(modifier);
 		}
 
+		public void UnapplyTimelineModifier(Card modifier)
+		{
+			ChangeRotation(0);
+		}
+
 		public List<Card> GetPatternModifiers()
 		{
 			return pattern.GetModifiers();
