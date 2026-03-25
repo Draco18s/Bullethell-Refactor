@@ -13,7 +13,9 @@ namespace Assets.draco18s.bulletboss
 		public static GameObject defaultBulletPrefab => instance._defaultBulletPrefab;
 		public static Material polyChromeMat => instance._polyChromeMat;
 		public static Material ephemeralMat => instance._ephemeralMat;
+		public static GameObject playerMountPointPrefab => instance._playerMountPointPrefab;
 		public static GameObject mountPointPrefab => instance._mountPointPrefab;
+		public static GameObject gem => instance._gem;
 
 		[SerializeField] private GameObject _playableCardUIPrefab;
 		[SerializeField] private GameObject _aiPlayerPrefab;
@@ -21,7 +23,9 @@ namespace Assets.draco18s.bulletboss
 		[SerializeField] private GameObject _defaultBulletPrefab;
 		[SerializeField] private Material _polyChromeMat;
 		[SerializeField] private Material _ephemeralMat;
+		[SerializeField] private GameObject _playerMountPointPrefab;
 		[SerializeField] private GameObject _mountPointPrefab;
+		[SerializeField] private GameObject _gem;
 
 		void Awake()
 		{

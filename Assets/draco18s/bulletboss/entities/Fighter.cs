@@ -20,7 +20,7 @@ namespace Assets.draco18s.bulletboss.entities
 		[UsedImplicitly]
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-			/*if (other.gameObject.layer == LayerMask.NameToLayer("PlayerBullets"))
+			if (other.gameObject.layer == LayerMask.NameToLayer("PlayerBullets"))
 			{
 				Bullet b = other.GetComponent<Bullet>();
 				currentHP -= b.Damage;
@@ -28,11 +28,11 @@ namespace Assets.draco18s.bulletboss.entities
 				b.DestroySelf();
 				if(currentHP <= 0)
 					DestroySelf();
-			}*/
-			if (other.gameObject.layer == LayerMask.NameToLayer("PlayerBullets"))
+			}
+			/*if (other.gameObject.layer == LayerMask.NameToLayer("PlayerBullets"))
 			{
 				transform.parent.parent.GetComponentInChildren<TargetDecider>().FighterDamaged(transform.localPosition);
-			}
+			}*/
 		}
 
 		[UsedImplicitly]
@@ -47,8 +47,18 @@ namespace Assets.draco18s.bulletboss.entities
 		public override void DestroySelf(bool ignorePenetrations=false)
 		{
 			if (!ignorePenetrations && currentHP > 0) return;
+			DropGem(transform.position);
 			Destroy(gameObject);
 			enabled = false;
+		}
+
+		private void DropGem(Vector3 pos)
+		{
+			for (int i = 0; i < reward; i++)
+			{
+				Vector3 off = Random.insideUnitCircle;
+				Instantiate(GameAssets.gem, pos + off, Quaternion.identity, transform.parent);
+			}
 		}
 
 		[UsedImplicitly]
@@ -81,7 +91,8 @@ namespace Assets.draco18s.bulletboss.entities
 			float delay = Random.value;
 			foreach (Timeline pat in config.weaponPatterns)
 			{
-				pat.DeserializeForRuntime();
+				//var p2 = Timeline.CloneFrom(pat);
+				//pat.DeserializeForRuntime();
 				AddGun(pat,-delay);
 			}
 		}
@@ -92,8 +103,9 @@ namespace Assets.draco18s.bulletboss.entities
 			mount.layer = gameObject.layer;
 			mount.transform.localPosition = Vector3.zero;
 			MountPoint b = mount.GetComponent<MountPoint>();
-			data.DeserializeForRuntime();
-			data.InitOrReset(true);
+			b.Start();
+			//data.DeserializeForRuntime();
+			//data.InitOrReset(true);
 			b.SetPattern(data, true);
 			b.SetCurrentTime(delay);
 		}

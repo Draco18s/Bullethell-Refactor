@@ -15,6 +15,7 @@ MonoBehaviour:
   _rarity: 2
   _description: Very fast speed change back to base speed.
   _icon: {fileID: -2050669294, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
+  _playableCopies: 1
   _preconfigured: 1
   _unique: 0
   _killOnComplete: 0

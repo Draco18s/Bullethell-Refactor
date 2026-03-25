@@ -56,7 +56,7 @@ namespace Assets.draco18s.bulletboss.entities
 
 		public void AddGun(PlayerProgress data, int mod)
 		{
-			GameObject mount = Instantiate(GameAssets.mountPointPrefab, transform);
+			GameObject mount = Instantiate(GameAssets.playerMountPointPrefab, transform);
 			mount.transform.localPosition = Vector3.zero;
 			MountPoint b = mount.GetComponent<MountPoint>();
 			b.Damage = (int)Mathf.Max(data.damageLevel + mod/2f, 1);

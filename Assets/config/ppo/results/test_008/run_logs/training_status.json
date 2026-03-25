@@ -1,0 +1,65 @@
+{
+    "Bullethell": {
+        "checkpoints": [
+            {
+                "steps": 7998000,
+                "file_path": "results\\test_008\\Bullethell\\Bullethell-7998000.onnx",
+                "reward": -83.4083731515067,
+                "creation_time": 1771378517.3009076,
+                "auxillary_file_paths": [
+                    "results\\test_008\\Bullethell\\Bullethell-7998000.pt"
+                ]
+            },
+            {
+                "steps": 8499000,
+                "file_path": "results\\test_008\\Bullethell\\Bullethell-8499000.onnx",
+                "reward": -62.989382310347125,
+                "creation_time": 1771385806.0567887,
+                "auxillary_file_paths": [
+                    "results\\test_008\\Bullethell\\Bullethell-8499000.pt"
+                ]
+            },
+            {
+                "steps": 8997000,
+                "file_path": "results\\test_008\\Bullethell\\Bullethell-8997000.onnx",
+                "reward": -55.07742691040039,
+                "creation_time": 1771391039.0392942,
+                "auxillary_file_paths": [
+                    "results\\test_008\\Bullethell\\Bullethell-8997000.pt"
+                ]
+            },
+            {
+                "steps": 9498000,
+                "file_path": "results\\test_008\\Bullethell\\Bullethell-9498000.onnx",
+                "reward": -50.630574226379395,
+                "creation_time": 1771396135.7546563,
+                "auxillary_file_paths": [
+                    "results\\test_008\\Bullethell\\Bullethell-9498000.pt"
+                ]
+            },
+            {
+                "steps": 9969000,
+                "file_path": "results\\test_008\\Bullethell\\Bullethell-9969000.onnx",
+                "reward": -39.71738910675049,
+                "creation_time": 1771400871.0815792,
+                "auxillary_file_paths": [
+                    "results\\test_008\\Bullethell\\Bullethell-9969000.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 9969000,
+            "file_path": "results\\test_008\\Bullethell.onnx",
+            "reward": -39.71738910675049,
+            "creation_time": 1771400871.0815792,
+            "auxillary_file_paths": [
+                "results\\test_008\\Bullethell\\Bullethell-9969000.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.8.0+cpu"
+    }
+}

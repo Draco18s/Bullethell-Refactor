@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Cruiser
   m_EditorClassIdentifier: 
   _icon: {fileID: 21300000, guid: 93793784ac1ac3d4d97acbc809ccd72b, type: 3}
-  _maxHP: 24
-  _speed: 1.5
-  _gemReward: 8
+  _maxHP: 18
+  _speed: 0.75
+  _gemReward: 3
   _defaultWeapons:
   - runtimeEditable: 0
     modifiers: []
     patternObjects:
-      keys: 00000000
+      keys: 0000000014000000
       values:
-      - {fileID: 11400000, guid: 0acb1cf3687f31f429d45e8c56124593, type: 2}
+      - {fileID: 11400000, guid: a2ad7a9c76954e147a39dbc6e80406b8, type: 2}
+      - {fileID: 11400000, guid: f421e2ba724434d44a0d4bc30f0d6113, type: 2}

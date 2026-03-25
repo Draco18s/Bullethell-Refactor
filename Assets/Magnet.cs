@@ -11,6 +11,12 @@ public class Magnet : MonoBehaviour, IHasSpeed
 	public float Speed => _speed;
 
 	private float radius = 1.5f;
+	private PlayerAgent _playerAgent;
+
+	void Awake()
+	{
+		_playerAgent = GameObject.FindFirstObjectByType<PlayerAgent>();
+	}
 
 	void FixedUpdate()
 	{
@@ -18,8 +24,6 @@ public class Magnet : MonoBehaviour, IHasSpeed
 		{
 			Vector3 dir1 = (transform.localPosition.ReplaceY(0).ReplaceZ(0)).normalized;
 			transform.Translate(-dir1 * Mathf.Max(_speed, 0.1f) * Time.fixedDeltaTime, Space.World);
-
-			transform.parent.parent.GetComponentInChildren<TargetDecider>().GemLost();
 		}
 		if (_magnet)
 		{
@@ -37,7 +41,12 @@ public class Magnet : MonoBehaviour, IHasSpeed
 		transform.Translate(Vector3.down * Time.fixedDeltaTime * Speed, Space.World);
 		if (transform.localPosition.y < -3)
 		{
-			transform.localPosition = transform.localPosition.ReplaceY(Random.value*2f + 0.75f).ReplaceX((Random.value * 18) - 8);
+			if (_playerAgent.GetTotalSteps() > 6_000_000)
+			{
+				Destroy(gameObject);
+				return;
+			}
+			transform.localPosition = transform.localPosition.ReplaceY(Random.value*3f + 2.75f).ReplaceX((Random.value * 18) - 8);
 			//transform.parent.parent.GetComponentInChildren<PlayerAgent>().AddReward(-0.2f, "gem lost");
 		}
 	}

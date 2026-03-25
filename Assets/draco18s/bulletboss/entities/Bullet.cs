@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.draco18s.bulletboss.cards;
+using Assets.draco18s.bulletboss.entities.behavior;
 using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
 using Assets.draco18s.util;
@@ -80,23 +81,30 @@ namespace Assets.draco18s.bulletboss.entities
 		private void OnUpdate(float dt)
 		{
 			bool kill = pattern.RuntimeUpdate(this, dt);
+			transform.Translate(Vector3.right * speed * dt, Space.Self);
 			if (this is Fighter)
 			{
 				kill = false;
 			}
-			transform.Translate(Vector3.right * speed * dt, Space.Self);
 			if (parentShot != null)
 			{
 				transform.Translate(parentShot.transform.right * parentShot.speed * dt, Space.World);
 			}
 
-			if (Mathf.Abs(transform.position.x) > 10 || Mathf.Abs(transform.position.y) > 6.5f)
+			if ((Mathf.Abs(transform.position.x) > 10 && Mathf.Sign(transform.right.x) == Mathf.Sign(transform.position.x)) || (Mathf.Abs(transform.position.y) > 6.5f && Mathf.Sign(transform.right.y) == Mathf.Sign(transform.position.y)))
 			{
 				kill = true;
 			}
 			
 			if (kill)
 			{
+				if (this is Fighter)
+				{
+					Transform trans = FighterConfigManager.instance.GetSpawnPoint();
+					this.transform.position = trans.position;
+					this.transform.rotation = trans.rotation;
+					return;
+				}
 				DestroySelf(true);
 				return;
 			}

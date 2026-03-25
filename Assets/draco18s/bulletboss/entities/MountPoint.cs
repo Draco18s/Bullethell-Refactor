@@ -11,7 +11,7 @@ namespace Assets.draco18s.bulletboss.entities
 		[SerializeField] private SpriteRenderer selectionFrame;
 
 		[UsedImplicitly]
-		void Start()
+		public void Start()
 		{
 			if (pattern != null) return;
 			serializedPattern.DeserializeForRuntime();

@@ -5,6 +5,7 @@ using Assets.draco18s.util;
 using JetBrains.Annotations;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Policies;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -13,22 +14,74 @@ namespace Assets.draco18s.bulletboss.entities
 {
 	public class PlayerAgent : Agent
 	{
+		public bool IsTraining => !runInfiniteEpisode;
 		[SerializeField] private GameObject gemPrefab;
 		[SerializeField] private GameObject bulletPrefab;
 		[SerializeField] private Transform gameContainer;
 		[SerializeField] private bool drawDebug = false;
+		[SerializeField] private bool drawGizmo = false;
 		[SerializeField] private bool deterministicDebug = false;
 		[SerializeField] private bool doMovement = true;
 		[SerializeField] private bool runInfiniteEpisode = false;
 
 		private float xpos = -4;
 		private float prob = 1.15f;
-		private Vector3 oobPos = new Vector3(0, -100, 0);
+		//private Vector3 oobPos = new Vector3(0, -10, -10);
 
-		private int numGemsSpawned = -1;
-		private int gemsCollected = -1;
-		private float stunTimer = -1;
 		[SerializeField] private long totalSteps = 0;
+
+		[SerializeField] private Vector3Int _gridSize;
+		[SerializeField] private Vector3 _gridCellSize;
+		[SerializeField] private Vector3Int _gridOffset;
+
+		private void OnDrawGizmos()
+		{
+			if (!drawGizmo) return;
+
+			for (int ox = -_gridSize.x / 2; ox <= _gridSize.x / 2; ox++)
+			{
+				for (int oy = -_gridSize.y / 2; oy <= _gridSize.y / 2; oy++)
+				{
+					float x = transform.position.x + (ox + _gridOffset.x) * _gridCellSize.x;
+					float y = transform.position.y + (oy + _gridOffset.y) * _gridCellSize.y;
+					Vector2 v = new Vector3(x, y);
+
+					Collider2D[] hits = Physics2D.OverlapBoxAll(v, _gridCellSize, 0, LayerMask.GetMask("Powerups", "EnemyBullets", "Enemy"));
+
+					Collider2D hit = hits.OrderByDescending(c => c.gameObject.layer).FirstOrDefault();
+					float f = GetNeuronValue(hit);
+
+					float x2 = transform.localPosition.x + (ox + _gridOffset.x) * _gridCellSize.x;
+					float y2 = transform.localPosition.y + (oy + _gridOffset.y) * _gridCellSize.y;
+					v = new Vector3(x2, y2, 0);
+
+					if (Mathf.Abs(v.x) > 8.5f || Mathf.Abs(v.y) > 3f)
+					{
+						f = Mathf.Min(f, -0.25f);
+					}
+
+					Color c = new Color(f <= 0 ? -f : 0, f > 0 ? 1 : 0, 0);
+					if (f == 0)
+					{
+						c = Color.white;
+					}
+
+					c.a = 0.25f;
+					if(Mathf.Approximately(f, 0))
+						c.b = 1 - Mathf.Clamp01(v.y / 3f);
+
+					float p = new Vector3(v.x / 20, v.y / 6, 0).magnitude - 0.2f;
+					c.g -= Mathf.Max(p, 0);
+					c.b -= Mathf.Max(p, 0);
+					//AddReward(-perUpdateScore * Mathf.Max(posOffset, 0) / 4, "position");
+
+					Gizmos.color = c;
+
+					Gizmos.DrawCube(new Vector3(x, y, transform.position.z), _gridCellSize * 0.9f);
+				}
+			}
+			Gizmos.color = Color.white;
+		}
 
 		private List<(Vector3, Vector3, Color)> debugLines = new List<(Vector3, Vector3, Color)>();
 
@@ -37,6 +90,15 @@ namespace Assets.draco18s.bulletboss.entities
 			base.Awake();
 			prob = 0.5f;
 			xpos = -4;
+			if (!IsTraining)
+			{
+				GetComponent<BehaviorParameters>().BehaviorType = BehaviorType.InferenceOnly;
+			}
+		}
+
+		public long GetTotalSteps()
+		{
+			return totalSteps;
 		}
 
 		[UsedImplicitly]
@@ -49,36 +111,38 @@ namespace Assets.draco18s.bulletboss.entities
 			}
 			base.OnEpisodeBegin();
 
-			if (drawDebug) Debug.Log($"Total: {awards.Select(kvp => kvp.Value).Sum():F3} | " + string.Join(", ", awards.OrderByDescending(kvp => Mathf.Abs(kvp.Value)).Select(kvp => $"{kvp.Key}: {kvp.Value:F3}")));
+			if (drawDebug) Debug.Log($"Total: {awards.Select(kvp => kvp.Value).Sum():F3} | " + string.Join(", ", awards.OrderByDescending(kvp => Mathf.Abs(kvp.Value)).Where(kvp => Mathf.Abs(kvp.Value) > 0.001).Select(kvp => $"{kvp.Key}: {kvp.Value:F3}")));
 			debugLines.Clear();
 
 			awards.Clear();
 
 			int leftRight = Random.value > 0.5f ? 1 : -1;
-			bool spawnGems = true;// Random.value < 0.75f;
-			bool spawnShots = true;//Random.value < 0.75f;
+			//bool spawnGems = true;// Random.value < 0.75f;
+			//bool spawnShots = true;//Random.value < 0.75f;
 
-			transform.localPosition = new Vector3(Random.value * 2 * -leftRight + 6 * -leftRight, Random.value * 4 - 2, 0);
+			transform.localPosition = new Vector3(Random.value * 6 * -leftRight + 2 * -leftRight, Random.value * 4 - 2, 0);
+
+			if (!IsTraining) return;
 
 			gameContainer.Clear();
 
-			int num = Mathf.FloorToInt(Random.value * 4 + Mathf.FloorToInt(totalSteps/750_000f)) + 1 + Mathf.FloorToInt(totalSteps / 1_500_000f);
+			int num = Mathf.FloorToInt(Random.value * (4 + totalSteps/500_000f)) + 2;
+			if (totalSteps > 9_000_000)
+				num = 0;
 
-			numGemsSpawned = spawnGems ? num : 0;
-			gemsCollected = 0;
-
-			for (int i = 0; i < num && spawnGems; i++)
+			for (int i = 0; i < num; i++)
 			{
 				GameObject go = Instantiate(gemPrefab, gameContainer);
 				Vector3 p;
 				do
 				{
-					p = new Vector3((Random.value * (3.5f + Mathf.Clamp(xpos / 10f, 0, 3)) + Mathf.Clamp(xpos / 2 - 2, -5, 3)) * leftRight, Random.value * 4, 0);
+					p = new Vector3((Random.value * (3.5f + Mathf.Clamp(xpos / 10f, 0, 3)) + Mathf.Clamp(xpos / 2 - 2, -5, 3)) * leftRight, Random.value * 3 + (totalSteps > 1_500_000 ? 2 : 0), 0);
 				} while (Vector3.Distance(p, transform.localPosition) < 2.0f);
 				go.transform.localPosition = p;
+				go.GetComponent<Magnet>().enabled = totalSteps > 3_000_000;
 			}
-			num = Mathf.FloorToInt(Random.value * 6 + Mathf.FloorToInt((totalSteps-250_000) / 500_000f)) + 2 + Mathf.FloorToInt(totalSteps / 2_000_000f);
-			for (int i = 0; i < num && spawnShots; i++)
+			num = Mathf.FloorToInt(Random.value * 6 + Mathf.FloorToInt(totalSteps / 500_000f)) + 2 + Mathf.FloorToInt(totalSteps / 3_000_000f);
+			for (int i = 0; i < num; i++)
 			{
 				GameObject go = Instantiate(bulletPrefab, gameContainer);
 				Vector3 p;
@@ -97,7 +161,7 @@ namespace Assets.draco18s.bulletboss.entities
 			}*/
 			totalSteps += MaxStep;
 			prevMove = Vector2.zero;
-			MaxStep = 3_000;
+			MaxStep = 5_000;
 		}
 
 		private IEnumerator TryAgain()
@@ -124,121 +188,68 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			Color w = Color.white;
 			w.a = 0.1f;
-			List<Collider2D> objs = new List<Collider2D>();
-			foreach (Transform t in gameContainer)
-			{
-				Collider2D c = t.GetComponent<Collider2D>();
-				if (c == null) continue;
-				objs.Add(c);
-			}
-
-			foreach (Collider2D c in objs)
-			{
-				//c.gameObject.GetComponentInChildren<SpriteRenderer>().color = w;
-			}
+			sensor.AddObservation(transform.localPosition.x / 20);
+			sensor.AddObservation(transform.localPosition.y / 6);
 
 			sensor.AddObservation(prevMove.x);
 			sensor.AddObservation(prevMove.y);
 
 			float d = Mathf.Abs((transform.localPosition.x - -8.5f) / 10f);
-			sensor.AddObservation(d);
+			sensor.AddObservation(Mathf.Min(d, 1));
 			d = Mathf.Abs((transform.localPosition.x - 8.5f) / 10f);
-			sensor.AddObservation(d);
+			sensor.AddObservation(Mathf.Min(d, 1));
 
-			d = Mathf.Abs((transform.localPosition.y - -2.5f) / 10f);
-			sensor.AddObservation(d);
-			d = Mathf.Abs((transform.localPosition.y - 2.5f) / 10f);
-			sensor.AddObservation(d);
+			d = Mathf.Abs((transform.localPosition.y - -3f) / 10f);
+			sensor.AddObservation(Mathf.Min(d, 1));
+			d = Mathf.Abs((transform.localPosition.y - 3f) / 10f);
+			sensor.AddObservation(Mathf.Min(d, 1));
 
-			int l1 = LayerMask.NameToLayer("EnemyBullets");
-
-			List<Collider2D> padObj = objs.Where(c => c.gameObject.layer == l1).ToList();
-
-			IOrderedEnumerable<Collider2D> bul = padObj.PadRight(Mathf.Max(padObj.Count, 5)).OrderBy(a => a == null ? 100_000 : Vector3.Distance(a.transform.localPosition.ReplaceZ(0), transform.localPosition.ReplaceZ(0)));
-
-			//int q = 0;
-			foreach (Collider2D b in bul.Take(3))
+			for (int ox = -_gridSize.x / 2; ox <= _gridSize.x / 2; ox++)
 			{
-				if (b == null)
+				for (int oy = -_gridSize.y / 2; oy <= _gridSize.y / 2; oy++)
 				{
-					sensor.AddObservation(oobPos / 10f);
-					sensor.AddObservation(Vector3.zero);
-					continue;
+					float x = transform.position.x + (ox + _gridOffset.x) * _gridCellSize.x;
+					float y = transform.position.y + (oy + _gridOffset.y) * _gridCellSize.y;
+					Vector2 v = new Vector3(x, y);
+
+					Collider2D[] hits = Physics2D.OverlapBoxAll(v, _gridCellSize, 0, LayerMask.GetMask("Powerups", "EnemyBullets", "Enemy"));
+
+					Collider2D hit = hits.OrderByDescending(c => c.gameObject.layer).FirstOrDefault();
+					float f = GetNeuronValue(hit);
+
+					float x2 = transform.localPosition.x + (ox + _gridOffset.x) * _gridCellSize.x;
+					float y2 = transform.localPosition.y + (oy + _gridOffset.y) * _gridCellSize.y;
+					v = new Vector3(x2, y2, 0);
+
+					if (Mathf.Abs(v.x) > 8.5f || Mathf.Abs(v.y) > 3f)
+					{
+						f = Mathf.Min(f, -0.25f);
+					}
+
+					sensor.AddObservation(f);
 				}
-
-				float colliderSize = 0.1f;
-				if (b is CircleCollider2D cir)
-				{
-					colliderSize = cir.radius;
-				}
-
-				Vector3 v = (b.transform.localPosition - transform.localPosition).ReplaceZ(b.transform.localScale.x * colliderSize);
-
-				float bSpeed = b.GetComponent<IHasSpeed>().Speed;
-
-				//sensor.AddObservation(b.transform.localPosition.ReplaceZ(b.transform.localScale.x));
-				sensor.AddObservation(v / 10f);
-				sensor.AddObservation(b.transform.right * bSpeed * Time.fixedDeltaTime);
-				b.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
-				padObj.Remove(b);
 			}
+		}
 
-			for (int i = 0; i < 2; i++)
+		private float GetNeuronValue(Collider2D hit)
+		{
+			if (hit == null) return 0;
+			switch (LayerMask.LayerToName(hit.gameObject.layer))
 			{
-				Collider2D b = padObj.GetRandom();
-				if (b == null)
-				{
-					sensor.AddObservation(oobPos / 10f);
-					sensor.AddObservation(Vector3.zero);
-					continue;
-				}
-				float bSpeed = b.GetComponent<IHasSpeed>().Speed;
-
-				Vector3 v = (b.transform.localPosition - transform.localPosition).ReplaceZ(b.transform.localScale.x);
-				sensor.AddObservation(v / 10f);
-				sensor.AddObservation(b.transform.right * bSpeed * Time.fixedDeltaTime);
-				b.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
-				padObj.Remove(b);
+				case "Powerups":
+					return 1;
+				case "EnemyBullets":
+					return -1;
+				case "Enemy":
+					return -0.5f;
+				default:
+					return 0;
 			}
-
-
-			int l2 = LayerMask.NameToLayer("Powerups");
-			padObj = objs.Where(c => c.gameObject.layer == l2).ToList();
-			bul = padObj.PadRight(Mathf.Max(padObj.Count, 3)).OrderBy(a => a == null ? 100_000 : Vector3.Distance(a.transform.position.ReplaceZ(0), transform.position.ReplaceZ(0)));
-			foreach (Collider2D b in bul.Take(3))
-			{
-				if (b == null)
-				{
-					sensor.AddObservation(oobPos / 10f);
-					continue;
-				}
-
-				Vector3 v = (b.transform.localPosition - transform.localPosition).ReplaceZ(1);
-				//sensor.AddObservation(b.transform.localPosition.ReplaceZ(1));
-				sensor.AddObservation(v / 10f);
-				b.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
-				padObj.Remove(b);
-			}
-
-			/*for (int i = 0; i < 2; i++)
-			{
-				Collider2D b = padObj.GetRandom();
-				if (b == null)
-				{
-					sensor.AddObservation(oobPos);
-					continue;
-				}
-				Vector3 v = (b.transform.localPosition - transform.localPosition).ReplaceZ(1);
-				//sensor.AddObservation(b.transform.localPosition.ReplaceZ(1));
-				sensor.AddObservation(v);
-				b.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
-				padObj.Remove(b);
-			}*/
 		}
 
 		private Vector2 prevMove = Vector2.zero;
+		private float prevSpeed = 0;
 		private const float perUpdateScore = 0.005f;
-		private float partialFrame = 0;
 		private Dictionary<string, float> awards = new Dictionary<string, float>();
 
 		public void AddReward(float amt, string reason)
@@ -269,7 +280,7 @@ namespace Assets.draco18s.bulletboss.entities
 					Debug.DrawLine(a, b, c, 0.02f);
 				}
 
-			Vector2 controlSignal = Vector2.zero;
+			/*Vector2 controlSignal = Vector2.zero;
 			controlSignal.x = actionBuffers.ContinuousActions[0];
 			controlSignal.y = actionBuffers.ContinuousActions[1];
 			float mag = Mathf.Clamp01(controlSignal.magnitude);
@@ -280,321 +291,74 @@ namespace Assets.draco18s.bulletboss.entities
 			if (Mathf.Abs(d) > float.Epsilon)
 				AddReward(-perUpdateScore * d * d * 100, "turning");
 
-			float m = Mathf.Clamp01(Mathf.Abs(prevMove.magnitude - mag));
-			AddReward(-perUpdateScore * m * m * 100, "speed");
+			float accl = Mathf.Clamp01(Mathf.Abs(prevMove.magnitude - mag) + 0.01f);
+			AddReward(-perUpdateScore * accl * accl * 100, "accel");
+			AddReward(-perUpdateScore * Mathf.Max(Mathf.Pow(mag, 1f / 12f) - 0.5f, 0) * 10, "speed");
 
-			Vector3 mv = new Vector3(controlSignal.x, controlSignal.y, 0) * Time.fixedDeltaTime * 3;
+			Vector3 mv = new Vector3(controlSignal.x, controlSignal.y, 0) * Time.fixedDeltaTime * 3;*/
 
-			Color col = new Color(d, 1-d, 0);
+			Vector2 moveDir = new Vector2(actionBuffers.ContinuousActions[0], actionBuffers.ContinuousActions[1]);
+			float speed = (actionBuffers.ContinuousActions[2] + 1f) / 2f;
+			Vector2 convertedInput = moveDir.normalized;
+			Vector3 mv = convertedInput * speed * Time.fixedDeltaTime * 3;
 
-			if(drawDebug) Debug.DrawLine(transform.position + new Vector3(prevMove.x, prevMove.y, 0).normalized, transform.position + mv.normalized, col, 0.02f);
-
-			var obs = GetObservations().Skip(6).ToArray();
-			
-			//for (int j = 0; obs.Length > 0 && j < 3; j++)
-			{
-				int j = 0;
-				int i = (5 * 6) + j * 3;
-				Vector3 pos = new Vector3(obs[i], obs[i + 1], 0) * 10f;
-				bool stop = false;
-				if (obs[i + 2] < 0.001f)
-				{
-					stop = j == 0;
-					pos = stop ? - transform.localPosition : Vector3.zero;
-				}
-
-				Vector3 op = pos;
-				Vector3 np = pos - mv;
-				Vector3 pp = pos - new Vector3(prevMove.x, prevMove.y, 0) * Time.fixedDeltaTime * 3;
-				bool movedAway = false;
-				if (np.sqrMagnitude > op.sqrMagnitude || np.sqrMagnitude > pp.sqrMagnitude)
-				{
-					col = new Color(stop ? mag : 1 - mag, stop ? 1 - mag : mag, 0, mag * mag * (3 - j) * 0.25f);
-					movedAway = true;
-					AddReward(-perUpdateScore * (stop ? (1 + mag) : mag) * (np.magnitude) * 2f * (3 - j) * 0.25f * (j == 0 ? 1 : 0.2f), "-center a");
-				}
-				else
-				{
-					col = new Color(stop ? mag : 1 - mag, stop ? 1 - mag : mag, 0, mag * mag * (3 - j) * 0.25f);
-					AddReward(perUpdateScore * (stop ? (1 + mag) : mag) * 2 * (4 - j) * 0.25f, "+center a");
-				}
-
-				if (drawDebug) Debug.DrawLine(transform.position + mv, pos + transform.position, col, 0.02f);
-
-				col = new Color((stop || movedAway) ? mag * mag : (1 - mag) * (1 - mag), (stop || movedAway) ? (1 - mag) * (1 - mag) : mag * mag, 0);
-				if (drawDebug || deterministicDebug)
-					Debug.DrawLine(Vector3.up + Vector3.left * 3 + Vector3.right * (Time.time % 1), Vector3.up + Vector3.up * mag * 2 + Vector3.left * 3 + Vector3.right * (Time.time % 1), col, 1);
-			}
-
-			/*for (int j = 0; obs.Length > 0 && j < 5; j++)
-			{
-				int i = j * 6;
-
-				Vector3 pos = new Vector3(obs[i], obs[i + 1], 0) * 10f;
-				Vector3 dir = new Vector3(obs[i + 3], obs[i + 4], 0);
-				
-				bool stop = false;
-				if (obs[i + 2] < 0.001f)
-				{
-					stop = j == 0;
-					pos = stop ? -transform.localPosition : Vector3.zero;
-				}
-
-				Vector3 op = pos;
-				Vector3 np = pos - mv + dir;
-				if ((op + dir).sqrMagnitude < 1)
-				{
-					if (np.sqrMagnitude < op.sqrMagnitude)
-					{
-						col = new Color(stop ? mag : 1 - mag, stop ? 1 - mag : mag, 0, mag * mag * (3 - j) * 0.25f);
-						AddReward(-perUpdateScore * (stop ? (1 + mag) : mag) * (np.magnitude) * 2f * (3 - j) * 0.25f * (j == 0 ? 1 : 0.2f), "-center b");
-					}
-					else
-					{
-						col = new Color(stop ? mag : 1 - mag, stop ? 1 - mag : mag, 0, mag * mag * (3 - j) * 0.25f);
-						AddReward(perUpdateScore * (stop ? (1 + mag) : mag) * 2 * (4 - j) * 0.25f, "+center b");
-					}
-
-					if (drawDebug) Debug.DrawLine(transform.position + mv, pos + transform.position, col, 0.02f);
-				}
-			}*/
-
-			float acc = Mathf.Abs(mag - prevMove.magnitude);
-			float sig = Mathf.Sign(mag - prevMove.magnitude);
-			col = new Color(acc, 1 - acc, 0);
-			if (drawDebug || deterministicDebug) 
-				Debug.DrawLine(Vector3.up + Vector3.right * (Time.time % 1), Vector3.up + Vector3.up * Mathf.Clamp01(acc * 4 + 0.01f) * 2 * sig + Vector3.right * (Time.time % 1), col, 1);
-
-			/*float d = Vector2.Angle(prevMove.normalized, controlSignal / mag);
+			float d = Vector2.SignedAngle(prevMove, convertedInput);
 			d /= 180;
-			Color cc = new Color(1, 1 - Mathf.Sqrt(d), 0, Mathf.Sqrt(d));
-			//if (d > float.Epsilon)
-			//	AddReward(-perUpdateScore * d * d * 250, "alive");
 
-			Vector3 mv = new Vector3(controlSignal.x, controlSignal.y, 0) * Time.fixedDeltaTime * 3;
+			Color col = new Color(Mathf.Abs(d), 1 - Mathf.Abs(d), 0);
+			if (Mathf.Abs(d) > float.Epsilon)
+				AddReward(-perUpdateScore * d * d * 100, "turning");
 
-			//Debug.DrawLine(transform.position + new Vector3(prevMove.x, prevMove.y, 0).normalized, transform.position + mv.normalized, Color.blue, 0.02f);
-			//Debug.DrawLine(transform.position, transform.position + new Vector3(prevMove.x, prevMove.y, 0).normalized, cc, 0.02f);
-			//Debug.DrawLine(transform.position, transform.position + mv.normalized, cc, 0.02f);
+			float accl = prevSpeed - speed;
+			float m = Mathf.Min(accl, accl / 4);
+			AddReward(-perUpdateScore * accl * m * 100, "accel");
+			AddReward(-perUpdateScore * speed, "speed");
 
-			float m = Mathf.Clamp01(Mathf.Abs(prevMove.magnitude - mag));
-			AddReward(-perUpdateScore * m * m * 100, "speed");
+			if (drawDebug) Debug.DrawLine(transform.position + new Vector3(prevMove.x, prevMove.y, 0).normalized, transform.position + mv.normalized, col, 0.02f);
 
-			var obs = GetObservations().Skip(6).ToArray();
-			bool movedTowardsAny = false;
-			bool areGems = false;
-			for (int j = 0; obs.Length > 0 && j < 3; j++)
+			if (drawDebug || deterministicDebug)
 			{
-				int i = (5 * 6) + j * 3;
-				Vector3 pos = new Vector3(obs[i], obs[i + 1], 0) * 10f;
-				if (obs[i + 2] < 0.001f)
-				{
-					AddReward(perUpdateScore * 3.1f * (3 - j), "no gem proximity");
-					continue;
-				}
-				areGems = true;
-				float dist1 = (pos).magnitude;
-				float dist2 = (pos - mv).magnitude;
-
-				float sc = (dist1 - dist2) / dist2 * (3 - j);
-				if (dist2 < dist1) // move closer to gem
-				{
-					AddReward(perUpdateScore * sc * sc * 0.3f, "gem proximity");
-					movedTowardsAny = true;
-				}
-
-				Color col = (dist2 < dist1 ? Color.green : Color.clear);
-				col.a = sc * 2;
-				if (drawDebug) Debug.DrawLine(transform.position + mv, pos + transform.position, col, 0.02f);
+				col = new Color(Mathf.Abs(accl), 1 - Mathf.Abs(accl), 0);
+				Debug.DrawLine(
+					Vector3.up * 4 + (Vector3.right * (Time.time % 1)) + Vector3.right,
+					Vector3.up * 4 + Vector3.up * Mathf.Clamp(accl, -1, 1) * 2 + Vector3.right * (Time.time % 1) + Vector3.right,
+					col, 1);
+				col = new Color(0, 1 - speed, speed);
+				Debug.DrawLine(
+					Vector3.up * 3 + Vector3.up * Mathf.Clamp01(prevSpeed) * 2 + Vector3.right * ((Time.time % 1) - Time.fixedDeltaTime) + Vector3.left * 2,
+					Vector3.up * 3 + Vector3.up * Mathf.Clamp01(speed) * 2 + Vector3.right * (Time.time % 1) + Vector3.left * 2,
+					col, 1);
 			}
-
-			//if (!movedTowardsAny && areGems)
-			//{
-				//AddReward(-perUpdateScore * 0.5f, "didn't gem move");
-			//}
-			
-			bool areShots = false;
-			for (int j = 0; obs.Length > 0 && j < 5; j++)
-			{
-				int i = j * 6;
-
-				Vector3 pos = new Vector3(obs[i], obs[i + 1], 0) * 10f;
-				Vector3 dir = new Vector3(obs[i + 3], obs[i + 4], 0);
-
-				if (obs[i + 2] < 0.001f)
-				{
-					AddReward(-perUpdateScore * 0.025f * (5 - j), "no bullet");
-					continue;
-				}
-				areShots = true;
-				float dist1 = (pos).magnitude;
-				float dist2 = (pos - mv).magnitude;
-
-				// if original distance is less than 0.5 seconds worth of movement + combined radius
-				if (j < 3 && dist2 < dist1) //getting closer to a bullet
-				{
-					float sc = dist1 - dist2;
-					AddReward(-perUpdateScore * sc * sc * 0.05f * (1 + mag), "move near bullet");
-					Color col = (dist2 < dist1 ? Color.red : Color.clear);
-					col.a = sc;
-					if (drawDebug) Debug.DrawLine(transform.position + mv, pos + dir + gameContainer.position + transform.localPosition, col, 0.02f);
-				}
-
-				if (dir.magnitude < 0.001f)
-				{
-					//AddReward(-perUpdateScore * 0.025f, "stationary bullet");
-					continue;
-				}
-
-				RaycastHit2D hit = Physics2D.CircleCast(pos + gameContainer.position + transform.localPosition, obs[i + 2] + 0.15f, dir, dir.magnitude * 40, LayerMask.GetMask("AIPlayer"));
-
-				if (hit.collider != null) // being in the path of the bullet
-				{
-					float sc = Mathf.Clamp(4 / hit.distance, 0, 8);
-					AddReward(-perUpdateScore * sc * (1 + mag), "in bullet path");
-					Color col = Color.magenta;
-					col.a = sc;
-					if (drawDebug) Debug.DrawLine(pos + dir + gameContainer.position + transform.localPosition, hit.point, col, 0.02f);
-				}
-			}
-
-			//if (!areShots && !areGems)
-			{
-				// try increasing penalty for fast and/or increasing reward for slow
-				// try making this integrate with the "distance from center" code
-				//AddReward(perUpdateScore * (mag > 0.2f ? -mag * 5 : 0.2f / Mathf.Max(mag, 0.04f)), "centering a");
-				Color col = (mag > 0.3f ? (mag > 0.6f ? Color.red : Color.yellow) : Color.green);
-				//if (drawDebug) Debug.DrawLine(Vector3.up + Vector3.right * (Time.time % 1), Vector3.up + Vector3.up * mag * 2 + Vector3.right * (Time.time % 1), col, 1);
-				if (drawDebug || deterministicDebug) Debug.DrawLine(Vector3.up + Vector3.right * (Time.time % 1), Vector3.up + Vector3.up * (mag - prevMove.magnitude) * 2 + Vector3.right * (Time.time % 1), col, 1);
-			}
-
-			if (!areGems)
-			{
-				Vector3 p = transform.localPosition;
-				p = p.ReplaceY(p.y * 3.4f).ReplaceZ(0);
-				float sl = .2f / (mag + .2f);
-				float sc = (6f - p.magnitude) / 6f * Mathf.Clamp01((StepCount - 250) / 1000f) * sl;
-				float dot = Vector3.Dot(mv, transform.localPosition.ReplaceZ(0));
-				if (sc < 0)
-				{
-					sc = -Mathf.Abs(sc) * Mathf.Sign(dot);
-				}
-				Color col = sc <= 0 ? Color.red : Color.green;
-				col.a = sc < 0 ? 0 - sc : sc;
-				if (drawDebug) Debug.DrawLine(gameContainer.position, transform.position, col, 0.02f);
-				AddReward(perUpdateScore * Mathf.Clamp(sc, -1, 0.5f) * 10 * (!areShots ? 1.5f : 1), "centering");
-			}
-
-			// mag*20 is definitely too much
-			// reaches into adjacent environments
-			RaycastHit2D hit_bul = Physics2D.CircleCast(transform.position, 0.3f, controlSignal, mag * 2, LayerMask.GetMask("EnemyBullets"));
-			if (hit_bul.collider != null && hit_bul.collider.transform.parent == gameContainer)
-			{
-				float sc = Mathf.Clamp(1 / hit_bul.distance, 0, 4);
-				AddReward(-perUpdateScore * sc * 0.5f * (1 + mag), "bullet in path");
-				if (drawDebug) Debug.DrawLine(hit_bul.point, transform.position, Color.red, 0.02f);
-			}
-			else if (!areShots)
-			{
-				AddReward(-perUpdateScore, "no shots (path)");
-			}
-			RaycastHit2D hit_gem = Physics2D.CircleCast(transform.position, 0.3f, controlSignal, mag * 2, LayerMask.GetMask("Powerups"));
-			if (hit_gem.collider != null && hit_gem.collider.transform.parent == gameContainer)
-			{
-				float sc = Mathf.Clamp(1 / hit_gem.distance, 0, 4);
-				AddReward(perUpdateScore * sc * 0.5f * mag, "gem in path");
-				if (drawDebug) Debug.DrawLine(hit_gem.point, transform.position, Color.cyan, 0.02f);
-			}
-			else if (!areGems)
-			{
-				AddReward(perUpdateScore, "no gems (path)");
-			}
-
-			RaycastHit2D hit3 = Physics2D.CircleCast(transform.position, 0.3f, prevMove, mag * 2, LayerMask.GetMask("Powerups", "EnemyBullets"));
-			if (hit3.collider != null && hit3.collider.transform.parent == gameContainer)
-			{
-				float sc = Mathf.Clamp(1 / (hit3.distance * 10), 0, 4);
-				if (hit3.transform.gameObject.layer == LayerMask.NameToLayer("Powerups"))
-				{
-					AddReward(perUpdateScore * sc * mag * (hit_gem.collider != null && hit_gem.collider.transform.parent == gameContainer ? 1 : -1), "gem in prevpath");
-					if (drawDebug) Debug.DrawLine(hit3.point, transform.position, (hit_gem.collider != null && hit_gem.collider.transform.parent == gameContainer ? Color.magenta : Color.cyan), 0.02f);
-				}
-				if (hit3.transform.gameObject.layer == LayerMask.NameToLayer("EnemyBullets"))
-				{
-					AddReward(perUpdateScore * sc * mag * 0.4f * (hit_bul.collider != null && hit_bul.collider.transform.parent == gameContainer ? -1 : 1), "bullet in prepath");
-					if (drawDebug) Debug.DrawLine(hit3.point, transform.position, (hit_bul.collider != null && hit_bul.collider.transform.parent == gameContainer ? Color.cyan : Color.magenta), 0.02f);
-				}
-			}*/
 
 			Vector3 origPos = transform.position;
 
 			if (doMovement)
 			{
-				/*if (stunTimer > 0)
-					stunTimer -= Time.fixedDeltaTime;
-				if (stunTimer <= 0)*/
-					transform.Translate(mv, Space.Self);
+				transform.Translate(mv, Space.Self);
 
 				if (deterministicDebug) debugLines.Add((origPos, transform.position, Color.white));
 			}
 			else if(deterministicDebug)
 				Debug.DrawLine(origPos + mv.normalized, origPos + mv.normalized * 1.1f, Color.white, 0.02f);
 
-			if (transform.localPosition.x < -8f || transform.localPosition.x > 8f || transform.localPosition.y < -2f || transform.localPosition.y > 2f)
+			if (transform.localPosition.x < -8f || transform.localPosition.x > 8f || transform.localPosition.y < -2.5f || transform.localPosition.y > 2.5f)
 			{
-				transform.localPosition = new Vector3(Mathf.Clamp(transform.localPosition.x, -8.5f, 8.5f), Mathf.Clamp(transform.localPosition.y, -2.5f, 2.5f), transform.localPosition.z);
-
-				/*Vector2 pos = new Vector2(transform.localPosition.x, transform.localPosition.y).normalized;
-				float d1 = Vector2.Angle(pos, controlSignal / mag);
-				d1 -= 15;
-				d1 /= 180;
-
-				if (Mathf.Abs(d1) > float.Epsilon)
-					AddReward(perUpdateScore * d1 * d1 * 20f * Mathf.Sign(d1), "u-turning");
-				cc.b = cc.g;
-				cc.g = 1;
-				cc.r = 0;
-				if (drawDebug) Debug.DrawLine(origPos + new Vector3(prevMove.x, prevMove.y, 0).normalized, origPos + mv.normalized, cc, 0.02f);*/
-			}
-			else
-			{
-				//if (Mathf.Abs(d) > float.Epsilon)
-				//	AddReward(-perUpdateScore * d * d * 20f, "turning");
-				//if(numGemsSpawned > 0)
-				//	AddReward(-perUpdateScore * 10f, "alive");
-
-				//if (drawDebug) Debug.DrawLine(origPos + new Vector3(prevMove.x, prevMove.y, 0).normalized, origPos + mv.normalized, cc, 0.02f);
-				//Debug.DrawLine(transform.position, transform.position + new Vector3(prevMove.x, prevMove.y, 0).normalized, cc, 0.02f);
-				//Debug.DrawLine(transform.position, transform.position + mv.normalized, cc, 0.02f);
+				Vector3 v = new Vector3(Mathf.Clamp(transform.localPosition.x, -8.5f, 8.5f), Mathf.Clamp(transform.localPosition.y, -3f, 3f), transform.localPosition.z);
+				float dist = Vector3.Distance(v, transform.localPosition) / Time.fixedDeltaTime;
+				if (dist > float.Epsilon)
+				{
+					AddReward(-perUpdateScore * Mathf.Clamp01(dist) * 30, "edge");
+				}
+				transform.localPosition = v;
 			}
 
-			prevMove = controlSignal;
+			AddReward(-perUpdateScore * Mathf.Clamp01(transform.localPosition.y / 3f), "gravity");
 
-			/*Color col2 = Color.yellow;
+			prevMove = moveDir;
+			prevSpeed = speed;
 
-			float s = 1 - Mathf.Clamp(Mathf.Abs(transform.localPosition.x - -8.5f), 0, 1);
-			col2.a = s * s;
-			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f * (controlSignal.x < 0.05 ? (1+mag * 2) : -0.75f), "-X edge proximity");
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.left * 1, (s < 0.001 ? Color.clear : (controlSignal.x < 0.05 ? Color.red : col2)), 0.02f);
-
-			s = 1 - Mathf.Clamp(Mathf.Abs(transform.localPosition.x - 8.5f), 0, 1);
-			col2.a = s * s;
-			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f * (controlSignal.x > -0.05 ? (1 + mag * 2) : -0.75f), "+X edge proximity");
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.right * 1, (s < 0.001 ? Color.clear : (controlSignal.x > -0.05 ? Color.red : col2)), 0.02f);
-
-			s = 1 - Mathf.Clamp(Mathf.Abs(transform.localPosition.y - -2.5f), 0, 1);
-			col2.a = s * s;
-			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f * (controlSignal.y < 0.05 ? (1 + mag * 2) : -0.75f), "-Y edge proximity");
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.down * 1, (s < 0.001 ? Color.clear : (controlSignal.y < 0.05 ? Color.red : col2)), 0.02f);
-
-			s = 1 - Mathf.Clamp(Mathf.Abs(transform.localPosition.y - 2.5f), 0, 1);
-			col2.a = s * s;
-			if (s > 0)
-				AddReward(-perUpdateScore * s * s * 2.5f * (controlSignal.y > -0.05 ? (1 + mag * 2) : -0.75f), "+Y edge proximity");
-			if (drawDebug) Debug.DrawLine(transform.position, transform.position + Vector3.up * 1, (s < 0.001 ? Color.clear : (controlSignal.y > -0.05 ? Color.red : col2)), 0.02f);*/
+			float posOffset = new Vector3(transform.localPosition.x / 20, transform.localPosition.y / 6, 0).magnitude - 0.2f;
+			AddReward(-perUpdateScore * Mathf.Max(posOffset, 0) / 4, "position");
 		}
 
 		void OnTriggerEnter2D(Collider2D other)

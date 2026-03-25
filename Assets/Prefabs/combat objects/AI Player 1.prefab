@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3846081892317154520}
   m_Layer: 10
   m_Name: AI Player 1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -187,7 +187,6 @@ MonoBehaviour:
   doMovement: 1
   runInfiniteEpisode: 0
   targetLocation: {x: 0, y: 0, z: 0}
-  trainingTargetLocation: {x: 0, y: 0, z: 0}
   rewardRatio: 0
   totalSteps: 46200000
 --- !u!114 &3846081892317154520
