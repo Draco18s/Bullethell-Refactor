@@ -9,6 +9,18 @@ namespace Assets.draco18s.util {
 		public static bool IsArrayOf<T>(this Type type) {
 			return type == typeof(T[]);
 		}
+
+		public static RectTransform RectTransform(this Component c) => c.transform as RectTransform;
+
+		public static Vector3 GetRectTransformScreenPosition(this RectTransform rectTransform, Canvas parentCanvas)
+		{
+			Camera cam = parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : parentCanvas.worldCamera;
+			// The transform.position property of a RectTransform gives its world position.
+			// WorldToScreenPoint then converts that to screen coordinates (pixels).
+			Vector3 screenPoint = RectTransformUtility.WorldToScreenPoint(cam, rectTransform.position);
+			return screenPoint;
+		}
+
 		public static IEnumerable<T> PadRight<T>(this IEnumerable<T> source, int length)
 		{
 			int i = 0;

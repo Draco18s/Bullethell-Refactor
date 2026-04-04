@@ -30,4 +30,4 @@ MonoBehaviour:
   changeDuration: 0
   allowedDurationRange:
     min: 0
-    max: 2
+    max: 5

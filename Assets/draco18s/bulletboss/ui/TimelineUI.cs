@@ -31,6 +31,13 @@ namespace Assets.draco18s.bulletboss.ui
 		public static TimelineUI instance;
 		public Timeline currentTimeline => timelines.Peek();
 
+		public float timelineScale => this.RectTransform().rect.width / 10;
+		public float zoomedTimelineScale => this.RectTransform().rect.width / zoomFactor;
+		public float zoomFactor => 10;
+
+		public float containerOffset => cardContainer.RectTransform().GetRectTransformScreenPosition(GetComponentInParent<Canvas>()).x + 2; //.anchoredPosition.x;
+		//public RectTransform rectTransform => transform as RectTransform;
+
 		private Stack<Timeline> timelines;
 		private MountPoint lastMountPoint = null;
 		private Canvas canvas;
@@ -141,7 +148,7 @@ namespace Assets.draco18s.bulletboss.ui
 			}
 			else
 			{
-				currentTimeline.CanAdd(cardUI.cardRef.pattern);
+				return currentTimeline.CanAdd(cardUI.cardRef.pattern);
 			}
 			return true;
 		}
@@ -170,6 +177,10 @@ namespace Assets.draco18s.bulletboss.ui
 			//float secondWidth = ((RectTransform)transform).rect.width / 10;
 			//((RectTransform)cardContainer).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, currentTimeline.GetDuration() * secondWidth);
 			parentPatternBtn.gameObject.SetActive(timelines.Count > 1);
+			ProjectileTradjectoryRenderer.instance.ClearExisting();
+			ProjectileTradjectoryRenderer.instance.DrawTimeline(lastMountPoint, currentTimeline, 
+				ProjectileTradjectoryRenderer.RenderOptions.IncludeNextChild | 
+				(timelines.Count == 1 ? ProjectileTradjectoryRenderer.RenderOptions.IsStationary : ProjectileTradjectoryRenderer.RenderOptions.None));
 		}
 
 		public void Close()
@@ -178,6 +189,7 @@ namespace Assets.draco18s.bulletboss.ui
 			lastMountPoint = null;
 			canvas.enabled = false;
 			timelines.Clear();
+			ProjectileTradjectoryRenderer.instance.ClearExisting();
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.entities;
 using Assets.draco18s.bulletboss.pattern.timeline;
@@ -9,6 +10,7 @@ using Assets.draco18s.serialization;
 using Assets.draco18s.util;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 using Keyframe = Assets.draco18s.bulletboss.ui.Keyframe;
 
@@ -67,21 +69,37 @@ namespace Assets.draco18s.bulletboss.pattern
 				return result;
 			}
 
-			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved)
+			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved, bool simulate = false)
 			{
 				shouldBulletBeRemoved = patternType.killParent;
-				SpawnNewBullet(shot, deltaTime, childPattern, patternType.followParent);
+				if(!simulate) SpawnNewBullet(shot, deltaTime, childPattern, patternType.followParent, out _);
+				else if (ProjectileTradjectoryRenderer.instance.originalFlags.HasFlag(ProjectileTradjectoryRenderer.RenderOptions.IncludeNextChild))
+				{
+					SpawnNewBullet(shot, deltaTime, childPattern, patternType.followParent, out Bullet ch);
+					if (ch == null) return true;
+					ProjectileTradjectoryRenderer.instance.DrawTimeline(ch, childPattern, 
+						(ProjectileTradjectoryRenderer.instance.originalFlags | ProjectileTradjectoryRenderer.RenderOptions.FadeOutPathAlongLength)
+						& ~ProjectileTradjectoryRenderer.RenderOptions.IsStationary, false);
+					Destroy(ch.gameObject);
+				}
 				return true;
 			}
 
-			private void SpawnNewBullet(Bullet parentShot, float deltaTime, Timeline timeline, bool followParent)
+			public Bullet SpawnNewBullet(Bullet shot)
 			{
+				SpawnNewBullet(shot, 1, childPattern, patternType.followParent, out Bullet s);
+				return s;
+			}
+
+			public void SpawnNewBullet(Bullet parentShot, float deltaTime, Timeline timeline, bool followParent, out Bullet shot)
+			{
+				shot = null;
 				if (spawned || deltaTime <= 0) return;
 
 				Quaternion q = Quaternion.Euler(0,0, spawnAngle);
 				GameObject prefab = timeline.bulletPrefab == null ? GameAssets.defaultBulletPrefab : timeline.bulletPrefab; //fukin ell, I shouldn't need this
 				GameObject go = Instantiate(prefab, parentShot.transform.position, parentShot.transform.rotation * q, GameManager.instance.bulletParentContainer);
-				Bullet shot = go.GetComponent<Bullet>();
+				shot = go.GetComponent<Bullet>();
 				if (parentShot is MountPoint)
 				{
 					shot.Damage = parentShot.Damage;

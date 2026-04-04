@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.ui;
+using Assets.draco18s.util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -71,6 +72,9 @@ namespace Assets.draco18s.bulletboss.ui
 				for(int i=0;i<6;i++)
 					MoveCard(mouse, 0.5f);
 
+				if (!InputManager.PatternEditor.ShiftFidelity.IsPressed())
+					Snap(TimelineUI.instance.timelineScale / 10);
+
 				hoverTiltCenter.localRotation = Quaternion.identity;
 				hoverPosCenter.localPosition = Vector3.zero;
 				return;
@@ -105,6 +109,25 @@ namespace Assets.draco18s.bulletboss.ui
 				tagName.color = cardRef.isEphemeral ? Color.white : cardRef.rarity.GetTextColor();
 				lastEphemeral = cardRef.isEphemeral;
 			}
+		}
+
+		private void Snap(float scalar)
+		{
+			float x = transform.localPosition.x + TimelineUI.instance.containerOffset - 25 + scalar/2;
+			x = Mathf.RoundToInt(x / scalar) * scalar - TimelineUI.instance.containerOffset;
+			
+			if (x + Screen.width / 2 <= TimelineUI.instance.containerOffset - 25)
+			{
+				return;
+			}
+			else if (x + Screen.width / 2 <= TimelineUI.instance.containerOffset)
+			{
+				//set min value
+				x = TimelineUI.instance.containerOffset - 2 - Screen.width / 2 + TimelineUI.instance.containerOffset;
+				//and re-step it
+				x = Mathf.RoundToInt(x / scalar) * scalar - TimelineUI.instance.containerOffset;
+			}
+			transform.localPosition = transform.localPosition.ReplaceX(x - 1 + 25 - scalar/2); //this -1 is dumb
 		}
 
 		private void MoveCard(Vector3 mouse, float amt)
@@ -236,6 +259,9 @@ namespace Assets.draco18s.bulletboss.ui
 
 			isHeld = false;
 			List<RaycastResult> list = new List<RaycastResult>();
+
+			eventData.position = eventData.position.ReplaceX(eventData.position.x + 25);
+
 			EventSystem.current.RaycastAll(eventData, list);
 
 			TimelineUI timeline = null;
@@ -253,7 +279,7 @@ namespace Assets.draco18s.bulletboss.ui
 				if (cardRef.count > 1)
 				{
 					CardUI newCardUi = Instantiate(gameObject, transform.parent).GetComponent<CardUI>();
-					newCardUi.SetData(new Card(cardRef.pattern, true));
+					newCardUi.SetData(new Card(cardRef.pattern.Clone(), true));
 					timeline.AddModule(newCardUi);
 					transform.SetParent(CardHand.instance.transform);
 					cardRef.Reduce(1);

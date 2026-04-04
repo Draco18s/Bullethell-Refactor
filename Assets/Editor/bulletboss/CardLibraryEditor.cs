@@ -1,7 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.draco18s.bulletboss;
+using Google.Protobuf.WellKnownTypes;
 using UnityEditor;
 using UnityEngine;
+using Enum = System.Enum;
 using Object = UnityEngine.Object;
 
 [CustomEditor(typeof(CardLibrary))]
@@ -20,7 +24,10 @@ public class CardLibraryEditor : Editor
 			string patternPath = "Patterns/";
 			string modififerPath = "Pattern Modifiers/";
 
-			string[] rarityFolders = {
+			Array en = Enum.GetValues(typeof(NamedRarity));
+			IEnumerable<NamedRarity> ro = en.Cast<NamedRarity>();
+			string[] rarityFolders = ro.Select(e => $"{(int)e} {e.ToString()}").ToArray();
+			/*{
 				"0 Starting",
 				"1 Common",
 				"2 Uncommon",
@@ -29,7 +36,7 @@ public class CardLibraryEditor : Editor
 				"5 Ultra Rare",
 				"6 Legendary",
 				"7 Artifact",
-			};
+			};*/
 			string[] modules = AssetDatabase.FindAssets("t:PatternModuleType", rarityFolders.Select(f => $"{basePath}{patternPath}{f}").ToArray());
 
 			string[] query = modules.Select(AssetDatabase.GUIDToAssetPath).ToArray();

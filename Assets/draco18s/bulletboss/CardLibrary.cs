@@ -44,7 +44,7 @@ namespace Assets.draco18s.bulletboss
 				moduleRegistry.Add(GetModuleName(module), module);
 				cardPools[module.rarity].Add(new Card(module));
 
-				if (module.rarity > NamedRarity.Uncommon) continue;
+				if (module.rarity > NamedRarity.Uncommon || module.rarity == NamedRarity.Cosmetic) continue;
 				activeDeck.Add(new Card(module), Deck.AddType.BaseDeck);
 				unlockedCards.Add(new Card(module));
 			}

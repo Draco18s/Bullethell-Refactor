@@ -102,7 +102,7 @@ namespace Assets.draco18s.bulletboss.pattern
 		/// <summary>
 		/// returns true if the action was completed
 		/// </summary>
-		public abstract bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved);
+		public abstract bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved, bool simulate=false);
 
 		public abstract void ResetForNewLoopIteration(Bullet shot);
 

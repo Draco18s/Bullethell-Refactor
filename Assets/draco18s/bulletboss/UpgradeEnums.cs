@@ -7,13 +7,14 @@ namespace Assets.draco18s.bulletboss
 	public enum NamedRarity
 	{
 		Starting,
+		Cosmetic,
 		Common,
 		Uncommon,
 		Rare,
 		Epic,
 		UltraRare,
 		Legendary,
-		Artifact,
+		Mythical,
 	}
 
 	internal static class EnumExtensions
@@ -28,6 +29,7 @@ namespace Assets.draco18s.bulletboss
 			switch (rarity)
 			{
 				case NamedRarity.Starting:
+				case NamedRarity.Cosmetic:
 				case NamedRarity.Common:
 					return dkGray;
 				case NamedRarity.Uncommon:
@@ -36,7 +38,7 @@ namespace Assets.draco18s.bulletboss
 					return seagrn;
 				case NamedRarity.Epic:
 					return Color.blue;
-				case NamedRarity.Artifact:
+				case NamedRarity.Mythical:
 					return purple;
 				case NamedRarity.UltraRare:
 					return orange;
@@ -51,9 +53,10 @@ namespace Assets.draco18s.bulletboss
 			switch (rarity)
 			{
 				case NamedRarity.Starting:
+				case NamedRarity.Cosmetic:
 				case NamedRarity.Common:
 				case NamedRarity.Epic:
-				case NamedRarity.Artifact:
+				case NamedRarity.Mythical:
 					return Color.white;
 				case NamedRarity.Uncommon:
 				case NamedRarity.Rare:

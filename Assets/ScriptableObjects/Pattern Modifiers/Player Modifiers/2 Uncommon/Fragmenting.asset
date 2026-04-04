@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fragmenting
   m_EditorClassIdentifier: 
   description: On hit, bullet fragments into 2 smaller bullets
-  rarity: 2
+  rarity: 3
   icon: {fileID: 606242878, guid: 6871e07e0e40f4c41a91250974d3d242, type: 3}
   moduleType: 3
   isUnique: 0

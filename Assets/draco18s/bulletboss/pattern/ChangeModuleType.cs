@@ -22,6 +22,8 @@ namespace Assets.draco18s.bulletboss.pattern
 		}
 		public override ModuleClassification moduleTypeClass => ModuleClassification.Transform;
 
+		public ChangeType Change => changeType;
+
 		[SerializeField] protected ChangeType changeType;
 		[SerializeField] private FloatRange allowedValueRange;
 
@@ -102,7 +104,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				return result;
 			}
 
-			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved)
+			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved, bool simulate = false)
 			{
 				timeElapsed += deltaTime;
 				float t = Mathf.Clamp01(timeElapsed / changeDuration);
@@ -113,7 +115,7 @@ namespace Assets.draco18s.bulletboss.pattern
 					case ChangeType.Speed:
 						if (oldValue < -1_000)
 						{
-							oldValue = shot.speed;
+							oldValue = shot.Speed;
 							val = Mathf.Lerp(oldValue, targetValue, t);
 						}
 						shot.ChangeSpeed(val);
@@ -153,6 +155,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			{
 				handle.SetLimits(patternType.allowedDurationRange, UpdateDuration);
 				handle.SetValue(changeDuration);
+				handle.SetScalar(TimelineUI.instance.timelineScale);
 				switch (patternType.changeType)
 				{
 					case ChangeType.Direction:

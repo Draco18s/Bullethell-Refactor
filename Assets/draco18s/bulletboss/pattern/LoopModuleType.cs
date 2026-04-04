@@ -30,7 +30,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			private int numLoops;
 			private int loopCounter;
 			public override bool hasEditableChild => !patternType.preconfiguredPattern || patternType.pattern.isEditable;
-			public override float duration => childPattern.GetDuration() * numLoops;
+			public override float duration => childPattern.GetDuration() * (numLoops > 0 ? numLoops : 1000);
 
 			public LoopModule(LoopModuleType modType) : base(modType)
 			{
@@ -60,11 +60,11 @@ namespace Assets.draco18s.bulletboss.pattern
 				return result;
 			}
 
-			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved)
+			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved, bool simulate = false)
 			{
 				shouldBulletBeRemoved = false;
 				if (numLoops > 0 && loopCounter >= numLoops) return true;
-				if (childPattern.RuntimeUpdate(shot, deltaTime))
+				if (childPattern.RuntimeUpdate(shot, deltaTime, simulate))
 				{
 					loopCounter++;
 				}

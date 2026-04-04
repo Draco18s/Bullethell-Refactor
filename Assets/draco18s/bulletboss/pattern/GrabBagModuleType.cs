@@ -37,7 +37,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				return mod;
 			}
 
-			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved)
+			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved, bool simulate = false)
 			{
 				shouldBulletBeRemoved = false;
 				if (nextPattern == null)
@@ -46,7 +46,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				{
 					return true;
 				}
-				nextPattern.DoShotStep(shot, deltaTime, out bool b);
+				nextPattern.DoShotStep(shot, deltaTime, out bool b, simulate);
 				shouldBulletBeRemoved |= b;
 				return true;
 			}

@@ -28,13 +28,13 @@ namespace Assets.draco18s.bulletboss.pattern
 
 			public PatternGroup(PatternGroupModuleType patternGroupModuleType) : base(patternGroupModuleType) { }
 
-			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved)
+			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved, bool simulate = false)
 			{
 				shouldBulletBeRemoved = false;
 				foreach (KeyValuePair<int, Card> grp in childPattern.GetModules())
 				{
 					if(!(grp.Value.pattern.patternTypeData is SpawnModuleType)) continue;
-					grp.Value.pattern.DoShotStep(shot, deltaTime, out bool b);
+					grp.Value.pattern.DoShotStep(shot, deltaTime, out bool b, simulate);
 					shouldBulletBeRemoved |= b;
 				}
 				return true;

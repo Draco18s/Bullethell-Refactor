@@ -21,7 +21,7 @@ MonoBehaviour:
   _killOnComplete: 0
   changeType: 0
   allowedValueRange:
-    min: 0.75
+    min: 0.5
     max: 1.5
   newValue: 0
   randomRange:

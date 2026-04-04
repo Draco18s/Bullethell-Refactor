@@ -31,22 +31,24 @@ namespace Assets.draco18s.bulletboss.entities
 		protected Timeline _pattern;
 		protected int patternHash = 0;
 		protected int penetrationsRemaining = 0;
-		protected Timeline pattern
+		public Timeline pattern
 		{
 			get
 			{
 				return _pattern;
 			}
-			set
+			protected set
 			{
 				_pattern = value;
 				patternHash = _pattern.GetHashCode();
 			}
 		}
 
+		public Bullet ParentShot => parentShot;
+
 		protected Bullet parentShot;
 
-		public float speed { get; protected set; }
+		protected float speed;
 
 		public float Speed => speed;
 
@@ -56,7 +58,7 @@ namespace Assets.draco18s.bulletboss.entities
 		private void Start()
 		{
 			speed = Mathf.Max(baseSpeed, 0.1f);
-			serializedPattern.InitOrReset();
+			serializedPattern?.InitOrReset();
 			//pattern ??= Timeline.CloneFrom(serializedPattern);
 			pattern?.SetOverrideDuration(20);
 		}
@@ -69,6 +71,28 @@ namespace Assets.draco18s.bulletboss.entities
 			//pattern.RuntimeUpdate(this, Time.fixedDeltaTime);
 			OnUpdate(Time.fixedDeltaTime);
 			ChildUpdate();
+		}
+
+		public void InitForSim(float spd)
+		{
+			speed = baseSpeed = spd;
+			pattern.SetOverrideDuration(20);
+		}
+
+		public bool Simulate(float dt)
+		{
+			bool kill = pattern.RuntimeUpdate(this, dt, true);
+			transform.Translate(Vector3.right * speed * dt, Space.Self);
+			if (parentShot != null)
+			{
+				transform.Translate(parentShot.transform.right * parentShot.speed * dt, Space.World);
+			}
+			if ((Mathf.Abs(transform.position.x) > 10 && Mathf.Sign(transform.right.x) == Mathf.Sign(transform.position.x)) || (Mathf.Abs(transform.position.y) > 6.5f && Mathf.Sign(transform.right.y) == Mathf.Sign(transform.position.y)))
+			{
+				kill = true;
+			}
+
+			return kill;
 		}
 
 		protected virtual void ChildUpdate()
@@ -108,7 +132,6 @@ namespace Assets.draco18s.bulletboss.entities
 				DestroySelf(true);
 				return;
 			}
-
 
 			transform.position = transform.position.ReplaceZ(transform.position.x / -50f + (parentShot != null ? 0.1f : 0));
 			

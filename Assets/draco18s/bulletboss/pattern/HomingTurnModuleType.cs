@@ -48,7 +48,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				return mod;
 			}
 
-			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved)
+			public override bool DoShotStep(Bullet shot, float deltaTime, out bool shouldBulletBeRemoved, bool simulate = false)
 			{
 				float bestAngle = 180;
 				foreach (Collider2D c in Physics2D.OverlapCircleAll(shot.transform.position, 10, shot.GetTargetLayerMask()))
@@ -68,7 +68,7 @@ namespace Assets.draco18s.bulletboss.pattern
 				oldValue = -(maxTurnRate / changeDuration * deltaTime - bestAngle);
 				newValue = bestAngle;
 				
-				return base.DoShotStep(shot, deltaTime, out shouldBulletBeRemoved);
+				return base.DoShotStep(shot, deltaTime, out shouldBulletBeRemoved, simulate);
 			}
 
 			public class HomingResolver : JsonConverter

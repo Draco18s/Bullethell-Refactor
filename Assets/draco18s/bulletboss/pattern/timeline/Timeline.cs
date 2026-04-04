@@ -43,6 +43,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 
 		public void DeserializeForRuntime()
 		{
+			if (activeRuntimePattern != null) return;
 			_bulletPrefab ??= GameAssets.defaultBulletPrefab;
 			activeRuntimeModifiers ??= new List<Card>();
 			activeRuntimePattern ??= new Dictionary<int, Card>();
@@ -97,7 +98,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			foreach (KeyValuePair<int, Card> module in activeRuntimePattern)
 			{
 				module.Value.pattern.ResetForNewLoopIteration(shot);
-				if (module.Key <= 0)
+				if (module.Key < 0)
 				{
 					module.Value.pattern.DoShotStep(shot, 0, out _);
 				}
@@ -123,9 +124,10 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		{
 			//uiLookup[patternRuntime[k]].transform.localPosition
 			int k = (int)card.transform.localPosition.x;
-			//Debug.Log($"Remove at {k}");
+			//Debug.Log($"Remove at {k}; {uiLookup}");
 			activeRuntimePattern.Remove(k, out Card m);
-			uiLookup.Remove(m);
+			if(m != null)
+				uiLookup.Remove(m);
 			ValidateModules();
 			currentTime = Mathf.Min(currentTime, 0);
 		}
@@ -153,10 +155,12 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				if (k >= nextOpenChange && isChangeType)
 				{
 					nextOpenChange = k + Mathf.CeilToInt(card.pattern.duration * secondWidth);
+					nextOpenSpawn = Mathf.Max(nextOpenSpawn, k + 1);
 				}
 				else if (k >= nextOpenSpawn && !isChangeType)
 				{
 					nextOpenSpawn = k + Mathf.CeilToInt(card.pattern.duration * secondWidth);
+					nextOpenChange = Mathf.Max(nextOpenChange, k + 1);
 				}
 				else
 				{
@@ -210,8 +214,6 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 					.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType)
 					.Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite) <= 1;
 
-				//Debug.Log($"{activeRuntimeModifiers.Where(m => m.timelineModifier.moduleType == card.timelineModifier.moduleType).Count(m => m.timelineModifier.moduleType == TimelineModifierType.ModuleType.Sprite)} => {b}");
-
 				if (!uiLookup.TryGetValue(card, out CardUI uiCard)) continue;
 
 				if (activeRuntimeModifiers
@@ -241,7 +243,7 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 			onTimelineChanged();
 		}
 
-		public bool RuntimeUpdate(Bullet bullet, float dt)
+		public bool RuntimeUpdate(Bullet bullet, float totalDt, bool simulate = false)
 		{
 			if (activeRuntimePattern == null) return true;
 			foreach (Card m in activeRuntimeModifiers)
@@ -249,24 +251,34 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 				if (!m.isActive) continue;
 				m.timelineModifier.ApplyModifier_OnUpdate(bullet);
 			}
-			float secondWidth = ((RectTransform)TimelineUI.instance.transform).rect.width / 10;
+			float dt = totalDt;
+
+			float secondWidth = TimelineUI.instance.timelineScale;
 			int idx = Mathf.CeilToInt(currentTime * secondWidth);
+			int idx2 = Mathf.CeilToInt((currentTime + (totalDt * _runSpeed)) * secondWidth);
 
 			foreach (int k in activeRuntimePattern.Keys.OrderBy(x => x))
 			{
-				if (k > idx) break;
-				if (k != idx && k + activeRuntimePattern[k].pattern.duration > idx) continue;
-				bool b = activeRuntimePattern[k].pattern.DoShotStep(bullet, dt, out bool shouldRemove);
-				if (shouldRemove) bullet.DestroySelf(true);
+				if (k >= idx2) break;
+				if (k + activeRuntimePattern[k].pattern.duration * secondWidth < idx) continue;
+				//if (k != idx && k + activeRuntimePattern[k].pattern.duration < idx) continue;
+				bool b = activeRuntimePattern[k].pattern.DoShotStep(bullet, dt, out bool shouldRemove, simulate);
+				if (shouldRemove)
+				{
+					if (simulate) 
+						return true;
+					bullet.DestroySelf(true);
+				}
 				if (b && activeRuntimePattern[k].pattern.duration < dt)
 				{
+					dt -= Mathf.Max(activeRuntimePattern[k].pattern.duration, 1f / secondWidth) * _runSpeed;
 					idx++;
 					continue;
 				}
 				if (!b) break;
 			}
 
-			currentTime += dt * _runSpeed;
+			currentTime += totalDt * _runSpeed;
 			bool completed = currentTime >= GetDuration();
 			if (!completed || !loopsOnTimelineEnd) return completed;
 			currentTime -= GetDuration();
@@ -351,7 +363,15 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		public bool CanAdd(PatternModule refPattern)
 		{
 			int max = moduleTypeOfThis?.GetMaxChildren() ?? (overrideChildLimit > 0 ? overrideChildLimit : -1);
-			if (max < 0 || activeRuntimePattern.Count >= max) return false;
+			if (max > 0 && activeRuntimePattern.Count >= max) return false;
+
+			if (entityOfThis != null && refPattern.patternTypeData is ChangeModuleType cm)
+			{
+				if (cm.killOnComplete) return false;
+				if (cm.Change == ChangeModuleType.ChangeType.Size) return false;
+				if (cm.Change == ChangeModuleType.ChangeType.Speed) return false;
+			}
+
 			return (moduleTypeOfThis == null || moduleTypeOfThis.CanAddModule(refPattern.patternTypeData)) && (entityOfThis == null || entityOfThis.CanAddModule(refPattern));
 		}
 
