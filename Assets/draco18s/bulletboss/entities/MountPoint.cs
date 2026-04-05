@@ -47,6 +47,10 @@ namespace Assets.draco18s.bulletboss.entities
 		{
 			return pattern.AddAIPlayerModifier(new Card(modifier));
 		}
+		public override void UnapplyTimelineModifier(Card modifier)
+		{
+			ChangeRotation(-90);
+		}
 
 		public void SetCurrentTime(float time)
 		{

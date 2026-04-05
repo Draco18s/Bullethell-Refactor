@@ -25,7 +25,7 @@ MonoBehaviour:
     runtimeEditable: 1
     modifiers: []
     patternObjects:
-      keys: 870000008a0000008d000000
+      keys: b4000000b5000000b6000000
       values:
       - {fileID: 11400000, guid: b9c49336ad4027c4ba28af70cc217791, type: 2}
       - {fileID: 11400000, guid: fa45a3b0c2983344b9095c85c1d7afa0, type: 2}

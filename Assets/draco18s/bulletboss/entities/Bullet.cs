@@ -213,7 +213,7 @@ namespace Assets.draco18s.bulletboss.entities
 			pattern.AddModifier(modifier);
 		}
 
-		public void UnapplyTimelineModifier(Card modifier)
+		public virtual void UnapplyTimelineModifier(Card modifier)
 		{
 			ChangeRotation(0);
 		}

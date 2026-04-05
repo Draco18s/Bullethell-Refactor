@@ -127,6 +127,7 @@ namespace Assets.draco18s.bulletboss.pattern
 			public override void ConfigureKeyframe(RectTransform keyframeBar, DraggableElement handle, Keyframe editableKeyframe)
 			{
 				childPattern.InitOrReset();
+				editableKeyframe.SetEditableType(Keyframe.EditTypes.None, FloatRange.Zero, childPattern.GetDuration(), false, 1, null);
 				editableKeyframe.SetEditableType(Keyframe.EditTypes.Angular, patternType.angleLimit, spawnAngle, true, 1, UpdateSpawnAngle);
 			}
 

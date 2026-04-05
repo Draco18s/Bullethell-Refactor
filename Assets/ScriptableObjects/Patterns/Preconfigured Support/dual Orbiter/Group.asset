@@ -28,5 +28,5 @@ MonoBehaviour:
       keys: 0000000001000000
       values:
       - {fileID: 11400000, guid: 4c0f467460044924e80ef8bac6283aa8, type: 2}
-      - {fileID: 11400000, guid: 60754742e931efc4ab23df0626131d70, type: 2}
+      - {fileID: 11400000, guid: 7a80bb1b7a7a4e04984ec65f3b9f64eb, type: 2}
   maxObjects: -1
