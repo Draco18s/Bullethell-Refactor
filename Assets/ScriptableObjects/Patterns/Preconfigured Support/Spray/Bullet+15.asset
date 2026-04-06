@@ -27,8 +27,10 @@ MonoBehaviour:
     patternObjects:
       keys: 
       values: []
+    overrideDuration: 0
+    overrideChildLimit: 0
   maxObjects: -1
-  duration: 1
+  duration: 1.5
   killParent: 0
   followParent: 0
   initialAngle: 15

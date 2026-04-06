@@ -28,6 +28,8 @@ MonoBehaviour:
       keys: 00000000
       values:
       - {fileID: 11400000, guid: ce583b814e6edfe4891405b501864fce, type: 2}
+    overrideDuration: 0
+    overrideChildLimit: 0
   maxObjects: -1
   duration: 5
   killParent: 0

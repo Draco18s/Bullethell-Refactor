@@ -30,6 +30,8 @@ MonoBehaviour:
       - {fileID: 11400000, guid: b9c49336ad4027c4ba28af70cc217791, type: 2}
       - {fileID: 11400000, guid: fa45a3b0c2983344b9095c85c1d7afa0, type: 2}
       - {fileID: 11400000, guid: 8eb2047500e030b4e92c1cabff3e8cbe, type: 2}
+    overrideDuration: 0
+    overrideChildLimit: 0
   maxObjects: -1
   duration: 100000
   killParent: 0

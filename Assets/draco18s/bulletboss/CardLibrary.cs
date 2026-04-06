@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.draco18s.bulletboss.cards;
 using Assets.draco18s.bulletboss.pattern;
 using Assets.draco18s.bulletboss.pattern.timeline;
@@ -89,6 +90,11 @@ namespace Assets.draco18s.bulletboss
 		public string GetModuleName(TimelineModifierType module)
 		{
 			return $"{module.rarity}/{module.name}";
+		}
+
+		public PatternModuleType[] GetModules()
+		{
+			return modules;
 		}
 	}
 }

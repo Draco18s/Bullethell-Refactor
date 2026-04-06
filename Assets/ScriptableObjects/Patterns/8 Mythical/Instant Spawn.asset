@@ -10,33 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a349b16367ecdfa48a5b8a0b3581e100, type: 3}
-  m_Name: Orbiting Bullet 1
+  m_Name: Instant Spawn
   m_EditorClassIdentifier: 
-  _rarity: 0
-  _description: 
-  _icon: {fileID: 1128709544, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
+  _rarity: 7
+  _description: Basic blue shot. Unlimited angle adjustment.
+  _icon: {fileID: -1717223286, guid: 6b88c01682600cb428fea6c4cb065843, type: 3}
   _playableCopies: 1
   _preconfigured: 1
   _unique: 0
   _killOnComplete: 0
-  _allowedChildrenClasses: -1
-  preconfiguredPattern: 1
+  _allowedChildrenClasses: 1
+  preconfiguredPattern: 0
   pattern:
-    runtimeEditable: 1
+    runtimeEditable: 0
     modifiers: []
     patternObjects:
-      keys: b4000000b5000000b6000000
-      values:
-      - {fileID: 11400000, guid: b9c49336ad4027c4ba28af70cc217791, type: 2}
-      - {fileID: 11400000, guid: fa45a3b0c2983344b9095c85c1d7afa0, type: 2}
-      - {fileID: 11400000, guid: 8eb2047500e030b4e92c1cabff3e8cbe, type: 2}
+      keys: 
+      values: []
     overrideDuration: 0
     overrideChildLimit: 0
   maxObjects: -1
-  duration: 100000
+  duration: 0.05
   killParent: 0
-  followParent: 1
-  initialAngle: 90
+  followParent: 0
+  initialAngle: 0
   angleLimit:
-    min: 0
-    max: 0
+    min: -180
+    max: 180

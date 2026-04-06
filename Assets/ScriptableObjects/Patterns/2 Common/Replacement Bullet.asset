@@ -20,7 +20,7 @@ MonoBehaviour:
   _preconfigured: 0
   _unique: 0
   _killOnComplete: 0
-  _allowedChildrenClasses: 0
+  _allowedChildrenClasses: -1
   preconfiguredPattern: 0
   pattern:
     runtimeEditable: 0
@@ -28,6 +28,8 @@ MonoBehaviour:
     patternObjects:
       keys: 
       values: []
+    overrideDuration: 0
+    overrideChildLimit: 0
   maxObjects: -1
   duration: 0.2
   killParent: 1

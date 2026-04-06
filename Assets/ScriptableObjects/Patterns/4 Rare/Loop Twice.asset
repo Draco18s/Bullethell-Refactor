@@ -27,6 +27,8 @@ MonoBehaviour:
     patternObjects:
       keys: 
       values: []
+    overrideDuration: 0
+    overrideChildLimit: 0
   maxObjects: 8
   iterations: 2
   allowedValueRange:

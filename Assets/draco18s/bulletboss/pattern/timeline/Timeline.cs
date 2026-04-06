@@ -29,8 +29,8 @@ namespace Assets.draco18s.bulletboss.pattern.timeline
 		public delegate void OnTimelineChanged();
 		[NonSerialized] public OnTimelineChanged onTimelineChanged = () => { };
 		private bool loopsOnTimelineEnd = true;
-		private float overrideDuration = 0;
-		private int overrideChildLimit = 0;
+		[SerializeField] private float overrideDuration = 0;
+		[SerializeField] private int overrideChildLimit = 0;
 		private PatternModuleType moduleTypeOfThis;
 		[NonSerialized] private PatternModule moduleOfThis;
 		[NonSerialized] private Bullet entityOfThis;
